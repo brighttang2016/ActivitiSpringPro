@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 为这个mapper指定一个唯一的namespace，namespace的值习惯上设置成包名+sql映射文件名，这样就能够保证namespace的值是唯一的
+例如namespace="me.gacl.mapping.userMapper"就是me.gacl.mapping(包名)+userMapper(userMapper.xml文件去除后缀)
+ -->
+<!-- <mapper namespace="com.nantian.mapping.userMapping2222"> -->
+<mapper namespace="com.sys.dao.StudentMapper">
+    <!-- 在select标签中编写查询的SQL语句， 设置select标签的id属性为getUser，id属性值必须是唯一的，不能够重复
+    使用parameterType属性指明查询时使用的参数类型，resultType属性指明查询返回的结果集类型
+    resultType="me.gacl.domain.User"就表示将查询结果封装成一个User类的对象返回
+    User类就是users表所对应的实体类
+    -->
+    <!-- 
+        根据id查询得到一个user对象
+     -->
+    <select id="getStudent" parameterType="com.sys.domain.Student" resultType="com.sys.domain.Student">
+        select * from student t 
+        <where>
+        	<if test="userId != null  and userId != ''">
+	        	t.userid=#{userId}
+	        </if>
+	        <if test="couse != null  and couse != ''">
+	        	and t.couse=#{couse}
+	        </if>
+        </where>
+    </select>
+    
+    <resultMap id="student" type="com.sys.domain.Student">
+    	<id column="userid" property="userId" />
+        <result column="couse" property="couse" />
+        <result column="point" property="point" />
+    </resultMap> 
+    <resultMap type="com.sys.domain.StuPoint" id="stuPoint">
+    	<result column="id" property="id"/>
+    	<result column="name" property="name"/>
+    	<discriminator column="zb" javaType="string">
+    		<case value="政治" resultType="com.sys.domain.StuPoint">
+    			<result column="point" property="pointZz"/>
+    		</case>
+    		<case value="数学" resultType="com.sys.domain.StuPoint">
+    			<result column="point" property="pointSx"/>
+    		</case>
+    	</discriminator>
+    </resultMap>
+   	<select id="getPoint" parameterType="map" resultMap="stuPoint">
+   		select * from test1 t
+   		<where>
+   			<if test="name != '' and name != null">
+   				and t.name=#{name}
+   			</if>
+   			<if test="idArray != null">
+	   			and id in
+		   		<foreach collection="idArray" item="id22222" open="(" separator="," close=")">
+		   			 #{id22222}
+		   		</foreach>
+   			</if>
+   		</where>
+   		order by t.point
+   	</select>
+    <select id="getStudentList" parameterType="com.sys.domain.Student" resultMap="student">
+        select * from student t 
+        <where>
+        	<if test="userId != null  and userId != ''">
+	        	t.userid=#{userId}
+	        </if>
+	        <if test="couse != null  and couse != ''">
+	        	and t.couse=#{couse}
+	        </if>
+        </where>
+    </select> 
+    
+    <!-- 插入学生 -->
+	<insert id="stuAdd" parameterType="com.sys.domain.Student">
+		insert into student(userid,couse,point) 
+		values(#{userId},#{couse},#{point})
+	</insert>
+	
+	<!-- 修改学生 -->
+	<update id="stuUpd" parameterType="com.sys.domain.Student">
+		update student t set t.couse = #{couse} ,t.point=#{point} where t.userid=#{userId}
+	</update>
+	
+	<!-- 删除学生 -->
+	<insert id="stuDel" parameterType="com.sys.domain.Student">
+		delete student t where t.userid=#{userId}
+	</insert>
+	<!-- 批量插入(oracle语法:写法一) -->
+	<!-- <insert id="stuAddBat" parameterType="java.util.List" >
+		insert into student(userid,couse,point) 
+		<foreach collection="list" item="item" index="index" separator="union all">
+			(select #{item.userId},#{item.couse},#{item.point} from dual)
+		</foreach>
+	</insert> -->
+	<!-- 批量插入(oracle语法:写法二) -->
+	<insert id="stuAddBat" parameterType="java.util.List" >
+		insert into student(userid,couse,point) 
+		<foreach collection="list" item="item" open="(" close=")" index="index" separator="union all">
+			select #{item.userId},#{item.couse},#{item.point} from dual
+		</foreach>
+	</insert>
+</mapper>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="js/jquery-1.8.3.js"></script>
+</head>
+<script>
+	$(document).ready(
+		function(){
+			//alert("hello world1"+$('#send'));	
+			$('#send').bind("click",function(){
+		    	alert("click");
+		         $.ajax({
+		             type: "GET",
+		             url: "/ActivitiSpring2/userQuery.ctrl",
+		             //data: {username:$("#username").val(), content:$("#content").val()},
+		             data:{name:"唐亮"},
+		             dataType: "json",
+		             success: function(data){
+		                        /*  $('#resText').empty();   //清空resText里面的所有内容
+		                         var html = ''; 
+		                         $.each(data, function(commentIndex, comment){
+		                               html += '<div class="comment"><h6>' + comment['username']
+		                                         + ':</h6><p class="para"' + comment['content']
+		                                         + '</p></div>';
+		                         });
+		                         $('#resText').html(html); */
+		                         alert(data);
+		                      }
+		         });
+		    });
+			
+			$("#class5_1").bind('click',function(){
+				$.ajax({
+					type:'get',
+					url:'/ActivitiSpring2/class5_1.ctrl',
+					success:function(data){
+						alert(data);
+					},
+					failure:function(){}
+				})
+			}); 
+			
+			$("#class5_2").bind('click',function(){
+				$.ajax({
+					type:'get',
+					url:'/ActivitiSpring2/class5_2.ctrl',
+					success:function(data){
+						alert(data);
+					},
+					failure:function(){}
+				})
+			}); 
+			
+			$("#process_delploy").bind('click',function(){
+				$.ajax({
+					type:'get',
+					url:'/ActivitiSpring2/process_delploy.ctrl',
+					success:function(data){
+						alert(data);
+					},
+					failure:function(){}
+				})
+			}); 
+			
+			$("#process_start").bind('click',function(){
+				$.ajax({
+					type:'get',
+					url:'/ActivitiSpring2/process_start.ctrl',
+					success:function(data){
+						alert(data);
+					},
+					failure:function(){}
+				})
+			}); 
+			
+			$("#task_query").bind('click',function(){
+				$.ajax({
+					type:'get',
+					url:'/ActivitiSpring2/task_query.ctrl',
+					success:function(data){
+						alert(data);
+					},
+					failure:function(){}
+				})
+			}); 
+			
+			$("#process_list").bind('click',function(){
+				window.open("/ActivitiSpring2/process_list.ctrl");
+			}); 
+			
+			$("#task_list").bind('click',function(){
+				window.open("/ActivitiSpring2/task_list.ctrl");
+			}); 
+			
+			$("#process_sign").bind('click',function(){
+				$.ajax({
+					type:'get',
+					url:'/ActivitiSpring2/task_sign.ctrl',
+					success:function(data){
+						alert(data);
+					},
+					failure:function(){}
+				})
+			}); 
+			$("#task_claim").bind('click',function(){
+				$.ajax({
+					type:'get',
+					url:'/ActivitiSpring2/task_claim.ctrl',
+					success:function(data){
+						alert(data);
+					},
+					failure:function(){}
+				})
+			});
+			$("#node_form").bind('click',function(){
+				$.ajax({
+					type:'get',
+					url:'/ActivitiSpring2/node_form.ctrl',
+					success:function(data){
+						alert(data);
+					},
+					failure:function(){}
+				})
+			});
+			$("#node_his").bind('click',function(){
+				$.ajax({
+					type:'get',
+					url:'/ActivitiSpring2/node_his.ctrl',
+					success:function(data){
+						alert(data);
+					},
+					failure:function(){}
+				})
+			});
+			
+			
+		}
+	);
+</script>
+<body>
+	<div style="border=1px solid red">
+		<form action="/ActivitiSpring2/userQuery.ctrl">
+			<input type="text" value="123" name="name"/>
+			<input type="submit" value="userQuery.ctr（用户查询）"/>
+			<input type="button" value="点击" id="send"/>
+		</form>
+	</div>
+	<div><input type="button" value="代码清单5-1,用户测试" id="class5_1"/></div>
+	<div><input type="button" value="代码清单5-2,用户组测试" id="class5_2"/></div>
+	<div><input type="button" value="请假流程发布" id="process_delploy"/></div>
+	<div><input type="button" value="请假流程启动" id="process_start"/></div>
+	<div><input type="button" value="任务查询" id="task_query"/></div>
+	<div><input type="button" value="任务列表查询" id="task_list"/></div>
+	<div><input type="button" value="已发布流程查询" id="process_list"/></div>
+	<hr/>
+	<div><input type="button" value="部门领导签收并提交" id="task_claim"/></div>
+	<div><input type="button" value="节点表单查询" id="node_form"/></div>
+	<div><input type="button" value="执行历史查询" id="node_his"/></div>
+	<!-- <div><input type="button" value="签收" id="process_sign"/></div> -->
+</body>
+</html>
