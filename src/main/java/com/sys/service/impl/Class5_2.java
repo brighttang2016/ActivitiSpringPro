@@ -151,6 +151,7 @@ public class Class5_2 {
 				
 				//发布流程xml图片（中文乱码）
 				repositoryService.createDeployment().addClasspathResource("chapter5/leave.bpmn").deploy();
+//				repositoryService.createDeployment().addClasspathResource("chapter6/workFlowLeave.bpmn").deploy();
 				
 				//发布流程图片（单独图片无法发布成功）
 //				repositoryService.createDeployment().addClasspathResource("chapter5/candidateUserInUserTask.png").deploy();

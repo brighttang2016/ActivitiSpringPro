@@ -1,6 +1,5 @@
 package com.sys.controler;
 
-import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,11 +23,16 @@ import org.activiti.engine.ProcessEngines;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.form.TaskFormData;
+import org.activiti.engine.history.HistoricDetail;
+import org.activiti.engine.history.HistoricFormProperty;
+import org.activiti.engine.history.HistoricVariableUpdate;
 import org.activiti.engine.identity.User;
 import org.activiti.engine.impl.RepositoryServiceImpl;
 //import org.activiti.engine.impl.bpmn.diagram.ProcessDiagramGenerator;
 import org.activiti.engine.impl.bpmn.parser.factory.DefaultActivityBehaviorFactory;
 import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
+import org.activiti.engine.impl.persistence.entity.HistoricVariableInstanceEntity;
 import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
 import org.activiti.engine.impl.pvm.delegate.ActivityBehavior;
 import org.activiti.engine.impl.pvm.process.ActivityImpl;
@@ -186,7 +190,7 @@ public class SpringMybatisControler{
 	}
 	
 	
-	//查询执行理事
+	//查询执行历史
 	@RequestMapping(value="/node_his.ctrl")
 	public void  node_his(){
 		TaskService taskService = processEngine.getTaskService();	
@@ -195,7 +199,18 @@ public class SpringMybatisControler{
 		HistoryService historyService = processEngine.getHistoryService();
 		long count = historyService.createHistoricProcessInstanceQuery().finished().count();
 		System.out.println("执行历史任务数："+count);
-		assertEquals(1, count);
+		List<HistoricDetail> hdList = historyService.createHistoricDetailQuery().processInstanceId("50005").list();
+		for (HistoricDetail historicDetail : hdList) {
+			System.out.println(historicDetail);
+			if(historicDetail instanceof HistoricFormProperty){
+				HistoricFormProperty hfp = (HistoricFormProperty) historicDetail;
+				System.out.println("HistoricFormProperty|"+hfp.getTaskId()+"|"+hfp.getPropertyId()+"|"+hfp.getPropertyValue()+"|"+hfp.getTime());
+			}else if(historicDetail instanceof HistoricVariableUpdate){
+				HistoricVariableInstanceEntity hvie = (HistoricVariableInstanceEntity) historicDetail;
+				System.out.println("HistoricVariableUpdate|"+hvie.getTaskId()+"|"+hvie.getName()+"|"+hvie.getValue()+"|"+hvie.getTime());
+			}
+		}
+//		assertEquals(1, count);
 	}
 	
 	
@@ -220,13 +235,15 @@ public class SpringMybatisControler{
 	@RequestMapping(value="/task_claim.ctrl")
 	public void  task_claim(){
 		TaskService taskService = processEngine.getTaskService();
+		RuntimeService runTimeservice;
+		
 		Task task = taskService.createTaskQuery().taskCandidateGroup("deptLeader").singleResult();
 		String taskId = task.getId();
 		System.out.println("taskId:"+taskId);
 		taskService.claim(task.getId(), "partLeaderUserId");
 		Map<String, String> variable = new HashMap<String, String>();
 		variable.put("approval", "true");
-		
+		variable.put("userName", "唐亮");
 		FormService formService = processEngine.getFormService();
 		formService.submitTaskFormData(taskId, variable);
 		
