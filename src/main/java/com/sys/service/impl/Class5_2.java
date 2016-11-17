@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,7 @@ import java.util.zip.ZipInputStream;
 
 import javax.annotation.Resource;
 
+import org.activiti.engine.FormService;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.IdentityService;
 import org.activiti.engine.ProcessEngine;
@@ -28,6 +30,7 @@ import org.activiti.engine.ProcessEngineConfiguration;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.identity.Group;
 import org.activiti.engine.identity.User;
 import org.activiti.engine.repository.DeploymentBuilder;
@@ -36,6 +39,7 @@ import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -51,14 +55,58 @@ public class Class5_2 {
 	public ProcessEngine processEngine;
 	@Resource
 	public TaskService taskService;
-	
+	@Autowired
+	private RepositoryService repositoryService;
+	@Autowired
+	private FormService formService;
+	@Autowired
+	private RuntimeService runtimeService;
+	@Autowired
+	private HistoryService historyService;
 	public void readResource(){
 		
 	}
 	
+	/**
+	 * 查询业务编码为：200810405234的已完成的流程，200810405234对应对应申请单的主键
+	 * tom 2016年11月17日
+	 */
+	public void finish_task(){
+		List<HistoricProcessInstance> finishList = historyService.createHistoricProcessInstanceQuery().
+				processInstanceBusinessKey("200810405234").finished().list();//200810405234:businesskey
+		System.out.println("finishList.size():"+finishList.size());
+	}
 	//已发布流程查询
 	public void process_list(){
 		
+	}
+	
+	//hr待办任务
+	public List<Task> hrTasklist(){
+		taskService = processEngine.getTaskService();
+		TaskQuery taskQuery = taskService.createTaskQuery();
+		List<Task> taskOfDepLeaderList = taskQuery.taskCandidateGroup("hrLeader").list();
+		logger.debug("taskOfDepLeaderList:"+taskOfDepLeaderList);
+		return taskOfDepLeaderList;
+	}
+	
+	//活动任务
+	public ProcessInstance activeTasklist(){
+		taskService = processEngine.getTaskService();
+		TaskQuery taskQuery = taskService.createTaskQuery();
+		List<Task> activeTasklist = taskQuery.taskCandidateGroup("modifyLeader").active().list();
+		logger.debug("activeTasklist:"+activeTasklist);
+		ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceBusinessKey("200810405234").active().singleResult();
+		return processInstance;
+	}	
+	
+	//modify待办任务
+	public List<Task> modifyTasklist(){
+		taskService = processEngine.getTaskService();
+		TaskQuery taskQuery = taskService.createTaskQuery();
+		List<Task> taskOfDepLeaderList = taskQuery.taskCandidateGroup("modifyLeader").list();
+		logger.debug("taskOfDepLeaderList:"+taskOfDepLeaderList);
+		return taskOfDepLeaderList;
 	}
 	
 	//查询用户任务
@@ -68,8 +116,9 @@ public class Class5_2 {
 		taskService = processEngine.getTaskService();
 		TaskQuery taskQuery = taskService.createTaskQuery();
 		//用户200810405234当前任务
-		List<Task> taskList1 = taskQuery.taskCandidateUser("200810405233").list();
+		/*List<Task> taskList1 = taskQuery.taskCandidateUser("200810405233").list();
 		List<Task> taskList2 = taskQuery.taskCandidateUser("200810405234").list();
+		
 		logger.debug("用户200810405233当前任务数:"+taskList1.size());
 		//说明200810405234和200810405234在同一个用户组：deptLeader
 		for (Task task:taskList1) {
@@ -78,7 +127,10 @@ public class Class5_2 {
 			}
 		}
 		logger.debug("taskList2:"+taskList2);
-		return taskList2;
+		*/
+		List<Task> taskOfDepLeaderList = taskQuery.taskCandidateGroup("deptLeader").list();
+		logger.debug("taskOfDepLeaderList:"+taskOfDepLeaderList);
+		return taskOfDepLeaderList;
 		
 		/*System.out.println("用户200810405234当前任务数:"+taskList2.size());
 		for (Task task:taskList2) {
@@ -125,13 +177,20 @@ public class Class5_2 {
 	//启动流程
 	public void process_start(){
 		//启动流程并返回流程实例
+		String createUserid = "20081040";
+		identityService.setAuthenticatedUserId(createUserid);
 		RuntimeService runtimeService = processEngine.getRuntimeService();
-		Map<String,Object> variables = new HashMap<String,Object>();
-		variables.put("applyUser", "brighttang");
-		variables.put("days", "5");
+		Map<String,String> variables = new HashMap<String,String>();
+		Calendar cl =Calendar.getInstance();
+		variables.put("startDate", "2015-01-01");
+		variables.put("endDate", "2015-01-05");
+		variables.put("reason", "公休");
 //		ProcessInstance processInstance = runtimeService
 //				.startProcessInstanceByKey("myProcess");
-		ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("myProcess",variables);
+//		ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("myProcess",variables);
+//		ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("leave", "200810405234", variables);
+		ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionKey("leave").singleResult();
+		ProcessInstance processInstance = formService.submitStartFormData(processDefinition.getId(), "200810405234", variables);
 //		ProcessInstance processInstance = runtimeService.startProcessInstanceById("myProcess");
 //		assertNotNull(processInstance);
 		System.out.println("pid=" + processInstance.getId() + ",pdid="
@@ -150,8 +209,8 @@ public class Class5_2 {
 				RepositoryService repositoryService = processEngine.getRepositoryService();
 				
 				//发布流程xml图片（中文乱码）
-				repositoryService.createDeployment().addClasspathResource("chapter5/leave.bpmn").deploy();
-//				repositoryService.createDeployment().addClasspathResource("chapter6/workFlowLeave.bpmn").deploy();
+//				repositoryService.createDeployment().addClasspathResource("chapter5/leave.bpmn").deploy();
+				repositoryService.createDeployment().addClasspathResource("chapter6/workFlowLeave.bpmn").deploy();
 				
 				//发布流程图片（单独图片无法发布成功）
 //				repositoryService.createDeployment().addClasspathResource("chapter5/candidateUserInUserTask.png").deploy();
@@ -194,16 +253,19 @@ public class Class5_2 {
 	
 	public void testUser(){
 		//创建用户组
-		String groupId = "deptLeader";
+		String[] groups = new String[]{"deptLeader","hrLeader","modifyLeader"};
 		System.out.println("class5_2->testUser");
-		Group group  = identityService.newGroup(groupId);
-//		group.setId("31001");
-		group.setName("总经理办公会");
-		group.setType("assignment");
-		identityService.deleteGroup(groupId);
-		identityService.saveGroup(group);
-		List<Group> groupList = identityService.createGroupQuery().groupId(groupId).list();
-		System.out.println("用户组数："+groupList.size());
+		for(int i = 0;i < groups.length;i++){
+			Group group  = identityService.newGroup(groups[i]);
+//			group.setId("31001");
+			group.setName("总经理办公会");
+			group.setType("assignment");
+			identityService.deleteGroup(groups[i]);
+			identityService.saveGroup(group);
+			List<Group> groupList = identityService.createGroupQuery().groupId(groups[i]).list();
+			System.out.println("用户组数："+groupList.size());
+		}
+		
 		
 		//创建用户
 		User user = identityService.newUser("200810405234");
@@ -222,11 +284,20 @@ public class Class5_2 {
 		identityService.deleteUser("200810405233");
 		identityService.saveUser(user2);
 		
+		User user3 = identityService.newUser("");
+		user3.setId("200810405235");
+		user3.setFirstName("唐");
+		user3.setLastName("亮");
+		user3.setPassword("200810405235");
+		identityService.deleteUser("200810405235");
+		identityService.saveUser(user3);
+		
 		//用户设置用户组
-		identityService.createMembership("200810405234", groupId);
-		identityService.createMembership("200810405233", groupId);
-		List<User> userList = identityService.createUserQuery().memberOfGroup(groupId).list();
-		System.out.println("用户组"+groupId+"中的用户：");
+		identityService.createMembership("200810405234", "hrLeader");
+		identityService.createMembership("200810405233", "deptLeader");
+		identityService.createMembership("200810405235", "modifyLeader");
+		List<User> userList = identityService.createUserQuery().memberOfGroup("deptLeader").list();
+		System.out.println("用户组 deptLeader中的用户：");
 		for(User userTemp:userList){
 			System.out.println("userTemp:"+userTemp.getId());
 		}

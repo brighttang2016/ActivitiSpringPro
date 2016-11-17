@@ -70,6 +70,8 @@ public class SpringMybatisControler{
 //	public RepositoryService repositoryService;
 	@Autowired
 	public ProcessEngine processEngine;
+	@Autowired
+	private RuntimeService runtimeService;
 	
 	@RequestMapping(value="/process_sign.ctrl")
 	public void process_sign(){
@@ -189,6 +191,11 @@ public class SpringMybatisControler{
 		}
 	}
 	
+	//查询执行历史
+	@RequestMapping(value="/finish_task.ctrl")
+	public void  finish_task(){
+		class5_2.finish_task();
+	}
 	
 	//查询执行历史
 	@RequestMapping(value="/node_his.ctrl")
@@ -230,31 +237,208 @@ public class SpringMybatisControler{
 //		System.out.println(task.getId());
 	}
 	
-	//任务签收
+	//调整申请至流程结束
 //	@ResponseBody
-	@RequestMapping(value="/task_claim.ctrl")
-	public void  task_claim(){
+	@RequestMapping(value="/to_end.ctrl")
+	public String  to_end(){
 		TaskService taskService = processEngine.getTaskService();
 		RuntimeService runTimeservice;
-		
+		Task task = taskService.createTaskQuery().taskCandidateGroup("modifyLeader").singleResult();
+		String taskId = task.getId();
+		System.out.println("taskId:"+taskId);
+		taskService.claim(task.getId(), "modifyLeaderId");
+		Map<String, Object> variable = new HashMap<String, Object>();
+		variable.put("nodeId", "endevent1");
+		variable.put("startDate", "2011-01-01");
+		variable.put("endDate", "2011-01-01");
+		variable.put("reason", "调整申请至流程结束");
+		variable.put("reApply", "true");
+		FormService formService = processEngine.getFormService();
+//		formService.submitTaskFormData(taskId, variable);
+		taskService.complete(taskId, variable);;
+		return "提交成功";
+//		taskService.complete(taskId);
+//		taskService.complete(taskId, variable);
+	}
+	
+	//调整申请退hr领导审批
+//	@ResponseBody
+	@RequestMapping(value="/to_hr.ctrl")
+	public String  to_hr(){
+		TaskService taskService = processEngine.getTaskService();
+		RuntimeService runTimeservice;
+		Task task = taskService.createTaskQuery().taskCandidateGroup("modifyLeader").singleResult();
+		String taskId = task.getId();
+		System.out.println("taskId:"+taskId);
+		taskService.claim(task.getId(), "modifyLeaderId");
+		Map<String, String> variable = new HashMap<String, String>();
+		variable.put("nodeId", "hrAudit");
+		variable.put("startDate", "2011-01-01");
+		variable.put("endDate", "2011-01-01");
+		variable.put("reason", "调整申请退hr领导审批");
+		variable.put("reApply", "true");
+		FormService formService = processEngine.getFormService();
+		formService.submitTaskFormData(taskId, variable);
+		return "提交成功";
+//		taskService.complete(taskId);
+//		taskService.complete(taskId, variable);
+	}
+	
+	//调整申请退部门领导审批
+//	@ResponseBody
+	@RequestMapping(value="/to_dept.ctrl")
+	public String  to_dept(){
+		TaskService taskService = processEngine.getTaskService();
+		RuntimeService runTimeservice;
+		Task task = taskService.createTaskQuery().taskCandidateGroup("modifyLeader").singleResult();
+		String taskId = task.getId();
+		System.out.println("taskId:"+taskId);
+		taskService.claim(task.getId(), "hrLeaderUserId");
+		Map<String, String> variable = new HashMap<String, String>();
+		variable.put("nodeId", "deptLeaderAudit");
+		variable.put("startDate", "2011-01-01");
+		variable.put("endDate", "2011-01-01");
+		variable.put("reason", "调整申请退部门领导审批");
+		variable.put("reApply", "true");
+		FormService formService = processEngine.getFormService();
+		formService.submitTaskFormData(taskId, variable);
+		return "提交成功";
+//		taskService.complete(taskId);
+//		taskService.complete(taskId, variable);
+	}
+	
+	//hr领导任务签收、审批通过，退回部门领导人
+//	@ResponseBody
+	@RequestMapping(value="/hr_refuse.ctrl")
+	public String  hr_refuse(){
+		TaskService taskService = processEngine.getTaskService();
+		RuntimeService runTimeservice;
+		Task task = taskService.createTaskQuery().taskCandidateGroup("hrLeader").singleResult();
+		String taskId = task.getId();
+		System.out.println("taskId:"+taskId);
+		taskService.claim(task.getId(), "hrLeaderUserId");
+		Map<String, String> variable = new HashMap<String, String>();
+		variable.put("hrApproved", "false");
+		FormService formService = processEngine.getFormService();
+		formService.submitTaskFormData(taskId, variable);
+		return "提交成功";
+//		taskService.complete(taskId);
+//		taskService.complete(taskId, variable);
+	}
+	
+	//hr领导任务签收、审批通过，退回部门领导人
+//	@ResponseBody
+	@RequestMapping(value="/hr_claim.ctrl")
+	public String  hr_claim(){
+		TaskService taskService = processEngine.getTaskService();
+		RuntimeService runTimeservice;
+		Task task = taskService.createTaskQuery().taskCandidateGroup("hrLeader").singleResult();
+		String taskId = task.getId();
+		System.out.println("taskId:"+taskId);
+		taskService.claim(task.getId(), "hrLeaderUserId");
+		Map<String, String> variable = new HashMap<String, String>();
+		variable.put("hrApproved", "true");
+		FormService formService = processEngine.getFormService();
+		formService.submitTaskFormData(taskId, variable);
+		return "提交成功";
+//		taskService.complete(taskId);
+//		taskService.complete(taskId, variable);
+	}
+	
+	//部门领导任务签收、审批拒绝
+//	@ResponseBody
+	@RequestMapping(value="/dept_refuse.ctrl")
+	public String  dept_refuse(){
+		TaskService taskService = processEngine.getTaskService();
+		RuntimeService runTimeservice;
 		Task task = taskService.createTaskQuery().taskCandidateGroup("deptLeader").singleResult();
 		String taskId = task.getId();
 		System.out.println("taskId:"+taskId);
 		taskService.claim(task.getId(), "partLeaderUserId");
 		Map<String, String> variable = new HashMap<String, String>();
-		variable.put("approval", "true");
-		variable.put("userName", "唐亮");
+		variable.put("deptLeaderApproved", "false");
 		FormService formService = processEngine.getFormService();
 		formService.submitTaskFormData(taskId, variable);
-		
+		return "提交成功";
 //		taskService.complete(taskId);
 //		taskService.complete(taskId, variable);
-		
-		
-		
 	}
 	
-	//查询已部署流程
+	//部门领导任务签收、审批通过
+//	@ResponseBody
+	@RequestMapping(value="/task_claim.ctrl")
+	public String  task_claim(){
+		TaskService taskService = processEngine.getTaskService();
+		RuntimeService runTimeservice;
+		Task task = taskService.createTaskQuery().taskCandidateGroup("deptLeader").singleResult();
+		String taskId = task.getId();
+		System.out.println("taskId:"+taskId);
+		taskService.claim(task.getId(), "partLeaderUserId");
+		Map<String, String> variable = new HashMap<String, String>();
+		variable.put("deptLeaderApproved", "true");
+		FormService formService = processEngine.getFormService();
+		formService.submitTaskFormData(taskId, variable);
+		return "提交成功";
+//		taskService.complete(taskId);
+//		taskService.complete(taskId, variable);
+	}
+	
+	//当前活动任务列表
+	@RequestMapping(value="/active_tasklist.ctrl")
+	public void active_tasklist(HttpServletResponse response){
+		RepositoryService repositoryService = processEngine.getRepositoryService();
+		List<ProcessDefinition> processDefinitionList = repositoryService.createProcessDefinitionQuery().list();
+		logger.debug("已部署流程数："+processDefinitionList.size());
+		ModelAndView mav = new ModelAndView("taskList");
+		ProcessInstance processInstance = class5_2.activeTasklist();
+
+//		ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(executionId).singleResult();
+		BpmnModel bpmnModel = repositoryService.getBpmnModel(processInstance.getProcessDefinitionId());
+//		List<String> activiActivityIds = runtimeService.getActiveActivityIds(executionId);
+		List<String> activiActivityIds = runtimeService.getActiveActivityIds(processInstance.getProcessInstanceId());
+		InputStream is = new DefaultProcessDiagramGenerator().generateDiagram(
+				bpmnModel, "png",
+				activiActivityIds, new ArrayList<String>(), 
+				processEngine.getProcessEngineConfiguration().getActivityFontName(), 
+				processEngine.getProcessEngineConfiguration().getLabelFontName(), 
+				null, 1.0);
+		byte[] buf = new byte[1024];
+		int length = -1;
+		try {
+			while(( length = is.read(buf)) != -1){
+				OutputStream os = response.getOutputStream();
+				os.write(buf, 0, length);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	//调整管理员待办任务列表
+	@RequestMapping(value="/modify_tasklist.ctrl")
+	public ModelAndView modify_tasklist(){
+		RepositoryService repositoryService = processEngine.getRepositoryService();
+		List<ProcessDefinition> processDefinitionList = repositoryService.createProcessDefinitionQuery().list();
+		logger.debug("已部署流程数："+processDefinitionList.size());
+		ModelAndView mav = new ModelAndView("taskList");
+		List<Task> taskList = class5_2.modifyTasklist();
+		mav.addObject("taskList",taskList);
+		return mav;
+	}
+	//hr待办任务列表
+	@RequestMapping(value="/hr_tasklist.ctrl")
+	public ModelAndView hr_tasklist(){
+		RepositoryService repositoryService = processEngine.getRepositoryService();
+		List<ProcessDefinition> processDefinitionList = repositoryService.createProcessDefinitionQuery().list();
+		logger.debug("已部署流程数："+processDefinitionList.size());
+		ModelAndView mav = new ModelAndView("taskList");
+		List<Task> taskList = class5_2.hrTasklist();
+		mav.addObject("taskList",taskList);
+		return mav;
+	}
+	
+	//部门管理员待办任务列表
 //	@ResponseBody
 	@RequestMapping(value="/task_list.ctrl")
 	public ModelAndView task_list(){
