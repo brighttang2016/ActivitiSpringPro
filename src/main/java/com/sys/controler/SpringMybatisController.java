@@ -40,6 +40,7 @@ import org.activiti.engine.impl.pvm.process.ProcessDefinitionImpl;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
+import org.activiti.engine.task.TaskInfoQueryWrapper;
 import org.activiti.engine.task.TaskQuery;
 import org.activiti.image.impl.DefaultProcessDiagramGenerator;
 import org.apache.log4j.Logger;
@@ -58,8 +59,8 @@ import com.sys.service.impl.UserServiceImpl;
 
 //@RequestMapping(value="/ActivitiSpring2")
 @Controller
-public class SpringMybatisControler{
-	private Logger logger = Logger.getLogger(SpringMybatisControler.class);
+public class SpringMybatisController{
+	private Logger logger = Logger.getLogger(SpringMybatisController.class);
 	@Resource
 	public UserServiceImpl userService;
 	@Resource 
@@ -72,6 +73,12 @@ public class SpringMybatisControler{
 	public ProcessEngine processEngine;
 	@Autowired
 	private RuntimeService runtimeService;
+	@Autowired
+	private TaskService taskService;
+	@Autowired
+	private FormService formService;
+	@Autowired
+	private RepositoryService repositoryService;
 	
 	@RequestMapping(value="/process_sign.ctrl")
 	public void process_sign(){
@@ -237,10 +244,52 @@ public class SpringMybatisControler{
 //		System.out.println(task.getId());
 	}
 	
+	//销假-》End
+	@RequestMapping(value="reportBackLeader_to_end.ctrl")
+	public String reportBackLeader_to_end(){
+		Task task = taskService.createTaskQuery().taskCandidateGroup("reportBackLeader").singleResult();
+		taskService.claim(task.getId(), "reportBackLeader");
+		Map<String,String> variables = new HashMap<String,String>();
+		variables.put("exit", "end");
+		formService.submitTaskFormData(task.getId(), variables);
+		return "";
+	}
+	//销假-》调整申请
+	@RequestMapping(value="reportBackLeader_to_modifierLeader.ctrl")
+	public String reportBackLeader_to_modifierLeader(){
+		Task task = taskService.createTaskQuery().taskCandidateGroup("reportBackLeader").singleResult();
+		taskService.claim(task.getId(), "reportBackLeader");
+		Map<String,String> variables = new HashMap<String,String>();
+		variables.put("exit", "modifier");
+		formService.submitTaskFormData(task.getId(), variables);
+		return "";
+	}
+	//销假-》hr领导
+	@RequestMapping(value="reportBackLeader_to_hrLeader.ctrl")
+	public String reportBackLeader_to_hrLeader(){
+		Task task = taskService.createTaskQuery().taskCandidateGroup("reportBackLeader").singleResult();
+		taskService.claim(task.getId(), "reportBackLeader");
+		Map<String,String> variables = new HashMap<String,String>();
+		variables.put("exit", "hrLeader");
+		formService.submitTaskFormData(task.getId(), variables);
+		return "";
+	}
+	
+	//销假-》部门领导审批
+	@RequestMapping(value="reportBackLeader_to_deptLeader.ctrl")
+	public String reportBackLeader_to_deptLeader(){
+		Task task = taskService.createTaskQuery().taskCandidateGroup("reportBackLeader").singleResult();
+		taskService.claim(task.getId(), "reportBackLeader");
+		Map<String,String> variables = new HashMap<String,String>();
+		variables.put("exit", "deptLeader");
+		formService.submitTaskFormData(task.getId(), variables);
+		return "";
+	}
+	
 	//调整申请至流程结束
 //	@ResponseBody
 	@RequestMapping(value="/to_end.ctrl")
-	public String  to_end(){
+	public String to_end(){
 		TaskService taskService = processEngine.getTaskService();
 		RuntimeService runTimeservice;
 		Task task = taskService.createTaskQuery().taskCandidateGroup("modifyLeader").singleResult();
@@ -413,6 +462,14 @@ public class SpringMybatisControler{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	@RequestMapping(value="/reportback_tasklist.ctrl")
+	public ModelAndView reportback_tasklist(){
+		ModelAndView mav = new ModelAndView("taskList");
+		List<Task> taskList = class5_2.reportBackTasklist();
+		mav.addObject("taskList",taskList);
+		return mav;
 	}
 	
 	//调整管理员待办任务列表
