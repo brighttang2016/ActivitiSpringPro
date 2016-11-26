@@ -46,9 +46,9 @@ import org.springframework.web.servlet.ModelAndView;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
-@Service("class5_2")
-public class Class5_2 {
-	private Logger logger = Logger.getLogger(Class5_2.class);
+@Service("externalFormServiceImpl")
+public class ExternalFormServiceImpl {
+	private Logger logger = Logger.getLogger(ExternalFormServiceImpl.class);
 	@Resource
 	public IdentityService  identityService;
 	@Resource
@@ -215,7 +215,7 @@ public class Class5_2 {
 				
 				//发布流程xml图片（中文乱码）
 //				repositoryService.createDeployment().addClasspathResource("chapter5/leave.bpmn").deploy();
-				repositoryService.createDeployment().addClasspathResource("chapter6/workFlowLeave.bpmn").deploy();
+				repositoryService.createDeployment().addClasspathResource("chapter6/workFlowLeave_externalForm.bpmn").deploy();
 				
 				//发布流程图片（单独图片无法发布成功）
 //				repositoryService.createDeployment().addClasspathResource("chapter5/candidateUserInUserTask.png").deploy();

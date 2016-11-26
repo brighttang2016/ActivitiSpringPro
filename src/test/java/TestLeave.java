@@ -1,6 +1,7 @@
 import static org.junit.Assert.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.activiti.bpmn.model.BpmnModel;
@@ -37,14 +38,13 @@ public class TestLeave {
 				.buildProcessEngine();
 		//部署流程定义文件
 		RepositoryService repositoryService = processEngine.getRepositoryService();
-		repositoryService.createDeployment().addClasspathResource(
-				"me/leave.bpmn").deploy();
+		repositoryService.createDeployment().addClasspathResource("chapter5/leave.bpmn").deploy();
+		repositoryService.createDeployment().addClasspathResource("chapter6/workFlowLeave.bpmn").deploy();
 		System.out.println("部署流程定义文件完成");
 		//验证已部署流程定义
-		ProcessDefinition processDefinition = repositoryService
-				.createProcessDefinitionQuery().singleResult();
+		/*ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().singleResult();
 		System.out.println(processDefinition.getKey());
-		assertEquals("myProcess", processDefinition.getKey());
+		assertEquals("myProcess", processDefinition.getKey());*/
 		//启动流程并返回流程实例
 		RuntimeService runtimeService = processEngine.getRuntimeService();
 		Map<String,Object> variables = new HashMap<String,Object>();
@@ -53,7 +53,7 @@ public class TestLeave {
 //		ProcessInstance processInstance = runtimeService
 //				.startProcessInstanceByKey("myProcess");
 		ProcessInstance processInstance = runtimeService
-				.startProcessInstanceByKey("myProcess",variables);
+				.startProcessInstanceByKey("leave",variables);
 //		ProcessInstance processInstance = runtimeService.startProcessInstanceById("myProcess");
 		assertNotNull(processInstance);
 		System.out.println("pid=" + processInstance.getId() + ",pdid="
@@ -61,7 +61,9 @@ public class TestLeave {
 		
 		//获取task
 		TaskService taskService = processEngine.getTaskService();
-		Task taskOfDepLeader = taskService.createTaskQuery().taskCandidateGroup("depLeader").singleResult();
+		Task taskOfDepLeader = taskService.createTaskQuery().taskCandidateGroup("deptLeader").singleResult();
+		List<Task> taskOfDepLeaderList = taskService.createTaskQuery().taskCandidateGroup("deptLeader").list();
+		System.out.println("taskOfDepLeaderList:"+taskOfDepLeaderList);
 		assertNotNull(taskOfDepLeader);
 		System.out.println("领导审批任务节点name："+taskOfDepLeader.getName());
 		assertEquals("领导审批", taskOfDepLeader.getName());

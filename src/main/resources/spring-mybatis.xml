@@ -87,8 +87,8 @@ drop-create： 在activiti启动时删除原来的旧表，然后在创建新表
 		<property name="jobExecutorActivate" value="false" />
 		<!-- <property name="databaseSchema" value="ACT"/> -->
 		<!-- 解决流程图乱码问题 -->
-		<property name="activityFontName" value="宋体"/>
-		<property name="labelFontName" value="宋体"/>
+		<property name="activityFontName" value="新宋体"/>
+		<property name="labelFontName" value="新宋体"/>
     </bean>
     <!-- activiti的各种服务接口 -->
 	<bean id="repositoryService" factory-bean="processEngine" factory-method="getRepositoryService" />
@@ -97,6 +97,7 @@ drop-create： 在activiti启动时删除原来的旧表，然后在创建新表
 	<bean id="historyService" factory-bean="processEngine" factory-method="getHistoryService" />
 	<bean id="managementService" factory-bean="processEngine" factory-method="getManagementService" />
     <bean id="identityService" factory-bean="processEngine" factory-method="getIdentityService"/>
+    <bean id="formService" factory-bean="processEngine" factory-method="getFormService"/>
     <!-- activiti 配置结束 --> 
  
 </beans>
