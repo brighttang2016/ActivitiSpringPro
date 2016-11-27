@@ -413,6 +413,23 @@ public class SpringMybatisController{
 //		taskService.complete(taskId, variable);
 	}
 	
+	
+	
+	
+	@RequestMapping(value="/apply_commit.ctrl")
+	public String  apply_commit(){
+		TaskService taskService = processEngine.getTaskService();
+		RuntimeService runTimeservice;
+		Task task = taskService.createTaskQuery().taskCandidateGroup("user").singleResult();
+		String taskId = task.getId();
+		System.out.println("taskId:"+taskId);
+		taskService.claim(task.getId(), "userId2009");
+		Map<String, String> variable = new HashMap<String, String>();
+		FormService formService = processEngine.getFormService();
+		formService.submitTaskFormData(taskId, variable);
+		return "提交成功";
+	}
+	
 	//部门领导任务签收、审批通过
 //	@ResponseBody
 	@RequestMapping(value="/task_claim.ctrl")

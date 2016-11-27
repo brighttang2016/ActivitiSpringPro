@@ -33,6 +33,12 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.identity.Group;
 import org.activiti.engine.identity.User;
+import org.activiti.engine.impl.RepositoryServiceImpl;
+import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
+import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
+import org.activiti.engine.impl.pvm.ReadOnlyProcessDefinition;
+import org.activiti.engine.impl.pvm.delegate.ActivityBehavior;
+import org.activiti.engine.impl.pvm.process.ActivityImpl;
 import org.activiti.engine.repository.DeploymentBuilder;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
@@ -66,7 +72,22 @@ public class ExternalFormServiceImpl {
 	public void readResource(){
 		
 	}
-	
+	//读取流程信息
+	public void readFlow(){
+		RepositoryServiceImpl repositoryServiceImpl = (RepositoryServiceImpl) repositoryService;
+		ExecutionEntity executionEntity = (ExecutionEntity) runtimeService.createExecutionQuery().executionId("57507").singleResult();
+		ReadOnlyProcessDefinition deployedProcessDefinition = repositoryServiceImpl.getDeployedProcessDefinition(executionEntity.getProcessDefinitionId());
+		ProcessDefinitionEntity processDefinitionEntity = (ProcessDefinitionEntity) deployedProcessDefinition;
+		List<ActivityImpl> activityImplList = processDefinitionEntity.getActivities();
+		
+		List<Map<String,Object>> activityInfos = new ArrayList<Map<String,Object>>();
+		List<String> activiActivityIds = runtimeService.getActiveActivityIds("57507");
+		System.out.println("JSONObject.toJSONString(activiActivityIds):"+JSONObject.toJSONString(activiActivityIds));
+		for (ActivityImpl activityImpl : activityImplList) {
+			ActivityBehavior activityBehaver = activityImpl.getActivityBehavior();
+			System.out.println(activityBehaver);
+		}
+	}
 	/**
 	 * 查询业务编码为：200810405234的已完成的流程，200810405234对应对应申请单的主键
 	 * tom 2016年11月17日
@@ -92,10 +113,6 @@ public class ExternalFormServiceImpl {
 	
 	//活动任务
 	public ProcessInstance activeTasklist(){
-		taskService = processEngine.getTaskService();
-		TaskQuery taskQuery = taskService.createTaskQuery();
-		List<Task> activeTasklist = taskQuery.taskCandidateGroup("modifyLeader").active().list();
-		logger.debug("activeTasklist:"+activeTasklist);
 		ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceBusinessKey("200810405234").active().singleResult();
 		return processInstance;
 	}	
@@ -116,68 +133,10 @@ public class ExternalFormServiceImpl {
 	
 	//查询用户任务
 	public List<Task> taskQuery(){
-//		List<Task> taskList = new ArrayList<Task>();
-//		String taskId = "";
-		taskService = processEngine.getTaskService();
 		TaskQuery taskQuery = taskService.createTaskQuery();
-		//用户200810405234当前任务
-		/*List<Task> taskList1 = taskQuery.taskCandidateUser("200810405233").list();
-		List<Task> taskList2 = taskQuery.taskCandidateUser("200810405234").list();
-		
-		logger.debug("用户200810405233当前任务数:"+taskList1.size());
-		//说明200810405234和200810405234在同一个用户组：deptLeader
-		for (Task task:taskList1) {
-			if(task != null){
-				logger.debug("task.getExecutionId():"+task.getExecutionId());
-			}
-		}
-		logger.debug("taskList2:"+taskList2);
-		*/
-		List<Task> taskOfDepLeaderList = taskQuery.taskCandidateGroup("deptLeader").list();
-		logger.debug("taskOfDepLeaderList:"+taskOfDepLeaderList);
+		List<Task> taskOfDepLeaderList = taskQuery.taskCandidateGroup("user").list();
 		return taskOfDepLeaderList;
-		
-		/*System.out.println("用户200810405234当前任务数:"+taskList2.size());
-		for (Task task:taskList2) {
-			taskId = task.getId();
-			System.out.println("task.getId():"+task.getId());
-		}*/
-		
-		/*
-		//如果用户200810405234签收了任务，那么200810405233就不会出现该条代办任务
-		taskService.claim(taskId, "200810405234");
-		taskList2 = taskQuery.taskCandidateUser("200810405234").list();
-		System.out.println("200810405234代办，taskList1.size():"+taskList1.size());
-		for (Task task:taskList2) {
-			System.out.println("200810405234代办，task.getId():"+task.getId());
-		}
-		//再次查询200810405233代办任务
-		taskList1 = taskQuery.taskCandidateUser("200810405233").list();
-		System.out.println("200810405234签收后，200810405233代办，taskList1.size():"+taskList1.size());
-		*/
-		
-		/*
-		//获取task
-				TaskService taskService = processEngine.getTaskService();
-				Task taskOfDepLeader = taskService.createTaskQuery().taskCandidateGroup("deptLeader").singleResult();
-//				assertNotNull(taskOfDepLeader);
-				System.out.println("领导审批任务节点name："+taskOfDepLeader.getName());
-//				assertEquals("领导审批", taskOfDepLeader.getName());
-				//指定执行task责任人(签收，任务taskOfDepLeader.getId()归leaderUser所有)
-				System.out.println("领导审批节点id："+taskOfDepLeader.getId());
-				taskService.claim(taskOfDepLeader.getId(), "leaderUser");//api文档：void claim(String taskId, String userId)
-				variables.put("approved", true);//代表领导审批通过
-				taskService.complete(taskOfDepLeader.getId(), variables);//完成任务的同时以流程变量的形式设置审批结果
-				
-				//再次查询组任务
-				taskOfDepLeader = taskService.createTaskQuery().taskCandidateGroup("deptLeader").singleResult();
-//				assertNull(taskOfDepLeader);//此时用户组：deptLeader未处理任务为空
-				//获取执行历史
-				HistoryService historyService = processEngine.getHistoryService();
-				long count = historyService.createHistoricProcessInstanceQuery().finished().count();
-				System.out.println("执行历史任务数："+count);
-//				assertEquals(1, count);
-*/	}
+	}
 	
 	//启动流程
 	public void process_start(){
@@ -190,11 +149,12 @@ public class ExternalFormServiceImpl {
 		variables.put("startDate", "2015-01-01");
 		variables.put("endDate", "2015-01-05");
 		variables.put("reason", "公休");
+		variables.put("applyFormName", "");
 //		ProcessInstance processInstance = runtimeService
 //				.startProcessInstanceByKey("myProcess");
 //		ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("myProcess",variables);
 //		ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("leave", "200810405234", variables);
-		ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionKey("leave").singleResult();
+		ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionKey("leaveExternalForm").singleResult();
 		ProcessInstance processInstance = formService.submitStartFormData(processDefinition.getId(), "200810405234", variables);
 //		ProcessInstance processInstance = runtimeService.startProcessInstanceById("myProcess");
 //		assertNotNull(processInstance);
@@ -215,15 +175,18 @@ public class ExternalFormServiceImpl {
 				
 				//发布流程xml图片（中文乱码）
 //				repositoryService.createDeployment().addClasspathResource("chapter5/leave.bpmn").deploy();
-				repositoryService.createDeployment().addClasspathResource("chapter6/workFlowLeave_externalForm.bpmn").deploy();
+//				repositoryService.createDeployment().addClasspathResource("chapter6/workFlowLeave_externalForm.bpmn").deploy();
 				
 				//发布流程图片（单独图片无法发布成功）
 //				repositoryService.createDeployment().addClasspathResource("chapter5/candidateUserInUserTask.png").deploy();
 				
 				//发布bar文件（中文正常）
-//				InputStream inputStream = getClass().getClassLoader().getResourceAsStream("chapter5/leave.zip");
-//				repositoryService.createDeployment().addZipInputStream(new ZipInputStream(inputStream)).deploy();
-				
+				/*
+				InputStream inputStream = getClass().getClassLoader().getResourceAsStream("chapter5/leave.zip");
+				repositoryService.createDeployment().addZipInputStream(new ZipInputStream(inputStream)).deploy();
+				*/
+				InputStream inputStream = getClass().getClassLoader().getResourceAsStream("chapter6/workFlowLeave_externalForm.zip");
+				repositoryService.createDeployment().addZipInputStream(new ZipInputStream(inputStream)).deploy();
 				//流发布
 				/*try {String path = getClass().getClassLoader().getResource("").getPath();
 					String pathDecode = URLDecoder.decode(path, "UTF-8");

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="leaveExternalForm" name="请假流程-外置表单" isExecutable="true">
-    <startEvent id="startevent1" name="Start" activiti:initiator="applyUserId">
+    <startEvent id="startevent1" name="Start" activiti:initiator="applyUserId" activiti:formKey="chapter6/start.form">
       <extensionElements>
         <activiti:formProperty id="startDate" name="请假开始时间" type="date" datePattern="yyyy-MM-dd" required="true"></activiti:formProperty>
         <activiti:formProperty id="endDate" name="请假结束时间" type="date" datePattern="yyyy-MM-dd" required="true"></activiti:formProperty>
@@ -94,7 +94,7 @@
     <sequenceFlow id="flow16" name="退回人事审批" sourceRef="exclusivegateway4" targetRef="hrAudit">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${exit == 'hrLeader'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="inputApply" name="填写申请" activiti:candidateGroups="user" activiti:formKey="chapter6/start.form"></userTask>
+    <userTask id="inputApply" name="填写申请" activiti:candidateGroups="user" activiti:formKey="${applyFormName}.form"></userTask>
     <sequenceFlow id="flow17" sourceRef="startevent1" targetRef="inputApply"></sequenceFlow>
     <sequenceFlow id="flow18" sourceRef="inputApply" targetRef="deptLeaderAudit"></sequenceFlow>
   </process>
