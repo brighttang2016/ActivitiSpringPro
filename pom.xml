@@ -2,10 +2,10 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.tang.activiti.test</groupId>
-  <artifactId>ActivitiSpring2</artifactId>
+  <artifactId>ActivitiSpringPro</artifactId>
   <packaging>war</packaging>
   <version>0.0.1-SNAPSHOT</version>
-  <name>ActivitiSpring2 Maven Webapp</name>
+  <name>ActivitiSpringPro Maven Webapp</name>
   <url>http://maven.apache.org</url>
   
   <!-- 属性配置以及各个依赖的版本 -->
@@ -232,7 +232,7 @@
 
   </dependencies>
   <build>
-    <finalName>ActivitiSpring2</finalName>
+    <finalName>ActivitiSpringPro</finalName>
     <plugins>
    	 	<plugin>
     		<groupId>org.codehaus.mojo</groupId>

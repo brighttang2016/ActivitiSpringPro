@@ -24,6 +24,7 @@
 	<!-- <mvc:view-controller path="/" view-name="redirect:/login/" /> -->
 	
 <!-- 返回json -->
+<!-- 
 	<bean id="mappingJacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
 		<property name="supportedMediaTypes">
 			<list>
@@ -34,6 +35,5 @@
 	</bean>
 	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"
 		p:messageConverters-ref="mappingJacksonHttpMessageConverter"/> 
-		
-	
+ -->	
 </beans>

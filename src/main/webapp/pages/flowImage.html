@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="/ActivitiSpringPro/js/jquery-1.8.3.js"></script>
+<script>
+	$(document).ready(
+		function(){
+			$("#nodeInfos").bind('click',function(){
+				$.ajax({
+					type:'get',
+					url:'/ActivitiSpringPro/readFlow.ctrl',
+					success:function(data){
+						var jsonArray = jQuery.parseJSON(data);
+						var length = jsonArray.length;
+						for(var i = 0;i < jsonArray.length;i++){
+							var json = jsonArray[i];
+							var div1 = $("<div id='"+json.id+"'></div>");
+							console.log("ttt:"+(json.x - (json.width/2)));
+							div1.css("left",json.x);
+							div1.css("top",json.y);
+							div1.css("border","1px solid red");
+							div1.css("width",json.width);
+							div1.css("height",json.height);
+							div1.css("position","absolute");
+							$("body").append(div1);
+						}
+					},
+					failure:function(){}
+				})
+			}); 
+		}
+	)
+</script>
+</head>
+
+<body>
+	<div style="background:url('/ActivitiSpringPro/external_active_tasklist.ctrl') no-repeat;position:absolute;left:0px;top:0px;width:99%; height:500px; border:1px solid red">
+		<div style="line-height: 500px;">&nbsp;</div>
+	</div>
+	<div style="position:absolute;left:302px;top:120px;width:105px;height:55px; border:1px solid red">部门领导审批节点详情</div>
+	<div style="position:absolute"><input type="button" id="nodeInfos" value="获取节点信息"/></div>
+</body>
+</html>

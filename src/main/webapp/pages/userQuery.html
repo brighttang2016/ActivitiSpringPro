@@ -56,7 +56,8 @@
 			$("#process_delploy").bind('click',function(){
 				$.ajax({
 					type:'get',
-					url:'/ActivitiSpringPro/process_delploy.ctrl',
+					//url:'/ActivitiSpringPro/process_delploy.ctrl',
+					url:'/ActivitiSpringPro/external_process_delploy.ctrl',
 					success:function(data){
 						alert(data);
 					},
@@ -67,7 +68,8 @@
 			$("#process_start").bind('click',function(){
 				$.ajax({
 					type:'get',
-					url:'/ActivitiSpringPro/process_start.ctrl',
+					//url:'/ActivitiSpringPro/process_start.ctrl',
+					url:'/ActivitiSpringPro/external_process_start.ctrl',
 					success:function(data){
 						alert(data);
 					},
@@ -86,9 +88,13 @@
 				})
 			}); 
 			
-			
+			$("#flowImage").bind('click',function(){
+				//window.open("/ActivitiSpringPro/active_tasklist.ctrl");
+				window.open("/ActivitiSpringPro/pages/flowImage.html");
+			});
 			$("#active_tasklist").bind('click',function(){
-				window.open("/ActivitiSpringPro/active_tasklist.ctrl");
+				//window.open("/ActivitiSpringPro/active_tasklist.ctrl");
+				window.open("/ActivitiSpringPro/external_active_tasklist.ctrl");
 			});
 			$("#process_list").bind('click',function(){
 				window.open("/ActivitiSpringPro/process_list.ctrl");
@@ -97,6 +103,10 @@
 			$("#task_list").bind('click',function(){
 				window.open("/ActivitiSpringPro/task_list.ctrl");
 			}); 
+			$("#external_task_list").bind('click',function(){
+				window.open("/ActivitiSpringPro/external_task_list.ctrl");
+			}); 
+			
 			$("#hr_tasklist").bind('click',function(){
 				window.open("/ActivitiSpringPro/hr_tasklist.ctrl");
 			}); 
@@ -128,6 +138,17 @@
 					failure:function(){}
 				})
 			});
+			$("#apply_commit").bind('click',function(){
+				$.ajax({
+					type:'get',
+					url:'/ActivitiSpringPro/apply_commit.ctrl',
+					success:function(data){
+						alert(data);
+					},
+					failure:function(){}
+				})
+			});
+			
 			$("#node_form").bind('click',function(){
 				$.ajax({
 					type:'get',
@@ -264,7 +285,26 @@
 				})
 			});
 			
-			
+			$("#readExternalForm").bind('click',function(){
+				$.ajax({
+					type:'get',
+					url:'/ActivitiSpringPro/readExternalForm.ctrl',
+					success:function(data){
+						alert(data);
+					},
+					failure:function(){}
+				})
+			});
+			$("#readFlow").bind('click',function(){
+				$.ajax({
+					type:'get',
+					url:'/ActivitiSpringPro/readFlow.ctrl',
+					success:function(data){
+						alert(data);
+					},
+					failure:function(){}
+				})
+			});
 		}
 	);
 </script>
@@ -278,10 +318,13 @@
 	</div>
 	<div><input type="button" value="代码清单5-1,用户测试" id="class5_1"/></div>
 	<div><input type="button" value="代码清单5-2,用户组测试(创建用户、用户组)" id="class5_2"/></div><hr/>
-	<div><input type="button" value="请假流程发布" id="process_delploy"/> <input type="button" value="请假流程启动" id="process_start"/></div>
+	<div><input type="button" value="请假流程发布" id="process_delploy"/> 
+	<input type="button" value="请假流程启动" id="process_start"/></div>
 	<div><input type="button" value="任务查询" id="task_query"/></div>
 	<div>
+		<input type="button" value="流程图片" id="flowImage"/> 
 		<input type="button" value="活动任务" id="active_tasklist"/> 
+		<input type="button" value="用户待办任务列表查询" id="external_task_list"/>
 		<input type="button" value="部门领导待办任务列表查询" id="task_list"/> 
 		<input type="button" value="hr领导待办任务列表查询" id="hr_tasklist"/> 
 		<input type="button" value="调整领导待办任务列表查询" id="modify_tasklist"/>
@@ -289,6 +332,9 @@
 	</div>
 	<div><input type="button" value="已发布流程查询" id="process_list"/></div>
 	<hr/>
+	<div>
+		<input type="button" value="申请提交" id="apply_commit"/>
+	</div>
 	<div>
 		<input type="button" value="部门领导签收并提交同意" id="task_claim"/>
 		<input type="button" value="部门领导签收并提交拒绝" id="dept_refuse"/>
@@ -314,6 +360,13 @@
 		<input type="button" value="销假退调整申请" id="reportBackLeader_to_modifierLeader"/>
 	</div>
 	<div><input type="button" value="执行历史查询" id="node_his"/></div><hr/>
-	<div><input type="button" value="已完成流程（查询已处理完成流程）" id="finish_task"/></div>
+	<div><input type="button" value="已完成流程（查询已处理完成流程）" id="finish_task"/></div><hr/>
+	<div>外置表单</div><hr/>
+	<div>
+		<input type="button" value="读取外置表单" id="readExternalForm"/>
+		<input type="button" value="读取流程跟踪信息" id="readFlow"/>
+	</div>
+	
+	
 </body>
 </html>
