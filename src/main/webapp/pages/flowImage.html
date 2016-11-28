@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" href="/ActivitiSpringPro/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="/ActivitiSpringPro/css/bootstrap-responsive.min.css" type="text/css"> 
 <script type="text/javascript" src="/ActivitiSpringPro/js/jquery-1.8.3.js"></script>
 <script>
 	$(document).ready(
@@ -17,14 +19,43 @@
 						for(var i = 0;i < jsonArray.length;i++){
 							var json = jsonArray[i];
 							var div1 = $("<div id='"+json.id+"'></div>");
-							console.log("ttt:"+(json.x - (json.width/2)));
-							div1.css("left",json.x);
-							div1.css("top",json.y);
-							div1.css("border","1px solid red");
+							div1.css("left",json.x - 54);
+							div1.css("top",json.y - 80);
+							div1.css("border","0px solid red");
 							div1.css("width",json.width);
 							div1.css("height",json.height);
 							div1.css("position","absolute");
+							div1.append(json.id);
 							$("body").append(div1);
+							//console.log(json.id+"|"+div1);
+							//alert($("#"+json.id).attr("id"));
+							
+							var div2 = $("<div id='"+json.id+"_detail"+"'></div>");
+							div2.css("left",json.x - 54);
+							div2.css("top",json.y - 20);
+							div2.css("border","0px solid red");
+							div2.css("width",json.width+200);
+							div2.css("height",json.height);
+							div2.css("position","absolute");
+							div2.append("<table border=1><tr><td>执行人：</td><td>"+json.assignee+"</td></tr><tr><td>开始时间：</td><td>"+json.startTime+"</td></tr><tr><td>结束时间：</td><td>"+json.endTime+"</td></tr><tr><td>持续时间：</td><td>"+json.duration+"</td></tr></table>");
+							div2.hide();
+							$("body").append(div2); 
+						}
+						
+						
+						var tempId;
+						for(var i = 0;i < jsonArray.length;i++){
+							json = jsonArray[i];
+							tempId = json.id;
+							console.log(i+"|"+tempId);
+							$("#"+tempId).bind("mouseover",function(){
+								thisId = $(this).attr("id");
+								$("#"+thisId+"_detail").show();
+							});
+							$("#"+tempId).bind("mouseout",function(){
+								thisId = $(this).attr("id");
+								$("#"+thisId+"_detail").hide();
+							});
 						}
 					},
 					failure:function(){}
@@ -39,7 +70,8 @@
 	<div style="background:url('/ActivitiSpringPro/external_active_tasklist.ctrl') no-repeat;position:absolute;left:0px;top:0px;width:99%; height:500px; border:1px solid red">
 		<div style="line-height: 500px;">&nbsp;</div>
 	</div>
-	<div style="position:absolute;left:302px;top:120px;width:105px;height:55px; border:1px solid red">部门领导审批节点详情</div>
+	<!-- <div style="position:absolute;left:302px;top:120px;width:105px;height:55px; border:1px solid red">部门领导审批节点详情</div>
+	<div style="position:absolute;left:413px;top:220px;width:105px;height:55px; border:1px solid green">调整申请节点详情</div> -->
 	<div style="position:absolute"><input type="button" id="nodeInfos" value="获取节点信息"/></div>
 </body>
 </html>

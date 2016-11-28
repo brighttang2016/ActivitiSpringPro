@@ -79,7 +79,7 @@ public class ExternalFormServiceImpl {
 	 * tom 2016年11月28日
 	 */
 	public List<Map<String,Object>> readFlow(){
-		String executionId = "132507";
+		String executionId = "57507";
 		RepositoryServiceImpl repositoryServiceImpl = (RepositoryServiceImpl) repositoryService;
 		ExecutionEntity executionEntity = (ExecutionEntity) runtimeService.createExecutionQuery().executionId(executionId).singleResult();
 		/*System.out.println("executionEntity.getId():"+executionEntity.getId());
