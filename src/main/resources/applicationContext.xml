@@ -19,6 +19,7 @@
 	<context:component-scan base-package="me.kafeitu.activiti.web.chapter5.deployment"></context:component-scan>
 	
 	<context:component-scan base-package="com.sys.service.impl"></context:component-scan>
+	<context:component-scan base-package="com.sys.listener.impl"/>
 	
 	<!-- 定义首页 -->
 	<!-- <mvc:view-controller path="/" view-name="redirect:/login/" /> -->

@@ -38,6 +38,8 @@ import org.activiti.engine.impl.RepositoryServiceImpl;
 import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
 import org.activiti.engine.impl.persistence.entity.HistoricTaskInstanceEntity;
 import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
+import org.activiti.engine.impl.pvm.PvmActivity;
+import org.activiti.engine.impl.pvm.PvmTransition;
 import org.activiti.engine.impl.pvm.ReadOnlyProcessDefinition;
 import org.activiti.engine.impl.pvm.delegate.ActivityBehavior;
 import org.activiti.engine.impl.pvm.process.ActivityImpl;
@@ -53,6 +55,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.sys.utils.Utils;
 
 @Service("externalFormServiceImpl")
 public class ExternalFormServiceImpl {
@@ -79,7 +82,7 @@ public class ExternalFormServiceImpl {
 	 * tom 2016年11月28日
 	 */
 	public List<Map<String,Object>> readFlow(){
-		String executionId = "57507";
+		String executionId = "132507";
 		RepositoryServiceImpl repositoryServiceImpl = (RepositoryServiceImpl) repositoryService;
 		ExecutionEntity executionEntity = (ExecutionEntity) runtimeService.createExecutionQuery().executionId(executionId).singleResult();
 		/*System.out.println("executionEntity.getId():"+executionEntity.getId());
@@ -95,31 +98,28 @@ public class ExternalFormServiceImpl {
 		
 		for (ActivityImpl activityImpl : activityImplList) {
 			ActivityBehavior activityBehaver = activityImpl.getActivityBehavior();
-//			System.out.println(activityBehaver);
 			boolean currentActiviti = false;
 			if(activeActivityIds.contains(activityImpl.getId())){
 				System.out.println("当前节点："+activityImpl.getId());
 				currentActiviti = true;	
+				
+				List<PvmTransition> outTrans = activityImpl.getOutgoingTransitions();
+				for (PvmTransition outTran : outTrans) {
+					System.out.println("outTran:"+outTran.getSource().getId()+"|"+outTran.getDestination().getId());
+					PvmActivity activity = outTran.getDestination();
+					List<PvmTransition> inTrans = activity.getIncomingTransitions();
+					for (PvmTransition inTran : inTrans) {
+						System.out.println("inTran:"+inTran.getSource().getId()+"|"+inTran.getDestination().getId());
+					}
+				} 
 			}
-//			if(currentActiviti){
-				Task task = taskService.createTaskQuery().executionId(executionEntity.getId()).taskDefinitionKey(executionEntity.getActivityId()).singleResult();
-//			Task task = taskService.createTaskQuery().executionId("132507").taskDefinitionKey("deptLeaderAudit").singleResult();	
-			System.out.println(task.getAssignee()+"|"+task.getId()+"|"+task.getName());
-			/*for (Task task : taskList) {
-					System.out.println(task.getAssignee()+"|"+task.getId()+"|"+task.getName());
-			}*/
-			/*System.out.println("currTask:"+currTask);
-			if(currTask != null){
-				String assignee = currTask.getAssignee();
-				System.out.println(assignee);
-			}*/
-//			}
+			activityImpl.getOutgoingTransitions();
+			Task task = taskService.createTaskQuery().executionId(executionEntity.getId()).taskDefinitionKey(executionEntity.getActivityId()).singleResult();	
+			logger.debug(task.getAssignee()+"|"+task.getId()+"|"+task.getName()+"|"+activityBehaver);
 			List<Task> taskList2 = taskService.createTaskQuery().processInstanceId(executionId).list();
 			for (Task task2 : taskList2) {
-				System.out.println("task2.getId():"+task2.getId());
+//				System.out.println("task2.getId():"+task2.getId());
 			}
-			
-			
 			Map<String,Object> activityInfo = new HashMap<String,Object>();
 			activityInfo.put("currentActiviti", currentActiviti);
 			activityInfo.put("width", activityImpl.getWidth());
@@ -131,17 +131,25 @@ public class ExternalFormServiceImpl {
 			//执行历史
 			List<HistoricTaskInstance> hisTaskList = historyService.createHistoricTaskInstanceQuery().executionId(executionId).list();
 			for (HistoricTaskInstance historicTaskInstance : hisTaskList) {
-				System.out.println("historicTaskInstance历史任务信息:"+historicTaskInstance.getId()+"|"+historicTaskInstance.getAssignee());
+				String startTime = "";
+				String endTime = "";
+				if(historicTaskInstance.getStartTime() != null)
+					startTime = Utils.formateDate2String(historicTaskInstance.getStartTime(), "yyyy-MM-dd hh:mm:ss");
+				if(historicTaskInstance.getEndTime() != null)
+					endTime = Utils.formateDate2String(historicTaskInstance.getEndTime(), "yyyy-MM-dd hh:mm:ss");
+//				System.out.println("historicTaskInstance历史任务信息:"+historicTaskInstance.getId()+"|"+historicTaskInstance.getAssignee()+"|"+startTime+"|"+endTime+"|"+historicTaskInstance.getTaskDefinitionKey());
 				if(historicTaskInstance.getTaskDefinitionKey().equals(activityImpl.getId())){
 					activityInfo.put("assignee", historicTaskInstance.getAssignee());
-					activityInfo.put("startTime", historicTaskInstance.getStartTime());
-					activityInfo.put("endTime", historicTaskInstance.getEndTime());
+					if(historicTaskInstance.getStartTime() != null)
+						activityInfo.put("startTime", startTime);
+					if(historicTaskInstance.getEndTime() != null)
+						activityInfo.put("endTime", endTime);
 					activityInfo.put("duration", historicTaskInstance.getDurationInMillis());
 				}
 			}
 			activityInfos.add(activityInfo);
 		}
-		System.out.println("JSONObject.toJSONString(activityInfos):"+JSONObject.toJSONString(activityInfos));
+//		System.out.println("JSONObject.toJSONString(activityInfos):"+JSONObject.toJSONString(activityInfos));
 		return activityInfos;
 //		return JSONObject.toJSONString(activityInfos);
 	}

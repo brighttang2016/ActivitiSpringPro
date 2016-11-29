@@ -87,8 +87,13 @@ drop-create： 在activiti启动时删除原来的旧表，然后在创建新表
 		<property name="jobExecutorActivate" value="false" />
 		<!-- <property name="databaseSchema" value="ACT"/> -->
 		<!-- 解决流程图乱码问题 -->
-		<property name="activityFontName" value="新宋体"/>
-		<property name="labelFontName" value="新宋体"/>
+		<property name="activityFontName" value="黑体"/>
+		<property name="labelFontName" value="黑体"/>
+		<property name="eventListeners">
+			<list>
+				<ref bean = "globalEventListener"/>
+			</list>
+		</property>
     </bean>
     <!-- activiti的各种服务接口 -->
 	<bean id="repositoryService" factory-bean="processEngine" factory-method="getRepositoryService" />
@@ -100,4 +105,18 @@ drop-create： 在activiti启动时删除原来的旧表，然后在创建新表
     <bean id="formService" factory-bean="processEngine" factory-method="getFormService"/>
     <!-- activiti 配置结束 --> 
  
+ 	<!-- 全局事件监听 -->
+ 	<bean id="globalEventListener" class="com.sys.listener.impl.GlobalEventListener">
+ 		<property name = "handler">
+ 			<map>
+ 				<entry key="TASK_CREATED" value="taskCreatedListener"/>
+ 				<entry key="TASK_ASSIGNED" value="taskAssignedListener"/>
+ 				<entry key="TASK_COMPLETED" value="taskCompletedListener"/>
+ 				<entry key="PROCESS_COMPLETED" value="processCompletedListener"/>
+ 				<entry key="ACTIVITY_STARTE" value="activityStarteListener"/>
+ 				<entry key="ACTIVITY_COMPLETED" value="activityCompletedListener"/>
+ 				<entry key="ACTIVITY_SIGNALED" value="activitySignaledListener"/>
+ 			</map>
+ 		</property>
+ 	</bean>
 </beans>
