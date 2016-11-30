@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -244,6 +245,24 @@ public class SpringMybatisController{
 //		System.out.println(task.getId());
 	}
 	
+	/*销假-》多实例任务*/
+	@ResponseBody
+	@RequestMapping(value="/reportBackLeader_to_countersign.ctrl")
+	public void reportBackLeader_to_countersign(){
+		logger.debug("reportBackLeader_to_countersign");
+		Task task = taskService.createTaskQuery().taskCandidateGroup("reportBackLeader").singleResult();
+		Map<String,Object> variables = new HashMap<String,Object>();
+		variables.put("exit", "counterSign");
+		
+		List<String> users = new LinkedList();
+		users.add("200810405240");
+		users.add("200810405241");
+		variables.put("users", users);
+		taskService.claim(task.getId(), "reportBackLeaderId");
+		taskService.complete(task.getId(), variables);
+//		formService.submitTaskFormData(task.getId(),variables);
+	}
+	
 	//销假-》End
 	@RequestMapping(value="reportBackLeader_to_end.ctrl")
 	public String reportBackLeader_to_end(){
@@ -251,7 +270,17 @@ public class SpringMybatisController{
 		taskService.claim(task.getId(), "reportBackLeader");
 		Map<String,String> variables = new HashMap<String,String>();
 		variables.put("exit", "end");
+		
+		List<String> users = new LinkedList<String>();
+		users.add("200810405240");
+		users.add("200810405241");
+		users.add("200810405242");
+//		variables.put("users", users);
+//		runtimeService.setVariable(task.getExecutionId(), "users", users);
+		
 		formService.submitTaskFormData(task.getId(), variables);
+		
+		
 		return "";
 	}
 	//销假-》调整申请

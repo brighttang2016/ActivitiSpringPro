@@ -81,12 +81,19 @@ public class ExternalFormServiceImpl {
 	public void readResource(){
 		
 	}
+	
+	/**
+	 * 会签
+	 */
+	public void reportBackLeaderToCountersign(){
+		logger.debug("reportBackLeaderToCountersign");
+	}
 /**
  * 流程节点跳转
  * tom 2016年11月30日
  */
 	public void activityJump(){
-		String executionId = "217507";
+		String executionId = "127560";
 		ExecutionEntity executionEntity = (ExecutionEntity) runtimeService.createExecutionQuery().executionId(executionId).singleResult();
 		RepositoryServiceImpl repositoryServiceImpl = (RepositoryServiceImpl) repositoryService;
 		ReadOnlyProcessDefinition deployedProcessDefinition = repositoryServiceImpl.getDeployedProcessDefinition(executionEntity.getProcessDefinitionId());
@@ -139,7 +146,7 @@ public class ExternalFormServiceImpl {
 	 * tom 2016年11月28日
 	 */
 	public List<Map<String,Object>> readFlow(){
-		String executionId = "217507";
+		String executionId = "127560";
 		RepositoryServiceImpl repositoryServiceImpl = (RepositoryServiceImpl) repositoryService;
 		ExecutionEntity executionEntity = (ExecutionEntity) runtimeService.createExecutionQuery().executionId(executionId).singleResult();
 		/*System.out.println("executionEntity.getId():"+executionEntity.getId());

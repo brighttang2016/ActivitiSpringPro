@@ -62,6 +62,28 @@ public class ExternalFormController {
 	@Autowired
 	private RepositoryService repositoryService;
 	
+	
+	
+	//多实例任务，200810405240提交处理
+	@RequestMapping(value="/commit_200810405240.ctrl")
+	public void commit_200810405240(){
+		Task task = taskService.createTaskQuery().taskAssignee("200810405240").singleResult();
+		logger.debug("task:"+task.getId()+"|"+task.getName());
+//		taskService.claim(task.getId(), "200814050240");//多实例任务，当任务分配后，自动签收，不需要手动签收
+		Map<String,Object> variables = new HashMap<String,Object>();
+		variables.put("countSignComment", "200810405240会签意见巴拉了吧");
+		taskService.complete(task.getId(), variables);
+	}
+	//多实例任务，200810405240提交处理
+	@RequestMapping(value="/commit_200810405241.ctrl")
+	public void commit_200810405241(){
+		Task task = taskService.createTaskQuery().taskAssignee("200810405241").singleResult();
+		logger.debug("task:"+task.getId()+"|"+task.getName());
+//			taskService.claim(task.getId(), "200814050240");//多实例任务，当任务分配后，自动签收，不需要手动签收
+		Map<String,Object> variables = new HashMap<String,Object>();
+		variables.put("countSignComment", "200810405241会签意见巴拉了吧");
+		taskService.complete(task.getId(), variables);
+	}
 	/**
 	 * 节点跳转
 	 */

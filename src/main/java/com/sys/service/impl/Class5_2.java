@@ -16,6 +16,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipInputStream;
@@ -185,18 +186,26 @@ public class Class5_2 {
 		String createUserid = "20081040";
 		identityService.setAuthenticatedUserId(createUserid);
 		RuntimeService runtimeService = processEngine.getRuntimeService();
-		Map<String,String> variables = new HashMap<String,String>();
+		Map<String,Object> variables = new HashMap<String,Object>();
 		Calendar cl =Calendar.getInstance();
 		variables.put("startDate", "2015-01-01");
 		variables.put("endDate", "2015-01-05");
 		variables.put("reason", "公休");
+		List<String> users = new LinkedList<String>();
+		users.add("200810405240");
+		users.add("200810405241");
+		users.add("200810405242");
+		variables.put("users", users);
+		
 //		ProcessInstance processInstance = runtimeService
 //				.startProcessInstanceByKey("myProcess");
-//		ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("myProcess",variables);
+		ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("myProcess",variables);
 //		ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("leave", "200810405234", variables);
+		/*
 		ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionKey("leave").singleResult();
 		ProcessInstance processInstance = formService.submitStartFormData(processDefinition.getId(), "200810405234", variables);
-//		ProcessInstance processInstance = runtimeService.startProcessInstanceById("myProcess");
+*/
+		//		ProcessInstance processInstance = runtimeService.startProcessInstanceById("myProcess");
 //		assertNotNull(processInstance);
 		System.out.println("pid=" + processInstance.getId() + ",pdid="
 				+ processInstance.getProcessDefinitionId());

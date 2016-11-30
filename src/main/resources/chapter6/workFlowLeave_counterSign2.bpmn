@@ -94,13 +94,24 @@
     <userTask id="inputApply" name="填写申请" activiti:candidateGroups="user" activiti:formKey="${applyFormName}.form"></userTask>
     <sequenceFlow id="flow17" sourceRef="startevent1" targetRef="inputApply"></sequenceFlow>
     <sequenceFlow id="flow18" sourceRef="inputApply" targetRef="deptLeaderAudit"></sequenceFlow>
-    <userTask id="lastAuth" name="终审" activiti:assignee="${user}">
-      <multiInstanceLoopCharacteristics isSequential="false" activiti:collection="${users}" activiti:elementVariable="user"></multiInstanceLoopCharacteristics>
-    </userTask>
-    <sequenceFlow id="flow29" sourceRef="exclusivegateway4" targetRef="lastAuth"></sequenceFlow>
-    <userTask id="lastRecheck" name="终极复核"></userTask>
-    <sequenceFlow id="flow30" sourceRef="lastAuth" targetRef="lastRecheck"></sequenceFlow>
-    <sequenceFlow id="flow31" sourceRef="lastRecheck" targetRef="endevent1"></sequenceFlow>
+    <parallelGateway id="parallelgateway1" name="Parallel Gateway"></parallelGateway>
+    <userTask id="counterSignAuth3" name="会签领导2-1" activiti:assignee="200810405242"></userTask>
+    <sequenceFlow id="flow19" sourceRef="parallelgateway1" targetRef="counterSignAuth3"></sequenceFlow>
+    <userTask id="counterSignAuth1" name="会签领导1-1" activiti:assignee="200810405240"></userTask>
+    <sequenceFlow id="flow20" sourceRef="parallelgateway1" targetRef="counterSignAuth1"></sequenceFlow>
+    <userTask id="counterSignAuth2" name="会签领导1-2" activiti:assignee="200810405241"></userTask>
+    <userTask id="counterSignAuth4" name="会签领导2-1" activiti:assignee="200810405243"></userTask>
+    <sequenceFlow id="flow22" sourceRef="counterSignAuth3" targetRef="counterSignAuth4"></sequenceFlow>
+    <parallelGateway id="parallelgateway2" name="Parallel Gateway"></parallelGateway>
+    <sequenceFlow id="flow23" sourceRef="counterSignAuth2" targetRef="parallelgateway2"></sequenceFlow>
+    <sequenceFlow id="flow24" sourceRef="counterSignAuth4" targetRef="parallelgateway2"></sequenceFlow>
+    <sequenceFlow id="flow25" sourceRef="exclusivegateway4" targetRef="parallelgateway1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${exit == 'counterSign'}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask id="lastAuth" name="终极审批" activiti:assignee="200810405244"></userTask>
+    <sequenceFlow id="flow27" sourceRef="parallelgateway2" targetRef="lastAuth"></sequenceFlow>
+    <sequenceFlow id="flow28" sourceRef="lastAuth" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow29" sourceRef="counterSignAuth1" targetRef="counterSignAuth2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_leaveExternalForm">
     <bpmndi:BPMNPlane bpmnElement="leaveExternalForm" id="BPMNPlane_leaveExternalForm">
@@ -137,11 +148,26 @@
       <bpmndi:BPMNShape bpmnElement="inputApply" id="BPMNShape_inputApply">
         <omgdc:Bounds height="55.0" width="105.0" x="180.0" y="200.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="lastAuth" id="BPMNShape_lastAuth">
-        <omgdc:Bounds height="55.0" width="105.0" x="825.0" y="472.0"></omgdc:Bounds>
+      <bpmndi:BPMNShape bpmnElement="parallelgateway1" id="BPMNShape_parallelgateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="1110.0" y="223.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="lastRecheck" id="BPMNShape_lastRecheck">
-        <omgdc:Bounds height="55.0" width="105.0" x="696.0" y="418.0"></omgdc:Bounds>
+      <bpmndi:BPMNShape bpmnElement="counterSignAuth3" id="BPMNShape_counterSignAuth3">
+        <omgdc:Bounds height="55.0" width="105.0" x="1065.0" y="466.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="counterSignAuth1" id="BPMNShape_counterSignAuth1">
+        <omgdc:Bounds height="55.0" width="105.0" x="977.0" y="370.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="counterSignAuth2" id="BPMNShape_counterSignAuth2">
+        <omgdc:Bounds height="55.0" width="105.0" x="820.0" y="370.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="counterSignAuth4" id="BPMNShape_counterSignAuth4">
+        <omgdc:Bounds height="55.0" width="105.0" x="854.0" y="466.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="parallelgateway2" id="BPMNShape_parallelgateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="751.0" y="487.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="lastAuth" id="BPMNShape_lastAuth">
+        <omgdc:Bounds height="55.0" width="105.0" x="615.0" y="482.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
         <omgdi:waypoint x="460.0" y="229.0"></omgdi:waypoint>
@@ -204,6 +230,9 @@
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
         <omgdi:waypoint x="517.0" y="442.0"></omgdi:waypoint>
         <omgdi:waypoint x="517.0" y="492.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="60.0" x="624.0" y="423.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
         <omgdi:waypoint x="517.0" y="402.0"></omgdi:waypoint>
@@ -244,19 +273,41 @@
         <omgdi:waypoint x="285.0" y="227.0"></omgdi:waypoint>
         <omgdi:waypoint x="355.0" y="229.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow29" id="BPMNEdge_flow29">
+      <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
+        <omgdi:waypoint x="1130.0" y="263.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1117.0" y="466.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
+        <omgdi:waypoint x="1130.0" y="263.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1029.0" y="370.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
+        <omgdi:waypoint x="1065.0" y="493.0"></omgdi:waypoint>
+        <omgdi:waypoint x="959.0" y="493.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
+        <omgdi:waypoint x="872.0" y="425.0"></omgdi:waypoint>
+        <omgdi:waypoint x="771.0" y="487.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
+        <omgdi:waypoint x="854.0" y="493.0"></omgdi:waypoint>
+        <omgdi:waypoint x="791.0" y="507.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
         <omgdi:waypoint x="1015.0" y="232.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1080.0" y="232.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1080.0" y="481.0"></omgdi:waypoint>
-        <omgdi:waypoint x="930.0" y="499.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1110.0" y="243.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
-        <omgdi:waypoint x="825.0" y="499.0"></omgdi:waypoint>
-        <omgdi:waypoint x="748.0" y="473.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
+        <omgdi:waypoint x="751.0" y="507.0"></omgdi:waypoint>
+        <omgdi:waypoint x="720.0" y="509.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
-        <omgdi:waypoint x="748.0" y="473.0"></omgdi:waypoint>
-        <omgdi:waypoint x="517.0" y="492.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
+        <omgdi:waypoint x="615.0" y="509.0"></omgdi:waypoint>
+        <omgdi:waypoint x="535.0" y="509.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow29" id="BPMNEdge_flow29">
+        <omgdi:waypoint x="977.0" y="397.0"></omgdi:waypoint>
+        <omgdi:waypoint x="925.0" y="397.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

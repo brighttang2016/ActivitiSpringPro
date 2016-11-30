@@ -284,6 +284,36 @@
 					failure:function(){}
 				})
 			});
+			$("#reportBackLeader_to_countersign").bind('click',function(){
+				$.ajax({
+					type:'get',
+					url:'/ActivitiSpringPro/reportBackLeader_to_countersign.ctrl',
+					success:function(data){
+						alert(data);
+					},
+					failure:function(){}
+				})
+			});
+			$("#commit_200810405240").bind('click',function(){
+				$.ajax({
+					type:'get',
+					url:'/ActivitiSpringPro/commit_200810405240.ctrl',
+					success:function(data){
+						alert(data);
+					},
+					failure:function(){}
+				})
+			});
+			$("#commit_200810405241").bind('click',function(){
+				$.ajax({
+					type:'get',
+					url:'/ActivitiSpringPro/commit_200810405241.ctrl',
+					success:function(data){
+						alert(data);
+					},
+					failure:function(){}
+				})
+			});
 			
 			$("#readExternalForm").bind('click',function(){
 				$.ajax({
@@ -371,6 +401,9 @@
 		<input type="button" value="销假退部门领导" id="reportBackLeader_to_deptLeader"/> 
 		<input type="button" value="销假退人事审批" id="reportBackLeader_to_hrLeader"/>
 		<input type="button" value="销假退调整申请" id="reportBackLeader_to_modifierLeader"/>
+		<input type="button" value="销假会签" id="reportBackLeader_to_countersign"/>
+		<input type="button" value="200810405240提交" id="commit_200810405240"/>
+		<input type="button" value="200810405241提交" id="commit_200810405241"/>
 	</div>
 	<div><input type="button" value="执行历史查询" id="node_his"/></div><hr/>
 	<div><input type="button" value="已完成流程（查询已处理完成流程）" id="finish_task"/></div><hr/>
