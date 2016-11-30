@@ -14,12 +14,12 @@ import com.sys.listener.EventHandler;
  *
  */
 @Service
-public class ActivityCompletedListener implements EventHandler {
-	Logger logger = Logger.getLogger(ActivityCompletedListener.class);
+public class ActivityStartedListener implements EventHandler {
+	Logger logger = Logger.getLogger("ActivitiyStartedListener.class");
 	@Override
 	public void handle(ActivitiEvent event) {
-		logger.debug("节点执行完成");
-		ActivitiActivityEvent activityImpl = (ActivitiActivityEvent) event;
-		logger.debug("ActivityCompletedListener:"+activityImpl.getActivityId()+"|"+activityImpl.getActivityName()+"|"+activityImpl.getActivityType());
+		logger.debug("节点开始执行");
+		ActivitiActivityEvent eventImpl = (ActivitiActivityEvent) event;
+		logger.debug("ActivityStartedListener:"+eventImpl.getActivityId()+"|"+eventImpl.getActivityName()+"|"+eventImpl.getActivityType());
 	}
 }

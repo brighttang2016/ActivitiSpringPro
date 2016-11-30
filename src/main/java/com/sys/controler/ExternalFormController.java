@@ -63,6 +63,15 @@ public class ExternalFormController {
 	private RepositoryService repositoryService;
 	
 	/**
+	 * 节点跳转
+	 */
+	@ResponseBody
+	@RequestMapping(value="/activityJump.ctrl")
+	public void activityJump(){
+		class5.activityJump();
+	}
+	
+	/**
 	 * 读取流程信息
 	 * tom 2016年11月28日
 	 */

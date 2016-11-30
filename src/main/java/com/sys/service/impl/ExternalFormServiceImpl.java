@@ -35,14 +35,17 @@ import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.identity.Group;
 import org.activiti.engine.identity.User;
 import org.activiti.engine.impl.RepositoryServiceImpl;
+import org.activiti.engine.impl.context.Context;
 import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
 import org.activiti.engine.impl.persistence.entity.HistoricTaskInstanceEntity;
 import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
+import org.activiti.engine.impl.persistence.entity.TaskEntity;
 import org.activiti.engine.impl.pvm.PvmActivity;
 import org.activiti.engine.impl.pvm.PvmTransition;
 import org.activiti.engine.impl.pvm.ReadOnlyProcessDefinition;
 import org.activiti.engine.impl.pvm.delegate.ActivityBehavior;
 import org.activiti.engine.impl.pvm.process.ActivityImpl;
+import org.activiti.engine.impl.pvm.process.TransitionImpl;
 import org.activiti.engine.repository.DeploymentBuilder;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
@@ -50,6 +53,7 @@ import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.concurrent.ExecutorConfigurationSupport;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -77,12 +81,65 @@ public class ExternalFormServiceImpl {
 	public void readResource(){
 		
 	}
-
+/**
+ * 流程节点跳转
+ * tom 2016年11月30日
+ */
+	public void activityJump(){
+		String executionId = "217507";
+		ExecutionEntity executionEntity = (ExecutionEntity) runtimeService.createExecutionQuery().executionId(executionId).singleResult();
+		RepositoryServiceImpl repositoryServiceImpl = (RepositoryServiceImpl) repositoryService;
+		ReadOnlyProcessDefinition deployedProcessDefinition = repositoryServiceImpl.getDeployedProcessDefinition(executionEntity.getProcessDefinitionId());
+		ProcessDefinitionEntity processDefinitionEntity = (ProcessDefinitionEntity) deployedProcessDefinition;
+		List<ActivityImpl> activityImplList = processDefinitionEntity.getActivities();
+		List<String> activiActivityIds = runtimeService.getActiveActivityIds(executionId);
+		for (String activiActivityId : activiActivityIds) {
+			System.out.println("activiActivityId:"+activiActivityId);
+		}
+		Task currTask = taskService.createTaskQuery().executionId(executionEntity.getId()).taskDefinitionKey(executionEntity.getActivityId()).singleResult();
+		TaskEntity taskEntity = (TaskEntity) currTask;
+//		taskEntity.fireEvent("complete");
+		//节点提交
+//		Map<String, Object> variable = new HashMap<String, Object>();
+//		variable.put("deptLeaderApproved", "true");
+//		taskService.complete(currTask.getId(),variable);
+//		taskService.deleteTask("200024");
+		//默认任务改派deptLeaderAudit
+		ActivityImpl targetActivityImpl = null;
+		for (ActivityImpl activityImpl : activityImplList) {
+			if("deptLeaderAudit".equals(activityImpl.getId())){
+				targetActivityImpl = activityImpl;
+			}
+		}
+		for (ActivityImpl activityImpl : activityImplList) {
+			System.out.println(activityImpl.getId());
+			if(activiActivityIds.contains(activityImpl.getId())){
+				System.out.println("当前节点");
+				List<PvmTransition> oriPvmTransitionList = new ArrayList<PvmTransition>();
+				List<PvmTransition> pvmTransitionList = activityImpl.getOutgoingTransitions();
+				for (PvmTransition pvmTransition : pvmTransitionList) {
+					oriPvmTransitionList.add(pvmTransition);
+				}
+				pvmTransitionList.clear();
+				
+				TransitionImpl newTransitionImpl = activityImpl.createOutgoingTransition();
+				newTransitionImpl.setDestination(targetActivityImpl);
+				taskService.complete(currTask.getId());
+				
+				targetActivityImpl.getIncomingTransitions().remove(newTransitionImpl);
+				activityImpl.getOutgoingTransitions().remove(newTransitionImpl);
+				for (PvmTransition pvmTransition : oriPvmTransitionList) {
+					pvmTransitionList.add(pvmTransition);
+				}
+			}
+		}
+	}
+	
 	/**读取流程信息(获取各个节点信息)
 	 * tom 2016年11月28日
 	 */
 	public List<Map<String,Object>> readFlow(){
-		String executionId = "132507";
+		String executionId = "217507";
 		RepositoryServiceImpl repositoryServiceImpl = (RepositoryServiceImpl) repositoryService;
 		ExecutionEntity executionEntity = (ExecutionEntity) runtimeService.createExecutionQuery().executionId(executionId).singleResult();
 		/*System.out.println("executionEntity.getId():"+executionEntity.getId());
@@ -104,18 +161,26 @@ public class ExternalFormServiceImpl {
 				currentActiviti = true;	
 				
 				List<PvmTransition> outTrans = activityImpl.getOutgoingTransitions();
+				activityImpl.findOutgoingTransition("");
 				for (PvmTransition outTran : outTrans) {
 					System.out.println("outTran:"+outTran.getSource().getId()+"|"+outTran.getDestination().getId());
 					PvmActivity activity = outTran.getDestination();
+					System.out.println("activity.getId()："+activity.getId());
 					List<PvmTransition> inTrans = activity.getIncomingTransitions();
+					List<PvmTransition> outTrans2 = activity.getOutgoingTransitions();
 					for (PvmTransition inTran : inTrans) {
 						System.out.println("inTran:"+inTran.getSource().getId()+"|"+inTran.getDestination().getId());
 					}
+					for (int i = 0; i < outTrans2.size(); i++) {
+						PvmTransition outTran2 = outTrans2.get(i);
+						System.out.println(i+",outTran2:"+outTran2.getSource().getId()+"|"+outTran2.getDestination().getId());
+					}
 				} 
 			}
+			
 			activityImpl.getOutgoingTransitions();
-			Task task = taskService.createTaskQuery().executionId(executionEntity.getId()).taskDefinitionKey(executionEntity.getActivityId()).singleResult();	
-			logger.debug(task.getAssignee()+"|"+task.getId()+"|"+task.getName()+"|"+activityBehaver);
+			Task task = taskService.createTaskQuery().executionId(executionEntity.getId()).taskDefinitionKey(executionEntity.getActivityId()).singleResult();//当前任务	
+			logger.debug(task.getAssignee()+"|"+task.getId()+"|"+task.getName()+"|"+activityBehaver+"|");
 			List<Task> taskList2 = taskService.createTaskQuery().processInstanceId(executionId).list();
 			for (Task task2 : taskList2) {
 //				System.out.println("task2.getId():"+task2.getId());
@@ -241,6 +306,7 @@ public class ExternalFormServiceImpl {
 				//发布流程xml图片（中文乱码）
 //				repositoryService.createDeployment().addClasspathResource("chapter5/leave.bpmn").deploy();
 //				repositoryService.createDeployment().addClasspathResource("chapter6/workFlowLeave_externalForm.bpmn").deploy();
+				repositoryService.createDeployment().addClasspathResource("chapter6/workFlowLeave_counterSign.bpmn").deploy();//会签测试流程图
 				
 				//发布流程图片（单独图片无法发布成功）
 //				repositoryService.createDeployment().addClasspathResource("chapter5/candidateUserInUserTask.png").deploy();
@@ -250,8 +316,9 @@ public class ExternalFormServiceImpl {
 				InputStream inputStream = getClass().getClassLoader().getResourceAsStream("chapter5/leave.zip");
 				repositoryService.createDeployment().addZipInputStream(new ZipInputStream(inputStream)).deploy();
 				*/
-				InputStream inputStream = getClass().getClassLoader().getResourceAsStream("chapter6/workFlowLeave_externalForm.zip");
-				repositoryService.createDeployment().addZipInputStream(new ZipInputStream(inputStream)).deploy();
+				/*InputStream inputStream = getClass().getClassLoader().getResourceAsStream("chapter6/workFlowLeave_externalForm.zip");//外置表单测试流程图
+				repositoryService.createDeployment().addZipInputStream(new ZipInputStream(inputStream)).deploy();*/
+				
 				//流发布
 				/*try {String path = getClass().getClassLoader().getResource("").getPath();
 					String pathDecode = URLDecoder.decode(path, "UTF-8");

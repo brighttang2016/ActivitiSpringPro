@@ -305,6 +305,19 @@
 					failure:function(){}
 				})
 			});
+			
+			$("#activityJump").bind('click',function(){
+				$.ajax({
+					type:'get',
+					url:'/ActivitiSpringPro/activityJump.ctrl',
+					success:function(data){
+						alert(data);
+					},
+					failure:function(){}
+				})
+			});
+			
+			
 		}
 	);
 </script>
@@ -365,6 +378,9 @@
 	<div>
 		<input type="button" value="读取外置表单" id="readExternalForm"/>
 		<input type="button" value="读取流程跟踪信息" id="readFlow"/>
+	</div>
+	<div>
+		<input type="button" value="任务节点跳转" id="activityJump"/>
 	</div>
 	
 	

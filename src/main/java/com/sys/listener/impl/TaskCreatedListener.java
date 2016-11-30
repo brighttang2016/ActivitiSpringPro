@@ -27,5 +27,6 @@ public class TaskCreatedListener implements EventHandler{
 		String applyUserId = (String) taskEntity.getVariable("applyUserId");//获取运行时变量池中指定名称变量
 		Map<String,Object> varaMap = taskEntity.getVariables();//获取运行时变量池中所有变量
 		logger.debug("varaMap:"+varaMap);
+	
 	}
 }

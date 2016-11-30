@@ -113,7 +113,7 @@ drop-create： 在activiti启动时删除原来的旧表，然后在创建新表
  				<entry key="TASK_ASSIGNED" value="taskAssignedListener"/>
  				<entry key="TASK_COMPLETED" value="taskCompletedListener"/>
  				<entry key="PROCESS_COMPLETED" value="processCompletedListener"/>
- 				<entry key="ACTIVITY_STARTE" value="activityStarteListener"/>
+ 				<entry key="ACTIVITY_STARTED" value="activityStartedListener"/>
  				<entry key="ACTIVITY_COMPLETED" value="activityCompletedListener"/>
  				<entry key="ACTIVITY_SIGNALED" value="activitySignaledListener"/>
  			</map>

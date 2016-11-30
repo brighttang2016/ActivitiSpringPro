@@ -257,7 +257,6 @@ public class Class5_2 {
 	}
 	
 	public void testUser(){
-		
 		List<Group> groupList2 = identityService.createGroupQuery().list();
 		for (Group group : groupList2) {
 			System.out.println(group.getName());
@@ -310,6 +309,21 @@ public class Class5_2 {
 		user4.setPassword("200810405236");
 		identityService.deleteUser("200810405236");
 		identityService.saveUser(user4);
+		
+		String[] users = new String[]{"200810405240","200810405241","200810405242","200810405243","200810405244"};
+		for (int i = 0; i < users.length; i++) {
+			String userId = users[i];
+			User userTemp = identityService.newUser("");
+			userTemp.setId(userId);
+			userTemp.setFirstName("唐"+userId);
+			userTemp.setLastName("亮"+userId);
+			userTemp.setPassword(userId);
+			identityService.deleteUser(userId);
+			identityService.saveUser(userTemp);
+		}
+
+		
+		
 		
 		//创建用户组
 		String[] groups = new String[]{"user","deptLeader","hrLeader","modifyLeader","reportBackLeader"};
