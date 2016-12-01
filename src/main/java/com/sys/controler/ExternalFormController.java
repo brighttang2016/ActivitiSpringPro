@@ -62,8 +62,11 @@ public class ExternalFormController {
 	@Autowired
 	private RepositoryService repositoryService;
 	
-	
-	
+	//驳回
+	@RequestMapping(value="/activityReject.ctrl")
+	public void activityReject(){
+		class5.activityReject();
+	}
 	//多实例任务，200810405240提交处理
 	@RequestMapping(value="/commit_200810405240.ctrl")
 	public void commit_200810405240(){
@@ -71,19 +74,43 @@ public class ExternalFormController {
 		logger.debug("task:"+task.getId()+"|"+task.getName());
 //		taskService.claim(task.getId(), "200814050240");//多实例任务，当任务分配后，自动签收，不需要手动签收
 		Map<String,Object> variables = new HashMap<String,Object>();
-		variables.put("countSignComment", "200810405240会签意见巴拉了吧");
+		variables.put("countSignComment", "200810405240实例处理意见巴拉了吧");
 		taskService.complete(task.getId(), variables);
 	}
-	//多实例任务，200810405240提交处理
+	//多实例任务，200810405241提交处理
 	@RequestMapping(value="/commit_200810405241.ctrl")
 	public void commit_200810405241(){
 		Task task = taskService.createTaskQuery().taskAssignee("200810405241").singleResult();
 		logger.debug("task:"+task.getId()+"|"+task.getName());
 //			taskService.claim(task.getId(), "200814050240");//多实例任务，当任务分配后，自动签收，不需要手动签收
 		Map<String,Object> variables = new HashMap<String,Object>();
-		variables.put("countSignComment", "200810405241会签意见巴拉了吧");
+		variables.put("countSignComment", "200810405241实例处理意见巴拉了吧");
 		taskService.complete(task.getId(), variables);
 	}
+	
+	//会签任务，200810405242提交处理
+	@RequestMapping(value="/commit_200810405242.ctrl")
+	public void commit_200810405242(){
+		Task task = taskService.createTaskQuery().taskAssignee("200810405242").singleResult();
+		logger.debug("task:"+task.getId()+"|"+task.getName());
+//		taskService.claim(task.getId(), "200814050242");//多实例任务，当任务分配后，自动签收，不需要手动签收
+		Map<String,Object> variables = new HashMap<String,Object>();
+		variables.put("countSignComment", "200810405242会签意见巴拉了吧");
+		variables.put("chanel1User2", "200810405242");
+		runtimeService.setVariable(task.getExecutionId(), "chanel1User3", "200810405242");
+		taskService.complete(task.getId(), variables);
+	}
+	//会签任务，200810405243提交处理
+	@RequestMapping(value="/commit_200810405243.ctrl")
+	public void commit_200810405243(){
+		Task task = taskService.createTaskQuery().taskAssignee("200810405243").singleResult();
+		logger.debug("task:"+task.getId()+"|"+task.getName());
+//		taskService.claim(task.getId(), "200814050243");//多实例任务，当任务分配后，自动签收，不需要手动签收
+		Map<String,Object> variables = new HashMap<String,Object>();
+		variables.put("countSignComment", "200810405243会签意见巴拉了吧");
+		taskService.complete(task.getId(), variables);
+	}
+	
 	/**
 	 * 节点跳转
 	 */

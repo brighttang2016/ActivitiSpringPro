@@ -315,6 +315,26 @@
 				})
 			});
 			
+			$("#commit_200810405242").bind('click',function(){
+				$.ajax({
+					type:'get',
+					url:'/ActivitiSpringPro/commit_200810405242.ctrl',
+					success:function(data){
+						alert(data);
+					},
+					failure:function(){}
+				})
+			});
+			$("#commit_200810405243").bind('click',function(){
+				$.ajax({
+					type:'get',
+					url:'/ActivitiSpringPro/commit_200810405243.ctrl',
+					success:function(data){
+						alert(data);
+					},
+					failure:function(){}
+				})
+			});
 			$("#readExternalForm").bind('click',function(){
 				$.ajax({
 					type:'get',
@@ -340,6 +360,16 @@
 				$.ajax({
 					type:'get',
 					url:'/ActivitiSpringPro/activityJump.ctrl',
+					success:function(data){
+						alert(data);
+					},
+					failure:function(){}
+				})
+			});
+			$("#activityReject").bind('click',function(){
+				$.ajax({
+					type:'get',
+					url:'/ActivitiSpringPro/activityReject.ctrl',
 					success:function(data){
 						alert(data);
 					},
@@ -402,8 +432,10 @@
 		<input type="button" value="销假退人事审批" id="reportBackLeader_to_hrLeader"/>
 		<input type="button" value="销假退调整申请" id="reportBackLeader_to_modifierLeader"/>
 		<input type="button" value="销假会签" id="reportBackLeader_to_countersign"/>
-		<input type="button" value="200810405240提交" id="commit_200810405240"/>
-		<input type="button" value="200810405241提交" id="commit_200810405241"/>
+		<input type="button" value="会签-200810405242提交" id="commit_200810405242"/>
+		<input type="button" value="会签-200810405243提交" id="commit_200810405243"/>
+		<input type="button" value="多实例-200810405240提交" id="commit_200810405240"/>
+		<input type="button" value="多实例-200810405241提交" id="commit_200810405241"/>
 	</div>
 	<div><input type="button" value="执行历史查询" id="node_his"/></div><hr/>
 	<div><input type="button" value="已完成流程（查询已处理完成流程）" id="finish_task"/></div><hr/>
@@ -414,6 +446,7 @@
 	</div>
 	<div>
 		<input type="button" value="任务节点跳转" id="activityJump"/>
+		<input type="button" value="驳回" id="activityReject"/>
 	</div>
 	
 	

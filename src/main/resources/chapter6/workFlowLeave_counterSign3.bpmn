@@ -97,25 +97,19 @@
     <userTask id="lastAuth" name="终审" activiti:assignee="${user}">
       <multiInstanceLoopCharacteristics isSequential="false" activiti:collection="${users}" activiti:elementVariable="user"></multiInstanceLoopCharacteristics>
     </userTask>
-    <sequenceFlow id="flow29" sourceRef="exclusivegateway4" targetRef="parallelgateway1">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${exit == 'counterSign'}]]></conditionExpression>
-    </sequenceFlow>
+    <sequenceFlow id="flow29" sourceRef="exclusivegateway4" targetRef="parallelgateway1"></sequenceFlow>
     <userTask id="lastRecheck" name="终极复核"></userTask>
     <sequenceFlow id="flow30" sourceRef="lastAuth" targetRef="lastRecheck"></sequenceFlow>
     <parallelGateway id="parallelgateway1" name="Parallel Gateway"></parallelGateway>
     <parallelGateway id="parallelgateway2" name="Parallel Gateway"></parallelGateway>
-    <userTask id="counterSign1_1" name="通道1任务1" activiti:assignee="200810405242"></userTask>
-    <userTask id="countSign2_1" name="通道2任务1" activiti:assignee="200810405243"></userTask>
+    <userTask id="counterSign1_1" name="通道1会签1" activiti:assignee="200810405242"></userTask>
+    <userTask id="countSign2_1" name="通道2会签1" activiti:assignee="200810405243"></userTask>
     <sequenceFlow id="flow32" sourceRef="parallelgateway1" targetRef="counterSign1_1"></sequenceFlow>
     <sequenceFlow id="flow33" sourceRef="parallelgateway1" targetRef="countSign2_1"></sequenceFlow>
-    <sequenceFlow id="flow34" sourceRef="counterSign1_1" targetRef="counterSign1_2"></sequenceFlow>
+    <sequenceFlow id="flow34" sourceRef="counterSign1_1" targetRef="parallelgateway2"></sequenceFlow>
     <sequenceFlow id="flow35" sourceRef="countSign2_1" targetRef="parallelgateway2"></sequenceFlow>
     <sequenceFlow id="flow36" sourceRef="parallelgateway2" targetRef="lastAuth"></sequenceFlow>
     <sequenceFlow id="flow37" sourceRef="lastRecheck" targetRef="endevent1"></sequenceFlow>
-    <userTask id="counterSign1_2" name="通道1任务2" activiti:assignee="${chanel1User2}"></userTask>
-    <sequenceFlow id="flow38" sourceRef="counterSign1_3" targetRef="parallelgateway2"></sequenceFlow>
-    <userTask id="counterSign1_3" name="通道1任务3" activiti:assignee="${chanel1User3}"></userTask>
-    <sequenceFlow id="flow39" sourceRef="counterSign1_2" targetRef="counterSign1_3"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_leaveExternalForm">
     <bpmndi:BPMNPlane bpmnElement="leaveExternalForm" id="BPMNPlane_leaveExternalForm">
@@ -165,16 +159,10 @@
         <omgdc:Bounds height="40.0" width="40.0" x="785.0" y="505.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="counterSign1_1" id="BPMNShape_counterSign1_1">
-        <omgdc:Bounds height="55.0" width="105.0" x="1020.0" y="395.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="943.0" y="427.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="countSign2_1" id="BPMNShape_countSign2_1">
         <omgdc:Bounds height="55.0" width="105.0" x="943.0" y="537.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="counterSign1_2" id="BPMNShape_counterSign1_2">
-        <omgdc:Bounds height="55.0" width="105.0" x="879.0" y="395.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="counterSign1_3" id="BPMNShape_counterSign1_3">
-        <omgdc:Bounds height="55.0" width="105.0" x="739.0" y="395.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
         <omgdi:waypoint x="460.0" y="229.0"></omgdi:waypoint>
@@ -292,15 +280,15 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
         <omgdi:waypoint x="1180.0" y="497.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1072.0" y="450.0"></omgdi:waypoint>
+        <omgdi:waypoint x="995.0" y="482.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
         <omgdi:waypoint x="1160.0" y="517.0"></omgdi:waypoint>
         <omgdi:waypoint x="995.0" y="537.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
-        <omgdi:waypoint x="1020.0" y="422.0"></omgdi:waypoint>
-        <omgdi:waypoint x="984.0" y="422.0"></omgdi:waypoint>
+        <omgdi:waypoint x="995.0" y="482.0"></omgdi:waypoint>
+        <omgdi:waypoint x="805.0" y="505.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
         <omgdi:waypoint x="943.0" y="564.0"></omgdi:waypoint>
@@ -313,14 +301,6 @@
       <bpmndi:BPMNEdge bpmnElement="flow37" id="BPMNEdge_flow37">
         <omgdi:waypoint x="451.0" y="527.0"></omgdi:waypoint>
         <omgdi:waypoint x="195.0" y="517.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
-        <omgdi:waypoint x="791.0" y="450.0"></omgdi:waypoint>
-        <omgdi:waypoint x="805.0" y="505.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
-        <omgdi:waypoint x="879.0" y="422.0"></omgdi:waypoint>
-        <omgdi:waypoint x="844.0" y="422.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

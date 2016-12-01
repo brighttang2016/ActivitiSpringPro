@@ -81,6 +81,41 @@ public class ExternalFormServiceImpl {
 	public void readResource(){
 		
 	}
+	/**
+	 * 获取上个任务
+	 * tom 2016年12月1日
+	 * @param currActivity
+	 */
+	public void getPreTask(ActivityImpl currActivity){
+		
+		List<PvmTransition> inPvmTransitions = currActivity.getIncomingTransitions();
+		for (PvmTransition inPvmTransition : inPvmTransitions) {
+			PvmActivity pvmAcvitity = inPvmTransition.getSource();
+			System.out.println("迁移节点："+pvmAcvitity.getId()+"|"+pvmAcvitity.isExclusive()+"|");
+		}
+	}
+	
+	/**
+	 * 驳回到上个任务节点
+	 */
+	public void activityReject(){
+		String executionId = "257565";
+		ExecutionEntity executionEntity = (ExecutionEntity) runtimeService.createExecutionQuery().executionId(executionId).singleResult();
+		List<String> activeActivityIds = runtimeService.getActiveActivityIds(executionEntity.getId());
+		
+		RepositoryServiceImpl repositoryServiceImpl = (RepositoryServiceImpl) repositoryService;
+		ReadOnlyProcessDefinition processDefinition = repositoryServiceImpl.getDeployedProcessDefinition(executionEntity.getProcessDefinitionId());
+		List<ActivityImpl> activityImplList = (List<ActivityImpl>) processDefinition.getActivities();
+		for (ActivityImpl activityImpl : activityImplList) {
+			logger.debug("activityImpl.getId():"+activityImpl.getId());
+			ActivityImpl currActivity = null;
+			if(activeActivityIds.contains(activityImpl.getId())){
+				currActivity = activityImpl;
+				logger.debug("当前节点："+currActivity.getId());
+				this.getPreTask(currActivity);
+			}
+		}
+	}
 	
 	/**
 	 * 会签
@@ -93,7 +128,7 @@ public class ExternalFormServiceImpl {
  * tom 2016年11月30日
  */
 	public void activityJump(){
-		String executionId = "127560";
+		String executionId = "257565";
 		ExecutionEntity executionEntity = (ExecutionEntity) runtimeService.createExecutionQuery().executionId(executionId).singleResult();
 		RepositoryServiceImpl repositoryServiceImpl = (RepositoryServiceImpl) repositoryService;
 		ReadOnlyProcessDefinition deployedProcessDefinition = repositoryServiceImpl.getDeployedProcessDefinition(executionEntity.getProcessDefinitionId());
@@ -103,6 +138,8 @@ public class ExternalFormServiceImpl {
 		for (String activiActivityId : activiActivityIds) {
 			System.out.println("activiActivityId:"+activiActivityId);
 		}
+		
+		
 		Task currTask = taskService.createTaskQuery().executionId(executionEntity.getId()).taskDefinitionKey(executionEntity.getActivityId()).singleResult();
 		TaskEntity taskEntity = (TaskEntity) currTask;
 //		taskEntity.fireEvent("complete");
@@ -140,13 +177,15 @@ public class ExternalFormServiceImpl {
 				}
 			}
 		}
+		
+		
 	}
 	
 	/**读取流程信息(获取各个节点信息)
 	 * tom 2016年11月28日
 	 */
 	public List<Map<String,Object>> readFlow(){
-		String executionId = "127560";
+		String executionId = "252505";
 		RepositoryServiceImpl repositoryServiceImpl = (RepositoryServiceImpl) repositoryService;
 		ExecutionEntity executionEntity = (ExecutionEntity) runtimeService.createExecutionQuery().executionId(executionId).singleResult();
 		/*System.out.println("executionEntity.getId():"+executionEntity.getId());
