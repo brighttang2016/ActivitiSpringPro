@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -31,10 +32,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.sys.dao.BigDataMapper;
+import com.sys.dao.StudentMapper;
+import com.sys.domain.BigData;
 import com.sys.domain.Student;
 import com.sys.service.impl.Class5_1;
 import com.sys.service.impl.ExternalFormServiceImpl;
 import com.sys.service.impl.UserServiceImpl;
+import com.sys.utils.Utils;
 
 /**
  * @author tom
@@ -61,7 +66,10 @@ public class ExternalFormController {
 	private FormService formService;
 	@Autowired
 	private RepositoryService repositoryService;
-	
+	@Autowired
+	private BigDataMapper bigDataMapperImpl;
+	@Autowired
+	private StudentMapper studentMapperImpl;
 	//驳回
 	@RequestMapping(value="/activityReject.ctrl")
 	public void activityReject(){
@@ -205,5 +213,25 @@ public class ExternalFormController {
 		ja.add(hm);
 		return ja;
 	}
-
+	
+	
+	//插入10万数据
+	@ResponseBody
+	@RequestMapping(value="/insertBigData.ctrl")
+	public void insertBigData(){
+		List<BigData> bigDataList = new ArrayList<BigData>();
+		for (int i = 0; i < 10009; i++) {
+			BigData bigData = new BigData();
+			bigData.setId(UUID.randomUUID().toString());
+			bigData.setAge(20);
+			bigData.setAddress("重庆");
+			bigData.setName("唐亮");
+			bigData.setSex("男");
+			bigData.setUserid(i+"");
+			bigDataList.add(bigData);
+//			bigDataMapperImpl.insertSelective(bigData);
+		}
+		bigDataMapperImpl.insertBatch(bigDataList);
+		System.out.println("批量插入完成");
+	}
 }

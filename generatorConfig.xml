@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+	<classPathEntry
+		location="D:\apache-maven-3.3.3\dependency\mysql\mysql-connector-java\5.1.21\mysql-connector-java-5.1.21.jar" />
+		
+	
+	<context id="mysqlMybatis"  defaultModelType="conditional" >
+		<commentGenerator>
+			<!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+			<property name="suppressAllComments" value="true" />
+			<!--数据库连接的信息：驱动类、连接地址、用户名、密码 -->
+		</commentGenerator>
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://127.0.0.1:3306/testdb?characterEncoding=UTF-8" userId="test"
+			password="test" />
+		
+		<javaModelGenerator targetPackage="com.sys.domain"
+			targetProject="ActivitiSpringPro/src/main/java" />
+		<sqlMapGenerator targetPackage="com.sys.mapper"
+			targetProject="ActivitiSpringPro/src/main/java" />
+		<javaClientGenerator targetPackage="com.sys.dao"
+			targetProject="ActivitiSpringPro/src/main/java" type="XMLMAPPER" />
+		
+		<table tableName="T_BIG_DATA" domainObjectName="BigData" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+	</context>
+</generatorConfiguration>

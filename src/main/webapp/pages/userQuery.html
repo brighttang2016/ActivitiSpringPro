@@ -8,7 +8,7 @@
 <script>
 	$(document).ready(
 		function(){
-			//alert("hello world1"+$('#send'));	
+			//alert("hello world1"+$('#send'));
 			$('#send').bind("click",function(){
 		    	alert("click");
 		         $.ajax({
@@ -19,7 +19,7 @@
 		             dataType: "json",
 		             success: function(data){
 		                        /*  $('#resText').empty();   //清空resText里面的所有内容
-		                         var html = ''; 
+		                         var html = '';
 		                         $.each(data, function(commentIndex, comment){
 		                               html += '<div class="comment"><h6>' + comment['username']
 		                                         + ':</h6><p class="para"' + comment['content']
@@ -30,7 +30,7 @@
 		                      }
 		         });
 		    });
-			
+
 			$("#class5_1").bind('click',function(){
 				$.ajax({
 					type:'get',
@@ -40,8 +40,8 @@
 					},
 					failure:function(){}
 				})
-			}); 
-			
+			});
+
 			$("#class5_2").bind('click',function(){
 				$.ajax({
 					type:'get',
@@ -51,8 +51,8 @@
 					},
 					failure:function(){}
 				})
-			}); 
-			
+			});
+
 			$("#process_delploy").bind('click',function(){
 				$.ajax({
 					type:'get',
@@ -63,8 +63,8 @@
 					},
 					failure:function(){}
 				})
-			}); 
-			
+			});
+
 			$("#process_start").bind('click',function(){
 				$.ajax({
 					type:'get',
@@ -75,8 +75,8 @@
 					},
 					failure:function(){}
 				})
-			}); 
-			
+			});
+
 			$("#task_query").bind('click',function(){
 				$.ajax({
 					type:'get',
@@ -86,8 +86,8 @@
 					},
 					failure:function(){}
 				})
-			}); 
-			
+			});
+
 			$("#flowImage").bind('click',function(){
 				//window.open("/ActivitiSpringPro/active_tasklist.ctrl");
 				window.open("/ActivitiSpringPro/pages/flowImage.html");
@@ -98,26 +98,26 @@
 			});
 			$("#process_list").bind('click',function(){
 				window.open("/ActivitiSpringPro/process_list.ctrl");
-			}); 
-			
+			});
+
 			$("#task_list").bind('click',function(){
 				window.open("/ActivitiSpringPro/task_list.ctrl");
-			}); 
+			});
 			$("#external_task_list").bind('click',function(){
 				window.open("/ActivitiSpringPro/external_task_list.ctrl");
-			}); 
-			
+			});
+
 			$("#hr_tasklist").bind('click',function(){
 				window.open("/ActivitiSpringPro/hr_tasklist.ctrl");
-			}); 
+			});
 			$("#modify_tasklist").bind('click',function(){
 				window.open("/ActivitiSpringPro/modify_tasklist.ctrl");
-			}); 
+			});
 			$("#reportback_tasklist").bind('click',function(){
 				window.open("/ActivitiSpringPro/reportback_tasklist.ctrl");
-			}); 
-			
-			
+			});
+
+
 			$("#process_sign").bind('click',function(){
 				$.ajax({
 					type:'get',
@@ -127,7 +127,7 @@
 					},
 					failure:function(){}
 				})
-			}); 
+			});
 			$("#task_claim").bind('click',function(){
 				$.ajax({
 					type:'get',
@@ -148,7 +148,7 @@
 					failure:function(){}
 				})
 			});
-			
+
 			$("#node_form").bind('click',function(){
 				$.ajax({
 					type:'get',
@@ -199,7 +199,7 @@
 					failure:function(){}
 				})
 			});
-			
+
 			$("#to_hr").bind('click',function(){
 				$.ajax({
 					type:'get',
@@ -240,7 +240,7 @@
 					failure:function(){}
 				})
 			});
-			
+
 			$("#reportBackLeader_to_end").bind('click',function(){
 				$.ajax({
 					type:'get',
@@ -251,7 +251,7 @@
 					failure:function(){}
 				})
 			});
-			
+
 			$("#reportBackLeader_to_deptLeader").bind('click',function(){
 				$.ajax({
 					type:'get',
@@ -262,7 +262,7 @@
 					failure:function(){}
 				})
 			});
-			
+
 			$("#reportBackLeader_to_hrLeader").bind('click',function(){
 				$.ajax({
 					type:'get',
@@ -273,7 +273,7 @@
 					failure:function(){}
 				})
 			});
-			
+
 			$("#reportBackLeader_to_modifierLeader").bind('click',function(){
 				$.ajax({
 					type:'get',
@@ -314,7 +314,7 @@
 					failure:function(){}
 				})
 			});
-			
+
 			$("#commit_200810405242").bind('click',function(){
 				$.ajax({
 					type:'get',
@@ -355,7 +355,7 @@
 					failure:function(){}
 				})
 			});
-			
+
 			$("#activityJump").bind('click',function(){
 				$.ajax({
 					type:'get',
@@ -376,8 +376,19 @@
 					failure:function(){}
 				})
 			});
+			$("#insertBigData").bind('click',function(){
+				$.ajax({
+					type:'get',
+					url:'/ActivitiSpringPro/insertBigData.ctrl',
+					success:function(data){
+						alert(data);
+					},
+					failure:function(){}
+				})
+			});
 			
-			
+
+
 		}
 	);
 </script>
@@ -391,15 +402,15 @@
 	</div>
 	<div><input type="button" value="代码清单5-1,用户测试" id="class5_1"/></div>
 	<div><input type="button" value="代码清单5-2,用户组测试(创建用户、用户组)" id="class5_2"/></div><hr/>
-	<div><input type="button" value="请假流程发布" id="process_delploy"/> 
+	<div><input type="button" value="请假流程发布" id="process_delploy"/>
 	<input type="button" value="请假流程启动" id="process_start"/></div>
 	<div><input type="button" value="任务查询" id="task_query"/></div>
 	<div>
-		<input type="button" value="流程图片" id="flowImage"/> 
-		<input type="button" value="活动任务" id="active_tasklist"/> 
+		<input type="button" value="流程图片" id="flowImage"/>
+		<input type="button" value="活动任务" id="active_tasklist"/>
 		<input type="button" value="用户待办任务列表查询" id="external_task_list"/>
-		<input type="button" value="部门领导待办任务列表查询" id="task_list"/> 
-		<input type="button" value="hr领导待办任务列表查询" id="hr_tasklist"/> 
+		<input type="button" value="部门领导待办任务列表查询" id="task_list"/>
+		<input type="button" value="hr领导待办任务列表查询" id="hr_tasklist"/>
 		<input type="button" value="调整领导待办任务列表查询" id="modify_tasklist"/>
 		<input type="button" value="销假待办任务列表查询" id="reportback_tasklist"/>
 	</div>
@@ -413,22 +424,22 @@
 		<input type="button" value="部门领导签收并提交拒绝" id="dept_refuse"/>
 	</div>
 	<div>
-		<input type="button" value="hr领导签收并提交通过" id="hr_claim"/> 
+		<input type="button" value="hr领导签收并提交通过" id="hr_claim"/>
 		<input type="button" value="hr领导签收并提交拒绝" id="hr_refuse"/>
 	</div>
 	<div>
-		<input type="button" value="调整申请跳转部门领导" id="to_dept"/> 
+		<input type="button" value="调整申请跳转部门领导" id="to_dept"/>
 		<input type="button" value="调整申请跳转hr领导" id="to_hr"/>
 	</div>
 	<div>
-		<input type="button" value="调整申请跳转end" id="to_end"/> 
-		<input type="button" value="hr领导签收并提交拒绝" id="hr_refuse"/> 
+		<input type="button" value="调整申请跳转end" id="to_end"/>
+		<input type="button" value="hr领导签收并提交拒绝" id="hr_refuse"/>
 		<input type="button" value="节点表单查询" id="node_form"/>
 	</div>
-	
+
 	<div>
-		<input type="button" value="销假同意" id="reportBackLeader_to_end"/> 
-		<input type="button" value="销假退部门领导" id="reportBackLeader_to_deptLeader"/> 
+		<input type="button" value="销假同意" id="reportBackLeader_to_end"/>
+		<input type="button" value="销假退部门领导" id="reportBackLeader_to_deptLeader"/>
 		<input type="button" value="销假退人事审批" id="reportBackLeader_to_hrLeader"/>
 		<input type="button" value="销假退调整申请" id="reportBackLeader_to_modifierLeader"/>
 		<input type="button" value="销假会签" id="reportBackLeader_to_countersign"/>
@@ -448,7 +459,6 @@
 		<input type="button" value="任务节点跳转" id="activityJump"/>
 		<input type="button" value="驳回" id="activityReject"/>
 	</div>
-	
-	
+	<div><input type="button" value="插入数据" id="insertBigData"/></div>
 </body>
 </html>
