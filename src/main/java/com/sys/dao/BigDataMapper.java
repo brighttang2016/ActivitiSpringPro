@@ -1,5 +1,6 @@
 package com.sys.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -21,5 +22,6 @@ public interface BigDataMapper {
 
 	int myInsert(BigData record);
 	
-	public void insertBatch(@Param("list")List<BigData> bigData); 
+//	int insertBatch(List<BigData> bigData); 
+	int insertBatch(List<HashMap<String,Object>> bigData); 
 }

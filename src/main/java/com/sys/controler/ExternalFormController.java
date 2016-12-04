@@ -219,19 +219,34 @@ public class ExternalFormController {
 	@ResponseBody
 	@RequestMapping(value="/insertBigData.ctrl")
 	public void insertBigData(){
-		List<BigData> bigDataList = new ArrayList<BigData>();
-		for (int i = 0; i < 10009; i++) {
-			BigData bigData = new BigData();
-			bigData.setId(UUID.randomUUID().toString());
-			bigData.setAge(20);
-			bigData.setAddress("重庆");
-			bigData.setName("唐亮");
-			bigData.setSex("男");
-			bigData.setUserid(i+"");
-			bigDataList.add(bigData);
-//			bigDataMapperImpl.insertSelective(bigData);
+//		List<BigData> bigDataList = new ArrayList<BigData>();
+		List<HashMap<String,Object>> bigDataList = new ArrayList<HashMap<String,Object>>();
+		long timeBegin = System.currentTimeMillis();
+
+		for (int i = 0; i < 10000; i++) {
+//				BigData bigData = new BigData();
+//				bigData.setId(UUID.randomUUID().toString());
+//				bigData.setAge(20);
+//				bigData.setAddress("重庆");
+//				bigData.setName("唐亮");
+//				bigData.setSex("男");
+//				bigData.setUserid(i+"");
+//				bigDataList.add(bigData);
+//				bigDataMapperImpl.insertSelective(bigData);
+			HashMap<String,Object> bigDataMap = new HashMap<String,Object>();
+			bigDataMap.put("id", UUID.randomUUID().toString());
+			bigDataMap.put("userId", i+"");
+			bigDataMap.put("name", "唐tom"+i);
+			bigDataMap.put("sex", "男");
+			bigDataMap.put("age", 33);
+			bigDataMap.put("address", "重庆市永川区大安街道"+i);
+			bigDataList.add(bigDataMap);
 		}
+//			bigDataMapperImpl.insertBatch(bigDataList);
 		bigDataMapperImpl.insertBatch(bigDataList);
-		System.out.println("批量插入完成");
+		long timeEnd = System.currentTimeMillis();
+		long timeDuration = (timeEnd - timeBegin)/1000;
+		System.out.println("批量插入完成,耗时："+timeDuration+"秒");
+		
 	}
 }

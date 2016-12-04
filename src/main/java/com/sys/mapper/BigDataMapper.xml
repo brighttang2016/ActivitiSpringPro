@@ -102,11 +102,18 @@
     where id = #{id,jdbcType=VARCHAR}
   </update>
   
-  <insert id="insertBatch" >
-    insert into BigData ( <include refid="Base_Column_List" /> ) 
+  <insert id="insertBatch" parameterType="ArrayList">
+    insert into t_big_data ( <include refid="Base_Column_List" /> ) 
     values 
     <foreach collection="list" item="item" index="index" separator=",">
-        (#{item.id},#{item.userId},#{item.name},#{item.sex},#{item.age},#{item.address})
+        (
+        #{item.id},
+        #{item.userId},
+        #{item.name},
+        #{item.sex},
+        #{item.age},
+        #{item.address}
+        )
     </foreach>
 </insert> 
 </mapper>
