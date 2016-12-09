@@ -32,6 +32,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.sys.dao.BigApplyMapper;
 import com.sys.dao.BigDataMapper;
 import com.sys.dao.StudentMapper;
 import com.sys.domain.BigData;
@@ -70,6 +71,8 @@ public class ExternalFormController {
 	private BigDataMapper bigDataMapperImpl;
 	@Autowired
 	private StudentMapper studentMapperImpl;
+	@Autowired
+	private BigApplyMapper bigApplyMapperImpl;
 	//驳回
 	@RequestMapping(value="/activityReject.ctrl")
 	public void activityReject(){
@@ -221,32 +224,47 @@ public class ExternalFormController {
 	public void insertBigData(){
 //		List<BigData> bigDataList = new ArrayList<BigData>();
 		List<HashMap<String,Object>> bigDataList = new ArrayList<HashMap<String,Object>>();
+		List<HashMap<String,Object>> bigApplyList = new ArrayList<HashMap<String,Object>>();
 		long timeBegin = System.currentTimeMillis();
-
-		for (int i = 0; i < 10000; i++) {
-//				BigData bigData = new BigData();
-//				bigData.setId(UUID.randomUUID().toString());
-//				bigData.setAge(20);
-//				bigData.setAddress("重庆");
-//				bigData.setName("唐亮");
-//				bigData.setSex("男");
-//				bigData.setUserid(i+"");
-//				bigDataList.add(bigData);
-//				bigDataMapperImpl.insertSelective(bigData);
+		System.out.println("批量插入开始");
+		for (int i = 0; i < 50000; i++) {
 			HashMap<String,Object> bigDataMap = new HashMap<String,Object>();
 			bigDataMap.put("id", UUID.randomUUID().toString());
-			bigDataMap.put("userId", i+"");
+			String userId = i+"";
+			bigDataMap.put("userId", userId);
 			bigDataMap.put("name", "唐tom"+i);
 			bigDataMap.put("sex", "男");
 			bigDataMap.put("age", 33);
 			bigDataMap.put("address", "重庆市永川区大安街道"+i);
 			bigDataList.add(bigDataMap);
+			
+			for (int j = 0; j < 2; j++) {
+				HashMap<String,Object> bigApplyMap = new HashMap<String,Object>();
+				bigApplyMap.put("id", UUID.randomUUID().toString());
+				bigApplyMap.put("userId", userId);
+				bigApplyMap.put("applyId", i+j+"");
+				bigApplyMap.put("applyDesc", "申请描述"+j);
+				bigApplyMap.put("bak1", "bak1"+j);
+				bigApplyMap.put("bak2", "bak2"+j);
+				bigApplyMap.put("bak3", "bak3"+j);
+				bigApplyMap.put("bak4", "bak4"+j);
+				bigApplyMap.put("bak5", "bak5"+j);
+				bigApplyMap.put("bak6", "bak6"+j);
+				bigApplyMap.put("bak7", "bak7"+j);
+				bigApplyMap.put("bak8", "bak8"+j);
+				bigApplyMap.put("bak9", "bak9"+j);
+				bigApplyMap.put("bak10", "bak110"+j);
+				bigApplyList.add(bigApplyMap);
+			}
 		}
-//			bigDataMapperImpl.insertBatch(bigDataList);
+//		bigDataMapperImpl.insertBatch(bigDataList);
 		bigDataMapperImpl.insertBatch(bigDataList);
+		bigApplyMapperImpl.insertBatch(bigApplyList);
 		long timeEnd = System.currentTimeMillis();
 		long timeDuration = (timeEnd - timeBegin)/1000;
 		System.out.println("批量插入完成,耗时："+timeDuration+"秒");
+		
+		
 		
 	}
 }

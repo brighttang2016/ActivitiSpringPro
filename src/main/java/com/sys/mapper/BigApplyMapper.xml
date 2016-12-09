@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sys.dao.BigApplyMapper">
+  <resultMap id="BaseResultMap" type="com.sys.domain.BigApply">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <id column="userId" jdbcType="VARCHAR" property="userid" />
+    <result column="applyId" jdbcType="INTEGER" property="applyid" />
+    <result column="applyDesc" jdbcType="VARCHAR" property="applydesc" />
+    <result column="bak1" jdbcType="VARCHAR" property="bak1" />
+    <result column="bak2" jdbcType="VARCHAR" property="bak2" />
+    <result column="bak3" jdbcType="VARCHAR" property="bak3" />
+    <result column="bak4" jdbcType="VARCHAR" property="bak4" />
+    <result column="bak5" jdbcType="VARCHAR" property="bak5" />
+    <result column="bak6" jdbcType="VARCHAR" property="bak6" />
+    <result column="bak7" jdbcType="VARCHAR" property="bak7" />
+    <result column="bak8" jdbcType="VARCHAR" property="bak8" />
+    <result column="bak9" jdbcType="VARCHAR" property="bak9" />
+    <result column="bak10" jdbcType="VARCHAR" property="bak10" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, userId, applyId, applyDesc, bak1, bak2, bak3, bak4, bak5, bak6, bak7, bak8, bak9, 
+    bak10
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="com.sys.domain.BigApplyKey" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_big_apply
+    where id = #{id,jdbcType=VARCHAR}
+      and userId = #{userid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.sys.domain.BigApplyKey">
+    delete from t_big_apply
+    where id = #{id,jdbcType=VARCHAR}
+      and userId = #{userid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.sys.domain.BigApply">
+    insert into t_big_apply (id, userId, applyId, 
+      applyDesc, bak1, bak2, 
+      bak3, bak4, bak5, bak6, 
+      bak7, bak8, bak9, bak10
+      )
+    values (#{id,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, #{applyid,jdbcType=INTEGER}, 
+      #{applydesc,jdbcType=VARCHAR}, #{bak1,jdbcType=VARCHAR}, #{bak2,jdbcType=VARCHAR}, 
+      #{bak3,jdbcType=VARCHAR}, #{bak4,jdbcType=VARCHAR}, #{bak5,jdbcType=VARCHAR}, #{bak6,jdbcType=VARCHAR}, 
+      #{bak7,jdbcType=VARCHAR}, #{bak8,jdbcType=VARCHAR}, #{bak9,jdbcType=VARCHAR}, #{bak10,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.sys.domain.BigApply">
+    insert into t_big_apply
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userid != null">
+        userId,
+      </if>
+      <if test="applyid != null">
+        applyId,
+      </if>
+      <if test="applydesc != null">
+        applyDesc,
+      </if>
+      <if test="bak1 != null">
+        bak1,
+      </if>
+      <if test="bak2 != null">
+        bak2,
+      </if>
+      <if test="bak3 != null">
+        bak3,
+      </if>
+      <if test="bak4 != null">
+        bak4,
+      </if>
+      <if test="bak5 != null">
+        bak5,
+      </if>
+      <if test="bak6 != null">
+        bak6,
+      </if>
+      <if test="bak7 != null">
+        bak7,
+      </if>
+      <if test="bak8 != null">
+        bak8,
+      </if>
+      <if test="bak9 != null">
+        bak9,
+      </if>
+      <if test="bak10 != null">
+        bak10,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="applyid != null">
+        #{applyid,jdbcType=INTEGER},
+      </if>
+      <if test="applydesc != null">
+        #{applydesc,jdbcType=VARCHAR},
+      </if>
+      <if test="bak1 != null">
+        #{bak1,jdbcType=VARCHAR},
+      </if>
+      <if test="bak2 != null">
+        #{bak2,jdbcType=VARCHAR},
+      </if>
+      <if test="bak3 != null">
+        #{bak3,jdbcType=VARCHAR},
+      </if>
+      <if test="bak4 != null">
+        #{bak4,jdbcType=VARCHAR},
+      </if>
+      <if test="bak5 != null">
+        #{bak5,jdbcType=VARCHAR},
+      </if>
+      <if test="bak6 != null">
+        #{bak6,jdbcType=VARCHAR},
+      </if>
+      <if test="bak7 != null">
+        #{bak7,jdbcType=VARCHAR},
+      </if>
+      <if test="bak8 != null">
+        #{bak8,jdbcType=VARCHAR},
+      </if>
+      <if test="bak9 != null">
+        #{bak9,jdbcType=VARCHAR},
+      </if>
+      <if test="bak10 != null">
+        #{bak10,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sys.domain.BigApply">
+    update t_big_apply
+    <set>
+      <if test="applyid != null">
+        applyId = #{applyid,jdbcType=INTEGER},
+      </if>
+      <if test="applydesc != null">
+        applyDesc = #{applydesc,jdbcType=VARCHAR},
+      </if>
+      <if test="bak1 != null">
+        bak1 = #{bak1,jdbcType=VARCHAR},
+      </if>
+      <if test="bak2 != null">
+        bak2 = #{bak2,jdbcType=VARCHAR},
+      </if>
+      <if test="bak3 != null">
+        bak3 = #{bak3,jdbcType=VARCHAR},
+      </if>
+      <if test="bak4 != null">
+        bak4 = #{bak4,jdbcType=VARCHAR},
+      </if>
+      <if test="bak5 != null">
+        bak5 = #{bak5,jdbcType=VARCHAR},
+      </if>
+      <if test="bak6 != null">
+        bak6 = #{bak6,jdbcType=VARCHAR},
+      </if>
+      <if test="bak7 != null">
+        bak7 = #{bak7,jdbcType=VARCHAR},
+      </if>
+      <if test="bak8 != null">
+        bak8 = #{bak8,jdbcType=VARCHAR},
+      </if>
+      <if test="bak9 != null">
+        bak9 = #{bak9,jdbcType=VARCHAR},
+      </if>
+      <if test="bak10 != null">
+        bak10 = #{bak10,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+      and userId = #{userid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sys.domain.BigApply">
+    update t_big_apply
+    set applyId = #{applyid,jdbcType=INTEGER},
+      applyDesc = #{applydesc,jdbcType=VARCHAR},
+      bak1 = #{bak1,jdbcType=VARCHAR},
+      bak2 = #{bak2,jdbcType=VARCHAR},
+      bak3 = #{bak3,jdbcType=VARCHAR},
+      bak4 = #{bak4,jdbcType=VARCHAR},
+      bak5 = #{bak5,jdbcType=VARCHAR},
+      bak6 = #{bak6,jdbcType=VARCHAR},
+      bak7 = #{bak7,jdbcType=VARCHAR},
+      bak8 = #{bak8,jdbcType=VARCHAR},
+      bak9 = #{bak9,jdbcType=VARCHAR},
+      bak10 = #{bak10,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+      and userId = #{userid,jdbcType=VARCHAR}
+  </update>
+  
+  
+  <insert id="insertBatch" parameterType="ArrayList">
+    insert into t_big_apply ( <include refid="Base_Column_List" /> ) 
+    values 
+    <foreach collection="list" index="index" item="item" separator=",">
+        (
+        #{item.id},
+        #{item.userId},
+        #{item.applyId},
+        #{item.applyDesc},
+        #{item.bak1},
+        #{item.bak2},
+        #{item.bak3},
+        #{item.bak4},
+        #{item.bak5},
+        #{item.bak6},
+        #{item.bak7},
+        #{item.bak8},
+        #{item.bak9},
+        #{item.bak10}
+        )
+    </foreach>
+</insert> 
+</mapper>

@@ -22,7 +22,11 @@
 		<javaClientGenerator targetPackage="com.sys.dao"
 			targetProject="ActivitiSpringPro/src/main/java" type="XMLMAPPER" />
 		
-		<table tableName="T_BIG_DATA" domainObjectName="BigData" enableCountByExample="false"
+		<!-- <table tableName="T_BIG_DATA" domainObjectName="BigData" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table> -->
+		<table tableName="T_BIG_APPLY" domainObjectName="BigApply" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>
