@@ -387,8 +387,28 @@
 				})
 			});
 			
-
-
+			$("#worldCount").bind('click',function(){
+				$.ajax({
+					type:'get',
+					url:'/ActivitiSpringPro/worldCount.ctrl',
+					success:function(data){
+						alert(data);
+					},
+					failure:function(){}
+				})
+			});
+			$("#logTest").bind('click',function(){
+				$.ajax({
+					type:'get',
+					url:'/ActivitiSpringPro/logTest.ctrl',
+					success:function(data){
+						alert(data);
+					},
+					failure:function(){}
+				})
+			});
+			
+			
 		}
 	);
 </script>
@@ -460,5 +480,7 @@
 		<input type="button" value="驳回" id="activityReject"/>
 	</div>
 	<div><input type="button" value="插入数据" id="insertBigData"/></div>
+	<div><input type="button" value="spark测试（world count）" id="worldCount"/></div>
+	<div><input type="button" value="logTest" id="logTest"/></div>
 </body>
 </html>

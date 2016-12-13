@@ -28,7 +28,7 @@ public class TestLeave {
 		System.out.println("开始测试之前");
 	}
 
-	@Test
+//	@Test
 	public void test() {
 		//fail("Not yet implemented");
 		System.out.println("流程引擎测试开始");
