@@ -72,7 +72,7 @@ public class PairsApp implements Serializable{
 			}
 		};
 		JavaPairRDD<String,String> result = pairs.filter(longWordFilter);
-		System.out.println("筛选第二个元素，result："+result);
+		System.out.println("筛选第二个元素，result："+result.collect());
 	}
 	
 	
@@ -87,7 +87,7 @@ public class PairsApp implements Serializable{
 //	    SparkConf conf = new SparkConf().setAppName("PairsApp测试").setMaster("local");
 		SparkConf conf = new SparkConf().setAppName("PairsApp测试").setMaster("spark://192.168.137.16:7077");
 	    JavaSparkContext sc = new JavaSparkContext(conf);
-		pa.pairsStart(sc);
+//		pa.pairsStart(sc);
 		pa.wordCount(sc);
 	}	
 }

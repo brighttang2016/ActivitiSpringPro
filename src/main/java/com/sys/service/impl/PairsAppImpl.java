@@ -99,8 +99,8 @@ public class PairsAppImpl implements Serializable{
 		// TODO Auto-generated method stub
 		PairsAppImpl pa = new PairsAppImpl();
 		String logFile = "/usr/local/spark-2.0.0-bin-hadoop2.7/README.md"; // Should be some file on your system
-//	    SparkConf conf = new SparkConf().setAppName("Simple Application").setMaster("local");
-		SparkConf conf = new SparkConf().setAppName("Simple Application").setMaster("spark://192.168.137.16:7077");
+	    SparkConf conf = new SparkConf().setAppName("Simple Application").setMaster("local");
+//		SparkConf conf = new SparkConf().setAppName("Simple Application").setMaster("spark://192.168.137.16:7077");
 	    JavaSparkContext sc = new JavaSparkContext(conf);
 	   
 		pa.pairsStart(sc);
