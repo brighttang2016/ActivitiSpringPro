@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Iterator;
 
-import org.apache.log4j.Logger;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
@@ -13,28 +12,16 @@ import org.apache.spark.api.java.function.FlatMapFunction;
 import org.apache.spark.api.java.function.Function;
 import org.apache.spark.api.java.function.Function2;
 import org.apache.spark.api.java.function.PairFunction;
-import org.springframework.stereotype.Service;
-
-import com.sys.controler.SparkController;
 
 import scala.Tuple2;
 
-
-/**
- * @author tom
- *
- */
 /**键值对取值
  * @author tom
  *
  */
-@Service
-public class PairsAppImpl implements Serializable{
-	
-	private static final Logger logger = Logger.getLogger(PairsAppImpl.class);
-	
+public class PairsApp implements Serializable{
+
 	public void wordCount(JavaSparkContext sc){
-		logger.debug("单词计数：PairsAppImpl->wordCount");
 		JavaRDD<String> lines = sc.parallelize(Arrays.asList("pandas","i like pandas"));
 	    System.out.println("lines.collect():"+lines.collect());
 	    JavaRDD<String> wordsRDD = lines.flatMap(new FlatMapFunction<String, String>() {
@@ -81,13 +68,11 @@ public class PairsAppImpl implements Serializable{
 			@Override
 			public Boolean call(Tuple2<String, String> v1) throws Exception {
 				// TODO Auto-generated method stub
-				System.out.println("v1._1:"+v1._1+"|"+v1._1.length());
-				System.out.println("v1._2:"+v1._2+"|"+v1._2.length());
-				return v1._2.length() < 14;
+				return v1._2.length() < 20;
 			}
 		};
 		JavaPairRDD<String,String> result = pairs.filter(longWordFilter);
-		System.out.println("经过filter过滤后的RDD，result："+result.collect());
+		System.out.println("筛选第二个元素，result："+result);
 	}
 	
 	
@@ -97,12 +82,11 @@ public class PairsAppImpl implements Serializable{
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		PairsAppImpl pa = new PairsAppImpl();
+		PairsApp pa = new PairsApp();
 		String logFile = "/usr/local/spark-2.0.0-bin-hadoop2.7/README.md"; // Should be some file on your system
-//	    SparkConf conf = new SparkConf().setAppName("Simple Application").setMaster("local");
-		SparkConf conf = new SparkConf().setAppName("Simple Application").setMaster("spark://192.168.137.16:7077");
+//	    SparkConf conf = new SparkConf().setAppName("PairsApp测试").setMaster("local");
+		SparkConf conf = new SparkConf().setAppName("PairsApp测试").setMaster("spark://192.168.137.16:7077");
 	    JavaSparkContext sc = new JavaSparkContext(conf);
-	   
 		pa.pairsStart(sc);
 		pa.wordCount(sc);
 	}	

@@ -85,12 +85,17 @@ public class SparkController{
 		logger.debug("SparkController->worldCount");
 		System.out.println("SparkController->worldCount");
 		SparkConf sparkConf = new SparkConf().setAppName("app名称：pairApp测试").setMaster("spark://192.168.137.16:7077");
+//		  SparkConf sparkConf = new SparkConf().setAppName("PairsApp测试").setMaster("local");
+		  JavaSparkContext jsc = new JavaSparkContext(sparkConf);
 //		sparkConf.setAppName("app名称：pairApp测试");
-		sparkConf.setMaster("spark://192.168.137.16:7077");
+//		sparkConf.setMaster("spark://192.168.137.16:7077");
 //		JavaSparkContext jsc = new JavaSparkContext(sparkConf);
 //		JavaSparkContext jsc = new JavaSparkContext("spark://192.168.137.16:7077", "tang name");
-		JavaSparkContext jsc = new JavaSparkContext("spark://192.168.137.16:7077", "tang name", "/usr/local/spark-2.0.0-bin-hadoop2.7", new String[0]);
+//		JavaSparkContext jsc = new JavaSparkContext("spark://192.168.137.16:7077", "tang name", "/usr/local/spark-2.0.0-bin-hadoop2.7", new String[0]);
 //		pairsAppImpl.wordCount(jsc);
+		
+		 /*SparkConf conf = new SparkConf().setAppName("PairsApp测试").setMaster("spark://1270.0.0.1:7077");
+		   JavaSparkContext jsc = new JavaSparkContext(conf);*/
 		pairsAppImpl.pairsStart(jsc);
 		return "pairsAppTest测试";
 	}

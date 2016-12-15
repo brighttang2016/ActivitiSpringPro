@@ -1,0 +1,763 @@
+2016-12-13 18:43:03  [ main:0 ] - [ DEBUG ]  initializing datasource to db: jdbc:h2:mem:activiti
+2016-12-13 18:43:03  [ main:7 ] - [ DEBUG ]  Logging initialized using 'class org.apache.ibatis.logging.slf4j.Slf4jImpl' adapter.
+2016-12-13 18:43:03  [ main:13 ] - [ DEBUG ]  PooledDataSource forcefully closed/removed all connections.
+2016-12-13 18:43:03  [ main:110 ] - [ DEBUG ]  Created connection 365181913.
+2016-12-13 18:43:03  [ main:112 ] - [ DEBUG ]  database product name: 'H2'
+2016-12-13 18:43:03  [ main:113 ] - [ DEBUG ]  using database type: h2
+2016-12-13 18:43:03  [ main:113 ] - [ DEBUG ]  Returned connection 365181913 to pool.
+2016-12-13 18:43:04  [ main:639 ] - [ DEBUG ]  
+
+2016-12-13 18:43:04  [ main:639 ] - [ DEBUG ]  --- starting SchemaOperationsProcessEngineBuild --------------------------------------------------------
+2016-12-13 18:43:04  [ main:645 ] - [ DEBUG ]  Opening JDBC Connection
+2016-12-13 18:43:04  [ main:645 ] - [ DEBUG ]  Checked out connection 365181913 from pool.
+2016-12-13 18:43:04  [ main:646 ] - [ DEBUG ]  Setting autocommit to false on JDBC Connection [conn0: url=jdbc:h2:mem:activiti user=SA]
+2016-12-13 18:43:04  [ main:665 ] - [ INFO ]  performing create on engine with resource org/activiti/db/create/activiti.h2.create.engine.sql
+2016-12-13 18:43:04  [ main:685 ] - [ DEBUG ]  SQL: create table ACT_GE_PROPERTY ( 
+NAME_ varchar(64), 
+VALUE_ varchar(300), 
+REV_ integer, 
+primary key (NAME_) 
+)
+2016-12-13 18:43:04  [ main:689 ] - [ DEBUG ]  SQL: insert into ACT_GE_PROPERTY 
+values ('schema.version', '5.16.4.0', 1)
+2016-12-13 18:43:04  [ main:691 ] - [ DEBUG ]  SQL: insert into ACT_GE_PROPERTY 
+values ('schema.history', 'create(5.16.4.0)', 1)
+2016-12-13 18:43:04  [ main:692 ] - [ DEBUG ]  SQL: insert into ACT_GE_PROPERTY 
+values ('next.dbid', '1', 1)
+2016-12-13 18:43:04  [ main:692 ] - [ DEBUG ]  SQL: create table ACT_GE_BYTEARRAY ( 
+ID_ varchar(64), 
+REV_ integer, 
+NAME_ varchar(255), 
+DEPLOYMENT_ID_ varchar(64), 
+BYTES_ longvarbinary, 
+GENERATED_ bit, 
+primary key (ID_) 
+)
+2016-12-13 18:43:04  [ main:694 ] - [ DEBUG ]  SQL: create table ACT_RE_DEPLOYMENT ( 
+ID_ varchar(64), 
+NAME_ varchar(255), 
+CATEGORY_ varchar(255), 
+TENANT_ID_ varchar(255) default '', 
+DEPLOY_TIME_ timestamp, 
+primary key (ID_) 
+)
+2016-12-13 18:43:04  [ main:695 ] - [ DEBUG ]  SQL: create table ACT_RE_MODEL ( 
+ID_ varchar(64) not null, 
+REV_ integer, 
+NAME_ varchar(255), 
+KEY_ varchar(255), 
+CATEGORY_ varchar(255), 
+CREATE_TIME_ timestamp, 
+LAST_UPDATE_TIME_ timestamp, 
+VERSION_ integer, 
+META_INFO_ varchar(4000), 
+DEPLOYMENT_ID_ varchar(64), 
+EDITOR_SOURCE_VALUE_ID_ varchar(64), 
+EDITOR_SOURCE_EXTRA_VALUE_ID_ varchar(64), 
+TENANT_ID_ varchar(255) default '', 
+primary key (ID_) 
+)
+2016-12-13 18:43:04  [ main:696 ] - [ DEBUG ]  SQL: create table ACT_RU_EXECUTION ( 
+ID_ varchar(64), 
+REV_ integer, 
+PROC_INST_ID_ varchar(64), 
+BUSINESS_KEY_ varchar(255), 
+PARENT_ID_ varchar(64), 
+PROC_DEF_ID_ varchar(64), 
+SUPER_EXEC_ varchar(64), 
+ACT_ID_ varchar(255), 
+IS_ACTIVE_ bit, 
+IS_CONCURRENT_ bit, 
+IS_SCOPE_ bit, 
+IS_EVENT_SCOPE_ bit, 
+SUSPENSION_STATE_ integer, 
+CACHED_ENT_STATE_ integer, 
+TENANT_ID_ varchar(255) default '', 
+NAME_ varchar(255), 
+primary key (ID_) 
+)
+2016-12-13 18:43:04  [ main:698 ] - [ DEBUG ]  SQL: create table ACT_RU_JOB ( 
+ID_ varchar(64) NOT NULL, 
+REV_ integer, 
+TYPE_ varchar(255) NOT NULL, 
+LOCK_EXP_TIME_ timestamp, 
+LOCK_OWNER_ varchar(255), 
+EXCLUSIVE_ boolean, 
+EXECUTION_ID_ varchar(64), 
+PROCESS_INSTANCE_ID_ varchar(64), 
+PROC_DEF_ID_ varchar(64), 
+RETRIES_ integer, 
+EXCEPTION_STACK_ID_ varchar(64), 
+EXCEPTION_MSG_ varchar(4000), 
+DUEDATE_ timestamp, 
+REPEAT_ varchar(255), 
+HANDLER_TYPE_ varchar(255), 
+HANDLER_CFG_ varchar(4000), 
+TENANT_ID_ varchar(255) default '', 
+primary key (ID_) 
+)
+2016-12-13 18:43:04  [ main:699 ] - [ DEBUG ]  SQL: create table ACT_RE_PROCDEF ( 
+ID_ varchar(64) NOT NULL, 
+REV_ integer, 
+CATEGORY_ varchar(255), 
+NAME_ varchar(255), 
+KEY_ varchar(255) NOT NULL, 
+VERSION_ integer NOT NULL, 
+DEPLOYMENT_ID_ varchar(64), 
+RESOURCE_NAME_ varchar(4000), 
+DGRM_RESOURCE_NAME_ varchar(4000), 
+DESCRIPTION_ varchar(4000), 
+HAS_START_FORM_KEY_ bit, 
+SUSPENSION_STATE_ integer, 
+TENANT_ID_ varchar(255) default '', 
+primary key (ID_) 
+)
+2016-12-13 18:43:04  [ main:701 ] - [ DEBUG ]  SQL: create table ACT_RU_TASK ( 
+ID_ varchar(64), 
+REV_ integer, 
+EXECUTION_ID_ varchar(64), 
+PROC_INST_ID_ varchar(64), 
+PROC_DEF_ID_ varchar(64), 
+NAME_ varchar(255), 
+PARENT_TASK_ID_ varchar(64), 
+DESCRIPTION_ varchar(4000), 
+TASK_DEF_KEY_ varchar(255), 
+OWNER_ varchar(255), 
+ASSIGNEE_ varchar(255), 
+DELEGATION_ varchar(64), 
+PRIORITY_ integer, 
+CREATE_TIME_ timestamp, 
+DUE_DATE_ timestamp, 
+CATEGORY_ varchar(255), 
+SUSPENSION_STATE_ integer, 
+TENANT_ID_ varchar(255) default '', 
+FORM_KEY_ varchar(255), 
+primary key (ID_) 
+)
+2016-12-13 18:43:04  [ main:702 ] - [ DEBUG ]  SQL: create table ACT_RU_IDENTITYLINK ( 
+ID_ varchar(64), 
+REV_ integer, 
+GROUP_ID_ varchar(255), 
+TYPE_ varchar(255), 
+USER_ID_ varchar(255), 
+TASK_ID_ varchar(64), 
+PROC_INST_ID_ varchar(64) null, 
+PROC_DEF_ID_ varchar(64), 
+primary key (ID_) 
+)
+2016-12-13 18:43:04  [ main:703 ] - [ DEBUG ]  SQL: create table ACT_RU_VARIABLE ( 
+ID_ varchar(64) not null, 
+REV_ integer, 
+TYPE_ varchar(255) not null, 
+NAME_ varchar(255) not null, 
+EXECUTION_ID_ varchar(64), 
+PROC_INST_ID_ varchar(64), 
+TASK_ID_ varchar(64), 
+BYTEARRAY_ID_ varchar(64), 
+DOUBLE_ double, 
+LONG_ bigint, 
+TEXT_ varchar(4000), 
+TEXT2_ varchar(4000), 
+primary key (ID_) 
+)
+2016-12-13 18:43:04  [ main:704 ] - [ DEBUG ]  SQL: create table ACT_RU_EVENT_SUBSCR ( 
+ID_ varchar(64) not null, 
+REV_ integer, 
+EVENT_TYPE_ varchar(255) not null, 
+EVENT_NAME_ varchar(255), 
+EXECUTION_ID_ varchar(64), 
+PROC_INST_ID_ varchar(64), 
+ACTIVITY_ID_ varchar(64), 
+CONFIGURATION_ varchar(255), 
+CREATED_ timestamp not null, 
+PROC_DEF_ID_ varchar(64), 
+TENANT_ID_ varchar(255) default '', 
+primary key (ID_) 
+)
+2016-12-13 18:43:04  [ main:705 ] - [ DEBUG ]  SQL: create table ACT_EVT_LOG ( 
+LOG_NR_ identity, 
+TYPE_ varchar(64), 
+PROC_DEF_ID_ varchar(64), 
+PROC_INST_ID_ varchar(64), 
+EXECUTION_ID_ varchar(64), 
+TASK_ID_ varchar(64), 
+TIME_STAMP_ timestamp not null, 
+USER_ID_ varchar(255), 
+DATA_ longvarbinary, 
+LOCK_OWNER_ varchar(255), 
+LOCK_TIME_ timestamp, 
+IS_PROCESSED_ bit default 0 
+)
+2016-12-13 18:43:04  [ main:709 ] - [ DEBUG ]  SQL: create index ACT_IDX_EXEC_BUSKEY on ACT_RU_EXECUTION(BUSINESS_KEY_)
+2016-12-13 18:43:04  [ main:709 ] - [ DEBUG ]  SQL: create index ACT_IDX_TASK_CREATE on ACT_RU_TASK(CREATE_TIME_)
+2016-12-13 18:43:04  [ main:710 ] - [ DEBUG ]  SQL: create index ACT_IDX_IDENT_LNK_USER on ACT_RU_IDENTITYLINK(USER_ID_)
+2016-12-13 18:43:04  [ main:710 ] - [ DEBUG ]  SQL: create index ACT_IDX_IDENT_LNK_GROUP on ACT_RU_IDENTITYLINK(GROUP_ID_)
+2016-12-13 18:43:04  [ main:711 ] - [ DEBUG ]  SQL: create index ACT_IDX_EVENT_SUBSCR_CONFIG_ on ACT_RU_EVENT_SUBSCR(CONFIGURATION_)
+2016-12-13 18:43:04  [ main:712 ] - [ DEBUG ]  SQL: create index ACT_IDX_VARIABLE_TASK_ID on ACT_RU_VARIABLE(TASK_ID_)
+2016-12-13 18:43:04  [ main:712 ] - [ DEBUG ]  SQL: create index ACT_IDX_ATHRZ_PROCEDEF on ACT_RU_IDENTITYLINK(PROC_DEF_ID_)
+2016-12-13 18:43:04  [ main:713 ] - [ DEBUG ]  SQL: alter table ACT_GE_BYTEARRAY 
+add constraint ACT_FK_BYTEARR_DEPL 
+foreign key (DEPLOYMENT_ID_) 
+references ACT_RE_DEPLOYMENT
+2016-12-13 18:43:04  [ main:717 ] - [ DEBUG ]  SQL: alter table ACT_RE_PROCDEF 
+add constraint ACT_UNIQ_PROCDEF 
+unique (KEY_,VERSION_, TENANT_ID_)
+2016-12-13 18:43:04  [ main:718 ] - [ DEBUG ]  SQL: alter table ACT_RU_EXECUTION 
+add constraint ACT_FK_EXE_PROCINST 
+foreign key (PROC_INST_ID_) 
+references ACT_RU_EXECUTION
+2016-12-13 18:43:04  [ main:719 ] - [ DEBUG ]  SQL: alter table ACT_RU_EXECUTION 
+add constraint ACT_FK_EXE_PARENT 
+foreign key (PARENT_ID_) 
+references ACT_RU_EXECUTION
+2016-12-13 18:43:04  [ main:721 ] - [ DEBUG ]  SQL: alter table ACT_RU_EXECUTION 
+add constraint ACT_FK_EXE_SUPER 
+foreign key (SUPER_EXEC_) 
+references ACT_RU_EXECUTION
+2016-12-13 18:43:04  [ main:722 ] - [ DEBUG ]  SQL: alter table ACT_RU_EXECUTION 
+add constraint ACT_FK_EXE_PROCDEF 
+foreign key (PROC_DEF_ID_) 
+references ACT_RE_PROCDEF (ID_)
+2016-12-13 18:43:04  [ main:723 ] - [ DEBUG ]  SQL: alter table ACT_RU_IDENTITYLINK 
+add constraint ACT_FK_TSKASS_TASK 
+foreign key (TASK_ID_) 
+references ACT_RU_TASK
+2016-12-13 18:43:04  [ main:725 ] - [ DEBUG ]  SQL: alter table ACT_RU_IDENTITYLINK 
+add constraint ACT_FK_ATHRZ_PROCEDEF 
+foreign key (PROC_DEF_ID_) 
+references ACT_RE_PROCDEF
+2016-12-13 18:43:04  [ main:726 ] - [ DEBUG ]  SQL: alter table ACT_RU_IDENTITYLINK 
+add constraint ACT_FK_IDL_PROCINST 
+foreign key (PROC_INST_ID_) 
+references ACT_RU_EXECUTION (ID_)
+2016-12-13 18:43:04  [ main:727 ] - [ DEBUG ]  SQL: alter table ACT_RU_TASK 
+add constraint ACT_FK_TASK_EXE 
+foreign key (EXECUTION_ID_) 
+references ACT_RU_EXECUTION
+2016-12-13 18:43:04  [ main:728 ] - [ DEBUG ]  SQL: alter table ACT_RU_TASK 
+add constraint ACT_FK_TASK_PROCINST 
+foreign key (PROC_INST_ID_) 
+references ACT_RU_EXECUTION
+2016-12-13 18:43:04  [ main:730 ] - [ DEBUG ]  SQL: alter table ACT_RU_TASK 
+add constraint ACT_FK_TASK_PROCDEF 
+foreign key (PROC_DEF_ID_) 
+references ACT_RE_PROCDEF
+2016-12-13 18:43:04  [ main:731 ] - [ DEBUG ]  SQL: alter table ACT_RU_VARIABLE 
+add constraint ACT_FK_VAR_EXE 
+foreign key (EXECUTION_ID_) 
+references ACT_RU_EXECUTION
+2016-12-13 18:43:04  [ main:732 ] - [ DEBUG ]  SQL: alter table ACT_RU_VARIABLE 
+add constraint ACT_FK_VAR_PROCINST 
+foreign key (PROC_INST_ID_) 
+references ACT_RU_EXECUTION
+2016-12-13 18:43:04  [ main:733 ] - [ DEBUG ]  SQL: alter table ACT_RU_VARIABLE 
+add constraint ACT_FK_VAR_BYTEARRAY 
+foreign key (BYTEARRAY_ID_) 
+references ACT_GE_BYTEARRAY
+2016-12-13 18:43:04  [ main:740 ] - [ DEBUG ]  SQL: alter table ACT_RU_JOB 
+add constraint ACT_FK_JOB_EXCEPTION 
+foreign key (EXCEPTION_STACK_ID_) 
+references ACT_GE_BYTEARRAY
+2016-12-13 18:43:04  [ main:742 ] - [ DEBUG ]  SQL: alter table ACT_RU_EVENT_SUBSCR 
+add constraint ACT_FK_EVENT_EXEC 
+foreign key (EXECUTION_ID_) 
+references ACT_RU_EXECUTION
+2016-12-13 18:43:04  [ main:743 ] - [ DEBUG ]  SQL: alter table ACT_RE_MODEL 
+add constraint ACT_FK_MODEL_SOURCE 
+foreign key (EDITOR_SOURCE_VALUE_ID_) 
+references ACT_GE_BYTEARRAY (ID_)
+2016-12-13 18:43:04  [ main:745 ] - [ DEBUG ]  SQL: alter table ACT_RE_MODEL 
+add constraint ACT_FK_MODEL_SOURCE_EXTRA 
+foreign key (EDITOR_SOURCE_EXTRA_VALUE_ID_) 
+references ACT_GE_BYTEARRAY (ID_)
+2016-12-13 18:43:04  [ main:746 ] - [ DEBUG ]  SQL: alter table ACT_RE_MODEL 
+add constraint ACT_FK_MODEL_DEPLOYMENT 
+foreign key (DEPLOYMENT_ID_) 
+references ACT_RE_DEPLOYMENT (ID_)
+2016-12-13 18:43:04  [ main:747 ] - [ DEBUG ]  activiti db schema create for component engine successful
+2016-12-13 18:43:04  [ main:747 ] - [ INFO ]  performing create on history with resource org/activiti/db/create/activiti.h2.create.history.sql
+2016-12-13 18:43:04  [ main:748 ] - [ DEBUG ]  SQL: create table ACT_HI_PROCINST ( 
+ID_ varchar(64) not null, 
+PROC_INST_ID_ varchar(64) not null, 
+BUSINESS_KEY_ varchar(255), 
+PROC_DEF_ID_ varchar(64) not null, 
+START_TIME_ timestamp not null, 
+END_TIME_ timestamp, 
+DURATION_ bigint, 
+START_USER_ID_ varchar(255), 
+START_ACT_ID_ varchar(255), 
+END_ACT_ID_ varchar(255), 
+SUPER_PROCESS_INSTANCE_ID_ varchar(64), 
+DELETE_REASON_ varchar(4000), 
+TENANT_ID_ varchar(255) default '', 
+NAME_ varchar(255), 
+primary key (ID_), 
+unique (PROC_INST_ID_) 
+)
+2016-12-13 18:43:04  [ main:749 ] - [ DEBUG ]  SQL: create table ACT_HI_ACTINST ( 
+ID_ varchar(64) not null, 
+PROC_DEF_ID_ varchar(64) not null, 
+PROC_INST_ID_ varchar(64) not null, 
+EXECUTION_ID_ varchar(64) not null, 
+ACT_ID_ varchar(255) not null, 
+TASK_ID_ varchar(64), 
+CALL_PROC_INST_ID_ varchar(64), 
+ACT_NAME_ varchar(255), 
+ACT_TYPE_ varchar(255) not null, 
+ASSIGNEE_ varchar(255), 
+START_TIME_ timestamp not null, 
+END_TIME_ timestamp, 
+DURATION_ bigint, 
+TENANT_ID_ varchar(255) default '', 
+primary key (ID_) 
+)
+2016-12-13 18:43:04  [ main:750 ] - [ DEBUG ]  SQL: create table ACT_HI_TASKINST ( 
+ID_ varchar(64) not null, 
+PROC_DEF_ID_ varchar(64), 
+TASK_DEF_KEY_ varchar(255), 
+PROC_INST_ID_ varchar(64), 
+EXECUTION_ID_ varchar(64), 
+NAME_ varchar(255), 
+PARENT_TASK_ID_ varchar(64), 
+DESCRIPTION_ varchar(4000), 
+OWNER_ varchar(255), 
+ASSIGNEE_ varchar(255), 
+START_TIME_ timestamp not null, 
+CLAIM_TIME_ timestamp, 
+END_TIME_ timestamp, 
+DURATION_ bigint, 
+DELETE_REASON_ varchar(4000), 
+PRIORITY_ integer, 
+DUE_DATE_ timestamp, 
+FORM_KEY_ varchar(255), 
+CATEGORY_ varchar(255), 
+TENANT_ID_ varchar(255) default '', 
+primary key (ID_) 
+)
+2016-12-13 18:43:04  [ main:750 ] - [ DEBUG ]  SQL: create table ACT_HI_VARINST ( 
+ID_ varchar(64) not null, 
+PROC_INST_ID_ varchar(64), 
+EXECUTION_ID_ varchar(64), 
+TASK_ID_ varchar(64), 
+NAME_ varchar(255) not null, 
+VAR_TYPE_ varchar(100), 
+REV_ integer, 
+BYTEARRAY_ID_ varchar(64), 
+DOUBLE_ double, 
+LONG_ bigint, 
+TEXT_ varchar(4000), 
+TEXT2_ varchar(4000), 
+CREATE_TIME_ timestamp, 
+LAST_UPDATED_TIME_ timestamp, 
+primary key (ID_) 
+)
+2016-12-13 18:43:04  [ main:751 ] - [ DEBUG ]  SQL: create table ACT_HI_DETAIL ( 
+ID_ varchar(64) not null, 
+TYPE_ varchar(255) not null, 
+TIME_ timestamp not null, 
+NAME_ varchar(255), 
+PROC_INST_ID_ varchar(64), 
+EXECUTION_ID_ varchar(64), 
+TASK_ID_ varchar(64), 
+ACT_INST_ID_ varchar(64), 
+VAR_TYPE_ varchar(255), 
+REV_ integer, 
+BYTEARRAY_ID_ varchar(64), 
+DOUBLE_ double, 
+LONG_ bigint, 
+TEXT_ varchar(4000), 
+TEXT2_ varchar(4000), 
+primary key (ID_) 
+)
+2016-12-13 18:43:04  [ main:768 ] - [ DEBUG ]  SQL: create table ACT_HI_COMMENT ( 
+ID_ varchar(64) not null, 
+TYPE_ varchar(255), 
+TIME_ timestamp not null, 
+USER_ID_ varchar(255), 
+TASK_ID_ varchar(64), 
+PROC_INST_ID_ varchar(64), 
+ACTION_ varchar(255), 
+MESSAGE_ varchar(4000), 
+FULL_MSG_ longvarbinary, 
+primary key (ID_) 
+)
+2016-12-13 18:43:04  [ main:769 ] - [ DEBUG ]  SQL: create table ACT_HI_ATTACHMENT ( 
+ID_ varchar(64) not null, 
+REV_ integer, 
+USER_ID_ varchar(255), 
+NAME_ varchar(255), 
+DESCRIPTION_ varchar(4000), 
+TYPE_ varchar(255), 
+TASK_ID_ varchar(64), 
+PROC_INST_ID_ varchar(64), 
+URL_ varchar(4000), 
+CONTENT_ID_ varchar(64), 
+primary key (ID_) 
+)
+2016-12-13 18:43:04  [ main:770 ] - [ DEBUG ]  SQL: create table ACT_HI_IDENTITYLINK ( 
+ID_ varchar(64), 
+GROUP_ID_ varchar(255), 
+TYPE_ varchar(255), 
+USER_ID_ varchar(255), 
+TASK_ID_ varchar(64), 
+PROC_INST_ID_ varchar(64) null, 
+primary key (ID_) 
+)
+2016-12-13 18:43:04  [ main:771 ] - [ DEBUG ]  SQL: create index ACT_IDX_HI_PRO_INST_END on ACT_HI_PROCINST(END_TIME_)
+2016-12-13 18:43:04  [ main:771 ] - [ DEBUG ]  SQL: create index ACT_IDX_HI_PRO_I_BUSKEY on ACT_HI_PROCINST(BUSINESS_KEY_)
+2016-12-13 18:43:04  [ main:772 ] - [ DEBUG ]  SQL: create index ACT_IDX_HI_ACT_INST_START on ACT_HI_ACTINST(START_TIME_)
+2016-12-13 18:43:04  [ main:772 ] - [ DEBUG ]  SQL: create index ACT_IDX_HI_ACT_INST_END on ACT_HI_ACTINST(END_TIME_)
+2016-12-13 18:43:04  [ main:772 ] - [ DEBUG ]  SQL: create index ACT_IDX_HI_DETAIL_PROC_INST on ACT_HI_DETAIL(PROC_INST_ID_)
+2016-12-13 18:43:04  [ main:773 ] - [ DEBUG ]  SQL: create index ACT_IDX_HI_DETAIL_ACT_INST on ACT_HI_DETAIL(ACT_INST_ID_)
+2016-12-13 18:43:04  [ main:773 ] - [ DEBUG ]  SQL: create index ACT_IDX_HI_DETAIL_TIME on ACT_HI_DETAIL(TIME_)
+2016-12-13 18:43:04  [ main:774 ] - [ DEBUG ]  SQL: create index ACT_IDX_HI_DETAIL_NAME on ACT_HI_DETAIL(NAME_)
+2016-12-13 18:43:04  [ main:774 ] - [ DEBUG ]  SQL: create index ACT_IDX_HI_DETAIL_TASK_ID on ACT_HI_DETAIL(TASK_ID_)
+2016-12-13 18:43:04  [ main:774 ] - [ DEBUG ]  SQL: create index ACT_IDX_HI_PROCVAR_PROC_INST on ACT_HI_VARINST(PROC_INST_ID_)
+2016-12-13 18:43:04  [ main:775 ] - [ DEBUG ]  SQL: create index ACT_IDX_HI_PROCVAR_NAME_TYPE on ACT_HI_VARINST(NAME_, VAR_TYPE_)
+2016-12-13 18:43:04  [ main:775 ] - [ DEBUG ]  SQL: create index ACT_IDX_HI_PROCVAR_TASK_ID on ACT_HI_VARINST(TASK_ID_)
+2016-12-13 18:43:04  [ main:776 ] - [ DEBUG ]  SQL: create index ACT_IDX_HI_ACT_INST_PROCINST on ACT_HI_ACTINST(PROC_INST_ID_, ACT_ID_)
+2016-12-13 18:43:04  [ main:781 ] - [ DEBUG ]  SQL: create index ACT_IDX_HI_IDENT_LNK_USER on ACT_HI_IDENTITYLINK(USER_ID_)
+2016-12-13 18:43:04  [ main:782 ] - [ DEBUG ]  SQL: create index ACT_IDX_HI_IDENT_LNK_TASK on ACT_HI_IDENTITYLINK(TASK_ID_)
+2016-12-13 18:43:04  [ main:782 ] - [ DEBUG ]  SQL: create index ACT_IDX_HI_IDENT_LNK_PROCINST on ACT_HI_IDENTITYLINK(PROC_INST_ID_)
+2016-12-13 18:43:04  [ main:783 ] - [ DEBUG ]  SQL: create index ACT_IDX_HI_ACT_INST_EXEC on ACT_HI_ACTINST(EXECUTION_ID_, ACT_ID_)
+2016-12-13 18:43:04  [ main:783 ] - [ DEBUG ]  activiti db schema create for component history successful
+2016-12-13 18:43:04  [ main:784 ] - [ INFO ]  performing create on identity with resource org/activiti/db/create/activiti.h2.create.identity.sql
+2016-12-13 18:43:04  [ main:785 ] - [ DEBUG ]  SQL: create table ACT_ID_GROUP ( 
+ID_ varchar(64), 
+REV_ integer, 
+NAME_ varchar(255), 
+TYPE_ varchar(255), 
+primary key (ID_) 
+)
+2016-12-13 18:43:04  [ main:785 ] - [ DEBUG ]  SQL: create table ACT_ID_MEMBERSHIP ( 
+USER_ID_ varchar(64), 
+GROUP_ID_ varchar(64), 
+primary key (USER_ID_, GROUP_ID_) 
+)
+2016-12-13 18:43:04  [ main:786 ] - [ DEBUG ]  SQL: create table ACT_ID_USER ( 
+ID_ varchar(64), 
+REV_ integer, 
+FIRST_ varchar(255), 
+LAST_ varchar(255), 
+EMAIL_ varchar(255), 
+PWD_ varchar(255), 
+PICTURE_ID_ varchar(64), 
+primary key (ID_) 
+)
+2016-12-13 18:43:04  [ main:787 ] - [ DEBUG ]  SQL: create table ACT_ID_INFO ( 
+ID_ varchar(64), 
+REV_ integer, 
+USER_ID_ varchar(64), 
+TYPE_ varchar(64), 
+KEY_ varchar(255), 
+VALUE_ varchar(255), 
+PASSWORD_ longvarbinary, 
+PARENT_ID_ varchar(255), 
+primary key (ID_) 
+)
+2016-12-13 18:43:04  [ main:787 ] - [ DEBUG ]  SQL: alter table ACT_ID_MEMBERSHIP 
+add constraint ACT_FK_MEMB_GROUP 
+foreign key (GROUP_ID_) 
+references ACT_ID_GROUP
+2016-12-13 18:43:04  [ main:789 ] - [ DEBUG ]  SQL: alter table ACT_ID_MEMBERSHIP 
+add constraint ACT_FK_MEMB_USER 
+foreign key (USER_ID_) 
+references ACT_ID_USER
+2016-12-13 18:43:04  [ main:790 ] - [ DEBUG ]  activiti db schema create for component identity successful
+2016-12-13 18:43:04  [ main:790 ] - [ DEBUG ]  flush summary: 0 insert, 0 update, 0 delete.
+2016-12-13 18:43:04  [ main:790 ] - [ DEBUG ]  now executing flush...
+2016-12-13 18:43:04  [ main:790 ] - [ DEBUG ]  firing event committing...
+2016-12-13 18:43:04  [ main:791 ] - [ DEBUG ]  committing the ibatis sql session...
+2016-12-13 18:43:04  [ main:791 ] - [ DEBUG ]  firing event committed...
+2016-12-13 18:43:04  [ main:791 ] - [ DEBUG ]  Resetting autocommit to true on JDBC Connection [conn0: url=jdbc:h2:mem:activiti user=SA]
+2016-12-13 18:43:04  [ main:792 ] - [ DEBUG ]  Closing JDBC Connection [conn0: url=jdbc:h2:mem:activiti user=SA]
+2016-12-13 18:43:04  [ main:792 ] - [ DEBUG ]  Returned connection 365181913 to pool.
+2016-12-13 18:43:04  [ main:792 ] - [ DEBUG ]  --- SchemaOperationsProcessEngineBuild finished --------------------------------------------------------
+2016-12-13 18:43:04  [ main:792 ] - [ DEBUG ]  
+
+2016-12-13 18:43:04  [ main:793 ] - [ INFO ]  ProcessEngine default created
+2016-12-13 18:43:04  [ main:798 ] - [ DEBUG ]  
+
+2016-12-13 18:43:04  [ main:798 ] - [ DEBUG ]  --- starting DeployCmd --------------------------------------------------------
+2016-12-13 18:43:04  [ main:799 ] - [ DEBUG ]  
+
+2016-12-13 18:43:04  [ main:799 ] - [ DEBUG ]  --- starting GetNextIdBlockCmd --------------------------------------------------------
+2016-12-13 18:43:04  [ main:806 ] - [ DEBUG ]  Opening JDBC Connection
+2016-12-13 18:43:04  [ main:806 ] - [ DEBUG ]  Checked out connection 365181913 from pool.
+2016-12-13 18:43:04  [ main:806 ] - [ DEBUG ]  Setting autocommit to false on JDBC Connection [conn0: url=jdbc:h2:mem:activiti user=SA]
+2016-12-13 18:43:04  [ main:808 ] - [ DEBUG ]  ==>  Preparing: select * from ACT_GE_PROPERTY where NAME_ = ? 
+2016-12-13 18:43:04  [ main:829 ] - [ DEBUG ]  ==> Parameters: next.dbid(String)
+2016-12-13 18:43:04  [ main:844 ] - [ DEBUG ]  <==      Total: 1
+2016-12-13 18:43:04  [ main:845 ] - [ DEBUG ]  flush summary: 0 insert, 1 update, 0 delete.
+2016-12-13 18:43:04  [ main:846 ] - [ DEBUG ]    update PropertyEntity[name=next.dbid, value=2501]
+2016-12-13 18:43:04  [ main:846 ] - [ DEBUG ]  now executing flush...
+2016-12-13 18:43:04  [ main:846 ] - [ DEBUG ]  updating: PropertyEntity[name=next.dbid, value=2501]
+2016-12-13 18:43:04  [ main:847 ] - [ DEBUG ]  ==>  Preparing: update ACT_GE_PROPERTY SET REV_ = ?, VALUE_ = ? where NAME_ = ? and REV_ = ? 
+2016-12-13 18:43:04  [ main:847 ] - [ DEBUG ]  ==> Parameters: 2(Integer), 2501(String), next.dbid(String), 1(Integer)
+2016-12-13 18:43:04  [ main:849 ] - [ DEBUG ]  <==    Updates: 1
+2016-12-13 18:43:04  [ main:849 ] - [ DEBUG ]  firing event committing...
+2016-12-13 18:43:04  [ main:850 ] - [ DEBUG ]  committing the ibatis sql session...
+2016-12-13 18:43:04  [ main:850 ] - [ DEBUG ]  Committing JDBC Connection [conn0: url=jdbc:h2:mem:activiti user=SA]
+2016-12-13 18:43:04  [ main:850 ] - [ DEBUG ]  firing event committed...
+2016-12-13 18:43:04  [ main:850 ] - [ DEBUG ]  Resetting autocommit to true on JDBC Connection [conn0: url=jdbc:h2:mem:activiti user=SA]
+2016-12-13 18:43:04  [ main:851 ] - [ DEBUG ]  Closing JDBC Connection [conn0: url=jdbc:h2:mem:activiti user=SA]
+2016-12-13 18:43:04  [ main:851 ] - [ DEBUG ]  Returned connection 365181913 to pool.
+2016-12-13 18:43:04  [ main:851 ] - [ DEBUG ]  --- GetNextIdBlockCmd finished --------------------------------------------------------
+2016-12-13 18:43:04  [ main:851 ] - [ DEBUG ]  
+
+2016-12-13 18:43:04  [ main:852 ] - [ DEBUG ]  Processing deployment null
+2016-12-13 18:43:04  [ main:852 ] - [ INFO ]  Processing resource chapter5/leave.bpmn
+2016-12-13 18:43:04  [ main:1004 ] - [ DEBUG ]  Parsing process myProcess
+2016-12-13 18:43:04  [ main:1005 ] - [ DEBUG ]  Parsing activity usertask1
+2016-12-13 18:43:04  [ main:1017 ] - [ DEBUG ]  Parsing activity hrApprove
+2016-12-13 18:43:04  [ main:1018 ] - [ DEBUG ]  Parsing activity startevent1
+2016-12-13 18:43:04  [ main:1019 ] - [ DEBUG ]  Parsing activity endevent1
+2016-12-13 18:43:06  [ main:2497 ] - [ DEBUG ]  Opening JDBC Connection
+2016-12-13 18:43:06  [ main:2498 ] - [ DEBUG ]  Checked out connection 365181913 from pool.
+2016-12-13 18:43:06  [ main:2498 ] - [ DEBUG ]  Setting autocommit to false on JDBC Connection [conn0: url=jdbc:h2:mem:activiti user=SA]
+2016-12-13 18:43:06  [ main:2499 ] - [ DEBUG ]  ==>  Preparing: select * from ACT_RE_PROCDEF where KEY_ = ? and (TENANT_ID_ = '' or TENANT_ID_ is null) and VERSION_ = (select max(VERSION_) from ACT_RE_PROCDEF where KEY_ = ? and (TENANT_ID_ = '' or TENANT_ID_ is null)) 
+2016-12-13 18:43:06  [ main:2502 ] - [ DEBUG ]  ==> Parameters: myProcess(String), myProcess(String)
+2016-12-13 18:43:06  [ main:2508 ] - [ DEBUG ]  <==      Total: 0
+2016-12-13 18:43:06  [ main:2510 ] - [ DEBUG ]  ==>  Preparing: select * from ACT_RU_JOB where HANDLER_TYPE_ = ? and HANDLER_CFG_ = ? 
+2016-12-13 18:43:06  [ main:2511 ] - [ DEBUG ]  ==> Parameters: timer-start-event(String), myProcess(String)
+2016-12-13 18:43:06  [ main:2512 ] - [ DEBUG ]  <==      Total: 0
+2016-12-13 18:43:06  [ main:2512 ] - [ DEBUG ]  flush summary: 4 insert, 0 update, 0 delete.
+2016-12-13 18:43:06  [ main:2513 ] - [ DEBUG ]    insert DeploymentEntity[id=1, name=null]
+2016-12-13 18:43:06  [ main:2513 ] - [ DEBUG ]    insert ResourceEntity[id=2, name=chapter5/leave.bpmn]
+2016-12-13 18:43:06  [ main:2513 ] - [ DEBUG ]    insert ResourceEntity[id=3, name=chapter5/leave.myProcess.png]
+2016-12-13 18:43:06  [ main:2514 ] - [ DEBUG ]    insert ProcessDefinitionEntity[myProcess:1:4]
+2016-12-13 18:43:06  [ main:2514 ] - [ DEBUG ]  now executing flush...
+2016-12-13 18:43:06  [ main:2514 ] - [ DEBUG ]  inserting: DeploymentEntity[id=1, name=null]
+2016-12-13 18:43:06  [ main:2514 ] - [ DEBUG ]  ==>  Preparing: insert into ACT_RE_DEPLOYMENT(ID_, NAME_, CATEGORY_, TENANT_ID_, DEPLOY_TIME_) values(?, ?, ?, ?, ?) 
+2016-12-13 18:43:06  [ main:2516 ] - [ DEBUG ]  ==> Parameters: 1(String), null, null, (String), 2016-12-13 18:43:04.601(Timestamp)
+2016-12-13 18:43:06  [ main:2516 ] - [ DEBUG ]  <==    Updates: 1
+2016-12-13 18:43:06  [ main:2517 ] - [ DEBUG ]  inserting: ResourceEntity[id=2, name=chapter5/leave.bpmn]
+2016-12-13 18:43:06  [ main:2517 ] - [ DEBUG ]  ==>  Preparing: insert into ACT_GE_BYTEARRAY(ID_, REV_, NAME_, BYTES_, DEPLOYMENT_ID_, GENERATED_) values (?, 1, ?, ?, ?, ?) 
+2016-12-13 18:43:06  [ main:2519 ] - [ DEBUG ]  ==> Parameters: 2(String), chapter5/leave.bpmn(String), java.io.ByteArrayInputStream@5b367418(ByteArrayInputStream), 1(String), false(Boolean)
+2016-12-13 18:43:06  [ main:2520 ] - [ DEBUG ]  <==    Updates: 1
+2016-12-13 18:43:06  [ main:2520 ] - [ DEBUG ]  inserting: ResourceEntity[id=3, name=chapter5/leave.myProcess.png]
+2016-12-13 18:43:06  [ main:2520 ] - [ DEBUG ]  ==>  Preparing: insert into ACT_GE_BYTEARRAY(ID_, REV_, NAME_, BYTES_, DEPLOYMENT_ID_, GENERATED_) values (?, 1, ?, ?, ?, ?) 
+2016-12-13 18:43:06  [ main:2521 ] - [ DEBUG ]  ==> Parameters: 3(String), chapter5/leave.myProcess.png(String), java.io.ByteArrayInputStream@36060e(ByteArrayInputStream), 1(String), true(Boolean)
+2016-12-13 18:43:06  [ main:2521 ] - [ DEBUG ]  <==    Updates: 1
+2016-12-13 18:43:06  [ main:2521 ] - [ DEBUG ]  inserting: ProcessDefinitionEntity[myProcess:1:4]
+2016-12-13 18:43:06  [ main:2521 ] - [ DEBUG ]  ==>  Preparing: insert into ACT_RE_PROCDEF(ID_, REV_, CATEGORY_, NAME_, KEY_, VERSION_, DEPLOYMENT_ID_, RESOURCE_NAME_, DGRM_RESOURCE_NAME_, DESCRIPTION_, HAS_START_FORM_KEY_, SUSPENSION_STATE_, TENANT_ID_) values (?, 1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) 
+2016-12-13 18:43:06  [ main:2522 ] - [ DEBUG ]  ==> Parameters: myProcess:1:4(String), http://www.activiti.org/test(String), My process(String), myProcess(String), 1(Integer), 1(String), chapter5/leave.bpmn(String), chapter5/leave.myProcess.png(String), null, true(Boolean), 1(Integer), (String)
+2016-12-13 18:43:06  [ main:2523 ] - [ DEBUG ]  <==    Updates: 1
+2016-12-13 18:43:06  [ main:2523 ] - [ DEBUG ]  firing event committing...
+2016-12-13 18:43:06  [ main:2523 ] - [ DEBUG ]  committing the ibatis sql session...
+2016-12-13 18:43:06  [ main:2523 ] - [ DEBUG ]  Committing JDBC Connection [conn0: url=jdbc:h2:mem:activiti user=SA]
+2016-12-13 18:43:06  [ main:2523 ] - [ DEBUG ]  firing event committed...
+2016-12-13 18:43:06  [ main:2524 ] - [ DEBUG ]  Resetting autocommit to true on JDBC Connection [conn0: url=jdbc:h2:mem:activiti user=SA]
+2016-12-13 18:43:06  [ main:2524 ] - [ DEBUG ]  Closing JDBC Connection [conn0: url=jdbc:h2:mem:activiti user=SA]
+2016-12-13 18:43:06  [ main:2524 ] - [ DEBUG ]  Returned connection 365181913 to pool.
+2016-12-13 18:43:06  [ main:2524 ] - [ DEBUG ]  --- DeployCmd finished --------------------------------------------------------
+2016-12-13 18:43:06  [ main:2524 ] - [ DEBUG ]  
+
+2016-12-13 18:43:06  [ main:2525 ] - [ DEBUG ]  
+
+2016-12-13 18:43:06  [ main:2525 ] - [ DEBUG ]  --- starting DeployCmd --------------------------------------------------------
+2016-12-13 18:43:06  [ main:2525 ] - [ DEBUG ]  Processing deployment null
+2016-12-13 18:43:06  [ main:2525 ] - [ INFO ]  Processing resource chapter6/workFlowLeave.bpmn
+2016-12-13 18:43:06  [ main:2556 ] - [ DEBUG ]  Parsing process leave
+2016-12-13 18:43:06  [ main:2557 ] - [ DEBUG ]  Parsing activity deptLeaderAudit
+2016-12-13 18:43:06  [ main:2557 ] - [ DEBUG ]  Parsing activity exclusivegateway1
+2016-12-13 18:43:06  [ main:2558 ] - [ DEBUG ]  Parsing activity hrAudit
+2016-12-13 18:43:06  [ main:2558 ] - [ DEBUG ]  Parsing activity exclusivegateway2
+2016-12-13 18:43:06  [ main:2558 ] - [ DEBUG ]  Parsing activity reportBack
+2016-12-13 18:43:06  [ main:2559 ] - [ DEBUG ]  Parsing activity modifyApply
+2016-12-13 18:43:06  [ main:2559 ] - [ DEBUG ]  Parsing activity exclusivegateway3
+2016-12-13 18:43:06  [ main:2559 ] - [ DEBUG ]  Parsing activity exclusivegateway4
+2016-12-13 18:43:06  [ main:2560 ] - [ DEBUG ]  Parsing activity startevent1
+2016-12-13 18:43:06  [ main:2560 ] - [ DEBUG ]  Parsing activity endevent1
+2016-12-13 18:43:06  [ main:2708 ] - [ DEBUG ]  Opening JDBC Connection
+2016-12-13 18:43:06  [ main:2708 ] - [ DEBUG ]  Checked out connection 365181913 from pool.
+2016-12-13 18:43:06  [ main:2708 ] - [ DEBUG ]  Setting autocommit to false on JDBC Connection [conn0: url=jdbc:h2:mem:activiti user=SA]
+2016-12-13 18:43:06  [ main:2709 ] - [ DEBUG ]  ==>  Preparing: select * from ACT_RE_PROCDEF where KEY_ = ? and (TENANT_ID_ = '' or TENANT_ID_ is null) and VERSION_ = (select max(VERSION_) from ACT_RE_PROCDEF where KEY_ = ? and (TENANT_ID_ = '' or TENANT_ID_ is null)) 
+2016-12-13 18:43:06  [ main:2709 ] - [ DEBUG ]  ==> Parameters: leave(String), leave(String)
+2016-12-13 18:43:06  [ main:2710 ] - [ DEBUG ]  <==      Total: 0
+2016-12-13 18:43:06  [ main:2710 ] - [ DEBUG ]  ==>  Preparing: select * from ACT_RU_JOB where HANDLER_TYPE_ = ? and HANDLER_CFG_ = ? 
+2016-12-13 18:43:06  [ main:2710 ] - [ DEBUG ]  ==> Parameters: timer-start-event(String), leave(String)
+2016-12-13 18:43:06  [ main:2711 ] - [ DEBUG ]  <==      Total: 0
+2016-12-13 18:43:06  [ main:2711 ] - [ DEBUG ]  flush summary: 4 insert, 0 update, 0 delete.
+2016-12-13 18:43:06  [ main:2711 ] - [ DEBUG ]    insert DeploymentEntity[id=5, name=null]
+2016-12-13 18:43:06  [ main:2711 ] - [ DEBUG ]    insert ResourceEntity[id=6, name=chapter6/workFlowLeave.bpmn]
+2016-12-13 18:43:06  [ main:2711 ] - [ DEBUG ]    insert ResourceEntity[id=7, name=chapter6/workFlowLeave.leave.png]
+2016-12-13 18:43:06  [ main:2711 ] - [ DEBUG ]    insert ProcessDefinitionEntity[leave:1:8]
+2016-12-13 18:43:06  [ main:2711 ] - [ DEBUG ]  now executing flush...
+2016-12-13 18:43:06  [ main:2712 ] - [ DEBUG ]  inserting: DeploymentEntity[id=5, name=null]
+2016-12-13 18:43:06  [ main:2712 ] - [ DEBUG ]  ==>  Preparing: insert into ACT_RE_DEPLOYMENT(ID_, NAME_, CATEGORY_, TENANT_ID_, DEPLOY_TIME_) values(?, ?, ?, ?, ?) 
+2016-12-13 18:43:06  [ main:2712 ] - [ DEBUG ]  ==> Parameters: 5(String), null, null, (String), 2016-12-13 18:43:06.327(Timestamp)
+2016-12-13 18:43:06  [ main:2713 ] - [ DEBUG ]  <==    Updates: 1
+2016-12-13 18:43:06  [ main:2713 ] - [ DEBUG ]  inserting: ResourceEntity[id=6, name=chapter6/workFlowLeave.bpmn]
+2016-12-13 18:43:06  [ main:2713 ] - [ DEBUG ]  ==>  Preparing: insert into ACT_GE_BYTEARRAY(ID_, REV_, NAME_, BYTES_, DEPLOYMENT_ID_, GENERATED_) values (?, 1, ?, ?, ?, ?) 
+2016-12-13 18:43:06  [ main:2713 ] - [ DEBUG ]  ==> Parameters: 6(String), chapter6/workFlowLeave.bpmn(String), java.io.ByteArrayInputStream@3b96c42e(ByteArrayInputStream), 5(String), false(Boolean)
+2016-12-13 18:43:06  [ main:2714 ] - [ DEBUG ]  <==    Updates: 1
+2016-12-13 18:43:06  [ main:2714 ] - [ DEBUG ]  inserting: ResourceEntity[id=7, name=chapter6/workFlowLeave.leave.png]
+2016-12-13 18:43:06  [ main:2714 ] - [ DEBUG ]  ==>  Preparing: insert into ACT_GE_BYTEARRAY(ID_, REV_, NAME_, BYTES_, DEPLOYMENT_ID_, GENERATED_) values (?, 1, ?, ?, ?, ?) 
+2016-12-13 18:43:06  [ main:2715 ] - [ DEBUG ]  ==> Parameters: 7(String), chapter6/workFlowLeave.leave.png(String), java.io.ByteArrayInputStream@5d066c7d(ByteArrayInputStream), 5(String), true(Boolean)
+2016-12-13 18:43:06  [ main:2715 ] - [ DEBUG ]  <==    Updates: 1
+2016-12-13 18:43:06  [ main:2715 ] - [ DEBUG ]  inserting: ProcessDefinitionEntity[leave:1:8]
+2016-12-13 18:43:06  [ main:2716 ] - [ DEBUG ]  ==>  Preparing: insert into ACT_RE_PROCDEF(ID_, REV_, CATEGORY_, NAME_, KEY_, VERSION_, DEPLOYMENT_ID_, RESOURCE_NAME_, DGRM_RESOURCE_NAME_, DESCRIPTION_, HAS_START_FORM_KEY_, SUSPENSION_STATE_, TENANT_ID_) values (?, 1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) 
+2016-12-13 18:43:06  [ main:2716 ] - [ DEBUG ]  ==> Parameters: leave:1:8(String), http://www.activiti.org/test(String), 请假流程-动态表单(String), leave(String), 1(Integer), 5(String), chapter6/workFlowLeave.bpmn(String), chapter6/workFlowLeave.leave.png(String), null, false(Boolean), 1(Integer), (String)
+2016-12-13 18:43:06  [ main:2716 ] - [ DEBUG ]  <==    Updates: 1
+2016-12-13 18:43:06  [ main:2717 ] - [ DEBUG ]  firing event committing...
+2016-12-13 18:43:06  [ main:2717 ] - [ DEBUG ]  committing the ibatis sql session...
+2016-12-13 18:43:06  [ main:2717 ] - [ DEBUG ]  Committing JDBC Connection [conn0: url=jdbc:h2:mem:activiti user=SA]
+2016-12-13 18:43:06  [ main:2717 ] - [ DEBUG ]  firing event committed...
+2016-12-13 18:43:06  [ main:2717 ] - [ DEBUG ]  Resetting autocommit to true on JDBC Connection [conn0: url=jdbc:h2:mem:activiti user=SA]
+2016-12-13 18:43:06  [ main:2717 ] - [ DEBUG ]  Closing JDBC Connection [conn0: url=jdbc:h2:mem:activiti user=SA]
+2016-12-13 18:43:06  [ main:2718 ] - [ DEBUG ]  Returned connection 365181913 to pool.
+2016-12-13 18:43:06  [ main:2718 ] - [ DEBUG ]  --- DeployCmd finished --------------------------------------------------------
+2016-12-13 18:43:06  [ main:2718 ] - [ DEBUG ]  
+
+2016-12-13 18:43:06  [ main:2719 ] - [ DEBUG ]  
+
+2016-12-13 18:43:06  [ main:2719 ] - [ DEBUG ]  --- starting StartProcessInstanceCmd --------------------------------------------------------
+2016-12-13 18:43:06  [ main:2719 ] - [ DEBUG ]  Opening JDBC Connection
+2016-12-13 18:43:06  [ main:2719 ] - [ DEBUG ]  Checked out connection 365181913 from pool.
+2016-12-13 18:43:06  [ main:2720 ] - [ DEBUG ]  Setting autocommit to false on JDBC Connection [conn0: url=jdbc:h2:mem:activiti user=SA]
+2016-12-13 18:43:06  [ main:2720 ] - [ DEBUG ]  ==>  Preparing: select * from ACT_RE_PROCDEF where KEY_ = ? and (TENANT_ID_ = '' or TENANT_ID_ is null) and VERSION_ = (select max(VERSION_) from ACT_RE_PROCDEF where KEY_ = ? and (TENANT_ID_ = '' or TENANT_ID_ is null)) 
+2016-12-13 18:43:06  [ main:2720 ] - [ DEBUG ]  ==> Parameters: leave(String), leave(String)
+2016-12-13 18:43:06  [ main:2721 ] - [ DEBUG ]  <==      Total: 1
+2016-12-13 18:43:06  [ main:2722 ] - [ DEBUG ]  initializing ProcessInstance[9]
+2016-12-13 18:43:06  [ main:2724 ] - [ DEBUG ]  Current history level: AUDIT, level required: ACTIVITY
+2016-12-13 18:43:06  [ main:2724 ] - [ DEBUG ]  Current history level: AUDIT, level required: FULL
+2016-12-13 18:43:06  [ main:2725 ] - [ DEBUG ]  Current history level: AUDIT, level required: ACTIVITY
+2016-12-13 18:43:06  [ main:2725 ] - [ DEBUG ]  Current history level: AUDIT, level required: ACTIVITY
+2016-12-13 18:43:06  [ main:2725 ] - [ DEBUG ]  Current history level: AUDIT, level required: FULL
+2016-12-13 18:43:06  [ main:2725 ] - [ DEBUG ]  Current history level: AUDIT, level required: ACTIVITY
+2016-12-13 18:43:06  [ main:2725 ] - [ DEBUG ]  Current history level: AUDIT, level required: FULL
+2016-12-13 18:43:06  [ main:2730 ] - [ DEBUG ]  ProcessInstance[9] executes Activity(startevent1): org.activiti.engine.impl.bpmn.behavior.NoneStartEventActivityBehavior
+2016-12-13 18:43:06  [ main:2730 ] - [ DEBUG ]  Leaving activity 'startevent1'
+2016-12-13 18:43:06  [ main:2731 ] - [ DEBUG ]  Current history level: AUDIT, level required: ACTIVITY
+2016-12-13 18:43:06  [ main:2731 ] - [ DEBUG ]  ProcessInstance[9] takes transition (startevent1)--flow17-->(deptLeaderAudit)
+2016-12-13 18:43:06  [ main:2731 ] - [ DEBUG ]  Current history level: AUDIT, level required: ACTIVITY
+2016-12-13 18:43:06  [ main:2732 ] - [ DEBUG ]  ProcessInstance[9] executes Activity(deptLeaderAudit): org.activiti.engine.impl.bpmn.behavior.UserTaskActivityBehavior
+2016-12-13 18:43:06  [ main:2732 ] - [ DEBUG ]  Current history level: AUDIT, level required: AUDIT
+2016-12-13 18:43:06  [ main:2732 ] - [ DEBUG ]  Current history level: AUDIT, level required: AUDIT
+2016-12-13 18:43:06  [ main:2733 ] - [ DEBUG ]  Current history level: AUDIT, level required: AUDIT
+2016-12-13 18:43:06  [ main:2734 ] - [ DEBUG ]  Current history level: AUDIT, level required: AUDIT
+2016-12-13 18:43:06  [ main:2735 ] - [ DEBUG ]  Current history level: AUDIT, level required: AUDIT
+2016-12-13 18:43:06  [ main:2735 ] - [ DEBUG ]  Current history level: AUDIT, level required: ACTIVITY
+2016-12-13 18:43:06  [ main:2735 ] - [ DEBUG ]  flush summary: 14 insert, 0 update, 0 delete.
+2016-12-13 18:43:06  [ main:2735 ] - [ DEBUG ]    insert ProcessInstance[9]
+2016-12-13 18:43:06  [ main:2736 ] - [ DEBUG ]    insert VariableInstanceEntity[id=10, name=applyUserId, type=null]
+2016-12-13 18:43:06  [ main:2736 ] - [ DEBUG ]    insert HistoricVariableInstanceEntity[id=10, name=applyUserId, revision=0, type=null]
+2016-12-13 18:43:06  [ main:2736 ] - [ DEBUG ]    insert HistoricProcessInstanceEntity[superProcessInstanceId=null]
+2016-12-13 18:43:06  [ main:2736 ] - [ DEBUG ]    insert HistoricActivityInstanceEntity[activityId=startevent1, activityName=Start]
+2016-12-13 18:43:06  [ main:2736 ] - [ DEBUG ]    insert VariableInstanceEntity[id=12, name=applyUser, type=string, textValue=brighttang]
+2016-12-13 18:43:06  [ main:2737 ] - [ DEBUG ]    insert HistoricVariableInstanceEntity[id=12, name=applyUser, revision=0, type=string, textValue=brighttang]
+2016-12-13 18:43:06  [ main:2737 ] - [ DEBUG ]    insert VariableInstanceEntity[id=13, name=days, type=string, textValue=5]
+2016-12-13 18:43:06  [ main:2737 ] - [ DEBUG ]    insert HistoricVariableInstanceEntity[id=13, name=days, revision=0, type=string, textValue=5]
+2016-12-13 18:43:06  [ main:2737 ] - [ DEBUG ]    insert HistoricActivityInstanceEntity[activityId=deptLeaderAudit, activityName=部门领导审批]
+2016-12-13 18:43:06  [ main:2737 ] - [ DEBUG ]    insert Task[id=15, name=部门领导审批]
+2016-12-13 18:43:06  [ main:2737 ] - [ DEBUG ]    insert org.activiti.engine.impl.persistence.entity.HistoricTaskInstanceEntity@58be6e8
+2016-12-13 18:43:06  [ main:2738 ] - [ DEBUG ]    insert IdentityLinkEntity[id=16, type=candidate, groupId=deptLeader, taskId=15]
+2016-12-13 18:43:06  [ main:2738 ] - [ DEBUG ]    insert org.activiti.engine.impl.persistence.entity.HistoricIdentityLinkEntity@7331196b
+2016-12-13 18:43:06  [ main:2738 ] - [ DEBUG ]  now executing flush...
+2016-12-13 18:43:06  [ main:2738 ] - [ DEBUG ]  inserting: ProcessInstance[9]
+2016-12-13 18:43:06  [ main:2738 ] - [ DEBUG ]  ==>  Preparing: insert into ACT_RU_EXECUTION (ID_, REV_, PROC_INST_ID_, BUSINESS_KEY_, PROC_DEF_ID_, ACT_ID_, IS_ACTIVE_, IS_CONCURRENT_, IS_SCOPE_,IS_EVENT_SCOPE_, PARENT_ID_, SUPER_EXEC_, SUSPENSION_STATE_, CACHED_ENT_STATE_, TENANT_ID_, NAME_) values ( ?, 1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) 
+2016-12-13 18:43:06  [ main:2740 ] - [ DEBUG ]  ==> Parameters: 9(String), 9(String), null, leave:1:8(String), deptLeaderAudit(String), true(Boolean), false(Boolean), true(Boolean), false(Boolean), null, null, 1(Integer), 2(Integer), (String), null
+2016-12-13 18:43:06  [ main:2740 ] - [ DEBUG ]  <==    Updates: 1
+2016-12-13 18:43:06  [ main:2741 ] - [ DEBUG ]  inserting: VariableInstanceEntity[id=10, name=applyUserId, type=null]
+2016-12-13 18:43:06  [ main:2741 ] - [ DEBUG ]  ==>  Preparing: insert into ACT_RU_VARIABLE (ID_, REV_, TYPE_, NAME_, PROC_INST_ID_, EXECUTION_ID_, TASK_ID_, BYTEARRAY_ID_, DOUBLE_, LONG_ , TEXT_, TEXT2_) values ( ?, 1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) 
+2016-12-13 18:43:06  [ main:2741 ] - [ DEBUG ]  ==> Parameters: 10(String), null(String), applyUserId(String), 9(String), 9(String), null, null, null, null, null, null
+2016-12-13 18:43:06  [ main:2742 ] - [ DEBUG ]  <==    Updates: 1
+2016-12-13 18:43:06  [ main:2742 ] - [ DEBUG ]  inserting: HistoricVariableInstanceEntity[id=10, name=applyUserId, revision=0, type=null]
+2016-12-13 18:43:06  [ main:2742 ] - [ DEBUG ]  ==>  Preparing: insert into ACT_HI_VARINST (ID_, PROC_INST_ID_, EXECUTION_ID_, TASK_ID_, NAME_, REV_, VAR_TYPE_, BYTEARRAY_ID_, DOUBLE_, LONG_ , TEXT_, TEXT2_, CREATE_TIME_, LAST_UPDATED_TIME_) values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) 
+2016-12-13 18:43:06  [ main:2743 ] - [ DEBUG ]  ==> Parameters: 10(String), 9(String), 9(String), null, applyUserId(String), 0(Integer), null(String), null, null, null, null, null, 2016-12-13 18:43:06.526(Timestamp), 2016-12-13 18:43:06.526(Timestamp)
+2016-12-13 18:43:06  [ main:2743 ] - [ DEBUG ]  <==    Updates: 1
+2016-12-13 18:43:06  [ main:2743 ] - [ DEBUG ]  inserting: HistoricProcessInstanceEntity[superProcessInstanceId=null]
+2016-12-13 18:43:06  [ main:2744 ] - [ DEBUG ]  ==>  Preparing: insert into ACT_HI_PROCINST ( ID_, PROC_INST_ID_, BUSINESS_KEY_, PROC_DEF_ID_, START_TIME_, END_TIME_, DURATION_, START_USER_ID_, START_ACT_ID_, END_ACT_ID_, SUPER_PROCESS_INSTANCE_ID_, DELETE_REASON_, TENANT_ID_, NAME_ ) values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) 
+2016-12-13 18:43:06  [ main:2744 ] - [ DEBUG ]  ==> Parameters: 9(String), 9(String), null, leave:1:8(String), 2016-12-13 18:43:06.527(Timestamp), null, null, null, startevent1(String), null, null, null, (String), null
+2016-12-13 18:43:06  [ main:2744 ] - [ DEBUG ]  <==    Updates: 1
+2016-12-13 18:43:06  [ main:2744 ] - [ DEBUG ]  inserting: HistoricActivityInstanceEntity[activityId=startevent1, activityName=Start]
+2016-12-13 18:43:06  [ main:2745 ] - [ DEBUG ]  ==>  Preparing: insert into ACT_HI_ACTINST ( ID_, PROC_DEF_ID_, PROC_INST_ID_, EXECUTION_ID_, ACT_ID_, TASK_ID_, CALL_PROC_INST_ID_, ACT_NAME_, ACT_TYPE_, ASSIGNEE_, START_TIME_, END_TIME_, DURATION_, TENANT_ID_ ) values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) 
+2016-12-13 18:43:06  [ main:2745 ] - [ DEBUG ]  ==> Parameters: 11(String), leave:1:8(String), 9(String), 9(String), startevent1(String), null, null, Start(String), startEvent(String), null, 2016-12-13 18:43:06.527(Timestamp), 2016-12-13 18:43:06.533(Timestamp), 6(Long), (String)
+2016-12-13 18:43:06  [ main:2745 ] - [ DEBUG ]  <==    Updates: 1
+2016-12-13 18:43:06  [ main:2746 ] - [ DEBUG ]  inserting: VariableInstanceEntity[id=12, name=applyUser, type=string, textValue=brighttang]
+2016-12-13 18:43:06  [ main:2746 ] - [ DEBUG ]  ==>  Preparing: insert into ACT_RU_VARIABLE (ID_, REV_, TYPE_, NAME_, PROC_INST_ID_, EXECUTION_ID_, TASK_ID_, BYTEARRAY_ID_, DOUBLE_, LONG_ , TEXT_, TEXT2_) values ( ?, 1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) 
+2016-12-13 18:43:06  [ main:2746 ] - [ DEBUG ]  ==> Parameters: 12(String), string(String), applyUser(String), 9(String), 9(String), null, null, null, null, brighttang(String), null
+2016-12-13 18:43:06  [ main:2746 ] - [ DEBUG ]  <==    Updates: 1
+2016-12-13 18:43:06  [ main:2746 ] - [ DEBUG ]  inserting: HistoricVariableInstanceEntity[id=12, name=applyUser, revision=0, type=string, textValue=brighttang]
+2016-12-13 18:43:06  [ main:2747 ] - [ DEBUG ]  ==>  Preparing: insert into ACT_HI_VARINST (ID_, PROC_INST_ID_, EXECUTION_ID_, TASK_ID_, NAME_, REV_, VAR_TYPE_, BYTEARRAY_ID_, DOUBLE_, LONG_ , TEXT_, TEXT2_, CREATE_TIME_, LAST_UPDATED_TIME_) values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) 
+2016-12-13 18:43:06  [ main:2747 ] - [ DEBUG ]  ==> Parameters: 12(String), 9(String), 9(String), null, applyUser(String), 0(Integer), string(String), null, null, null, brighttang(String), null, 2016-12-13 18:43:06.527(Timestamp), 2016-12-13 18:43:06.527(Timestamp)
+2016-12-13 18:43:06  [ main:2747 ] - [ DEBUG ]  <==    Updates: 1
+2016-12-13 18:43:06  [ main:2748 ] - [ DEBUG ]  inserting: VariableInstanceEntity[id=13, name=days, type=string, textValue=5]
+2016-12-13 18:43:06  [ main:2748 ] - [ DEBUG ]  ==>  Preparing: insert into ACT_RU_VARIABLE (ID_, REV_, TYPE_, NAME_, PROC_INST_ID_, EXECUTION_ID_, TASK_ID_, BYTEARRAY_ID_, DOUBLE_, LONG_ , TEXT_, TEXT2_) values ( ?, 1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) 
+2016-12-13 18:43:06  [ main:2748 ] - [ DEBUG ]  ==> Parameters: 13(String), string(String), days(String), 9(String), 9(String), null, null, null, null, 5(String), null
+2016-12-13 18:43:06  [ main:2748 ] - [ DEBUG ]  <==    Updates: 1
+2016-12-13 18:43:06  [ main:2749 ] - [ DEBUG ]  inserting: HistoricVariableInstanceEntity[id=13, name=days, revision=0, type=string, textValue=5]
+2016-12-13 18:43:06  [ main:2749 ] - [ DEBUG ]  ==>  Preparing: insert into ACT_HI_VARINST (ID_, PROC_INST_ID_, EXECUTION_ID_, TASK_ID_, NAME_, REV_, VAR_TYPE_, BYTEARRAY_ID_, DOUBLE_, LONG_ , TEXT_, TEXT2_, CREATE_TIME_, LAST_UPDATED_TIME_) values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) 
+2016-12-13 18:43:06  [ main:2749 ] - [ DEBUG ]  ==> Parameters: 13(String), 9(String), 9(String), null, days(String), 0(Integer), string(String), null, null, null, 5(String), null, 2016-12-13 18:43:06.527(Timestamp), 2016-12-13 18:43:06.527(Timestamp)
+2016-12-13 18:43:06  [ main:2750 ] - [ DEBUG ]  <==    Updates: 1
+2016-12-13 18:43:06  [ main:2750 ] - [ DEBUG ]  inserting: HistoricActivityInstanceEntity[activityId=deptLeaderAudit, activityName=部门领导审批]
+2016-12-13 18:43:06  [ main:2750 ] - [ DEBUG ]  ==>  Preparing: insert into ACT_HI_ACTINST ( ID_, PROC_DEF_ID_, PROC_INST_ID_, EXECUTION_ID_, ACT_ID_, TASK_ID_, CALL_PROC_INST_ID_, ACT_NAME_, ACT_TYPE_, ASSIGNEE_, START_TIME_, END_TIME_, DURATION_, TENANT_ID_ ) values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) 
+2016-12-13 18:43:06  [ main:2751 ] - [ DEBUG ]  ==> Parameters: 14(String), leave:1:8(String), 9(String), 9(String), deptLeaderAudit(String), 15(String), null, 部门领导审批(String), userTask(String), null, 2016-12-13 18:43:06.534(Timestamp), null, null, (String)
+2016-12-13 18:43:06  [ main:2751 ] - [ DEBUG ]  <==    Updates: 1
+2016-12-13 18:43:06  [ main:2751 ] - [ DEBUG ]  inserting: Task[id=15, name=部门领导审批]
+2016-12-13 18:43:06  [ main:2752 ] - [ DEBUG ]  ==>  Preparing: insert into ACT_RU_TASK (ID_, REV_, NAME_, PARENT_TASK_ID_, DESCRIPTION_, PRIORITY_, CREATE_TIME_, OWNER_, ASSIGNEE_, DELEGATION_, EXECUTION_ID_, PROC_INST_ID_, PROC_DEF_ID_, TASK_DEF_KEY_, DUE_DATE_, CATEGORY_, SUSPENSION_STATE_, TENANT_ID_, FORM_KEY_) values (?, 1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) 
+2016-12-13 18:43:06  [ main:2752 ] - [ DEBUG ]  ==> Parameters: 15(String), 部门领导审批(String), null, null, 50(Integer), 2016-12-13 18:43:06.534(Timestamp), null, null, null, 9(String), 9(String), leave:1:8(String), deptLeaderAudit(String), null, null, 1(Integer), (String), null
+2016-12-13 18:43:06  [ main:2753 ] - [ DEBUG ]  <==    Updates: 1
+2016-12-13 18:43:06  [ main:2753 ] - [ DEBUG ]  inserting: org.activiti.engine.impl.persistence.entity.HistoricTaskInstanceEntity@58be6e8
+2016-12-13 18:43:06  [ main:2753 ] - [ DEBUG ]  ==>  Preparing: insert into ACT_HI_TASKINST ( ID_, PROC_DEF_ID_, PROC_INST_ID_, EXECUTION_ID_, NAME_, PARENT_TASK_ID_, DESCRIPTION_, OWNER_, ASSIGNEE_, START_TIME_, CLAIM_TIME_, END_TIME_, DURATION_, DELETE_REASON_, TASK_DEF_KEY_, FORM_KEY_, PRIORITY_, DUE_DATE_, CATEGORY_, TENANT_ID_ ) values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) 
+2016-12-13 18:43:06  [ main:2754 ] - [ DEBUG ]  ==> Parameters: 15(String), leave:1:8(String), 9(String), 9(String), 部门领导审批(String), null, null, null, null, 2016-12-13 18:43:06.534(Timestamp), null, null, null, null, deptLeaderAudit(String), null, 50(Integer), null, null, (String)
+2016-12-13 18:43:06  [ main:2754 ] - [ DEBUG ]  <==    Updates: 1
+2016-12-13 18:43:06  [ main:2755 ] - [ DEBUG ]  inserting: IdentityLinkEntity[id=16, type=candidate, groupId=deptLeader, taskId=15]
+2016-12-13 18:43:06  [ main:2755 ] - [ DEBUG ]  ==>  Preparing: insert into ACT_RU_IDENTITYLINK (ID_, REV_, TYPE_, USER_ID_, GROUP_ID_, TASK_ID_, PROC_INST_ID_, PROC_DEF_ID_) values (?, 1, ?, ?, ?, ?, ?, ?) 
+2016-12-13 18:43:06  [ main:2756 ] - [ DEBUG ]  ==> Parameters: 16(String), candidate(String), null, deptLeader(String), 15(String), null, null
+2016-12-13 18:43:06  [ main:2756 ] - [ DEBUG ]  <==    Updates: 1
+2016-12-13 18:43:06  [ main:2756 ] - [ DEBUG ]  inserting: org.activiti.engine.impl.persistence.entity.HistoricIdentityLinkEntity@7331196b
+2016-12-13 18:43:06  [ main:2756 ] - [ DEBUG ]  ==>  Preparing: insert into ACT_HI_IDENTITYLINK (ID_, TYPE_, USER_ID_, GROUP_ID_, TASK_ID_, PROC_INST_ID_) values (?, ?, ?, ?, ?, ?) 
+2016-12-13 18:43:06  [ main:2757 ] - [ DEBUG ]  ==> Parameters: 16(String), candidate(String), null, deptLeader(String), 15(String), null
+2016-12-13 18:43:06  [ main:2757 ] - [ DEBUG ]  <==    Updates: 1
+2016-12-13 18:43:06  [ main:2758 ] - [ DEBUG ]  firing event committing...
+2016-12-13 18:43:06  [ main:2759 ] - [ DEBUG ]  committing the ibatis sql session...
+2016-12-13 18:43:06  [ main:2759 ] - [ DEBUG ]  Committing JDBC Connection [conn0: url=jdbc:h2:mem:activiti user=SA]
+2016-12-13 18:43:06  [ main:2759 ] - [ DEBUG ]  firing event committed...
+2016-12-13 18:43:06  [ main:2760 ] - [ DEBUG ]  Resetting autocommit to true on JDBC Connection [conn0: url=jdbc:h2:mem:activiti user=SA]
+2016-12-13 18:43:06  [ main:2760 ] - [ DEBUG ]  Closing JDBC Connection [conn0: url=jdbc:h2:mem:activiti user=SA]
+2016-12-13 18:43:06  [ main:2760 ] - [ DEBUG ]  Returned connection 365181913 to pool.
+2016-12-13 18:43:06  [ main:2760 ] - [ DEBUG ]  --- StartProcessInstanceCmd finished --------------------------------------------------------
+2016-12-13 18:43:06  [ main:2760 ] - [ DEBUG ]  
+
+2016-12-13 18:43:06  [ main:2761 ] - [ DEBUG ]  
+
+2016-12-13 18:43:06  [ main:2761 ] - [ DEBUG ]  --- starting TaskQueryImpl --------------------------------------------------------
+2016-12-13 18:43:06  [ main:2799 ] - [ DEBUG ]  Opening JDBC Connection
+2016-12-13 18:43:06  [ main:2799 ] - [ DEBUG ]  Checked out connection 365181913 from pool.
+2016-12-13 18:43:06  [ main:2800 ] - [ DEBUG ]  Setting autocommit to false on JDBC Connection [conn0: url=jdbc:h2:mem:activiti user=SA]
+2016-12-13 18:43:06  [ main:2800 ] - [ DEBUG ]  ==>  Preparing: select distinct RES.* from ACT_RU_TASK RES inner join ACT_RU_IDENTITYLINK I on I.TASK_ID_ = RES.ID_ WHERE RES.ASSIGNEE_ is null and I.TYPE_ = 'candidate' and ( I.GROUP_ID_ IN ( ? ) ) order by RES.ID_ asc LIMIT ? OFFSET ? 
+2016-12-13 18:43:06  [ main:2802 ] - [ DEBUG ]  ==> Parameters: deptLeader(String), 2147483647(Integer), 0(Integer)
+2016-12-13 18:43:06  [ main:2803 ] - [ DEBUG ]  <==      Total: 1
+2016-12-13 18:43:06  [ main:2804 ] - [ DEBUG ]  flush summary: 0 insert, 0 update, 0 delete.
+2016-12-13 18:43:06  [ main:2804 ] - [ DEBUG ]  now executing flush...
+2016-12-13 18:43:06  [ main:2804 ] - [ DEBUG ]  firing event committing...
+2016-12-13 18:43:06  [ main:2804 ] - [ DEBUG ]  committing the ibatis sql session...
+2016-12-13 18:43:06  [ main:2804 ] - [ DEBUG ]  firing event committed...
+2016-12-13 18:43:06  [ main:2805 ] - [ DEBUG ]  Resetting autocommit to true on JDBC Connection [conn0: url=jdbc:h2:mem:activiti user=SA]
+2016-12-13 18:43:06  [ main:2805 ] - [ DEBUG ]  Closing JDBC Connection [conn0: url=jdbc:h2:mem:activiti user=SA]
+2016-12-13 18:43:06  [ main:2805 ] - [ DEBUG ]  Returned connection 365181913 to pool.
+2016-12-13 18:43:06  [ main:2805 ] - [ DEBUG ]  --- TaskQueryImpl finished --------------------------------------------------------
+2016-12-13 18:43:06  [ main:2805 ] - [ DEBUG ]  
+
+2016-12-13 18:43:06  [ main:2805 ] - [ DEBUG ]  
+
+2016-12-13 18:43:06  [ main:2805 ] - [ DEBUG ]  --- starting TaskQueryImpl --------------------------------------------------------
+2016-12-13 18:43:06  [ main:2806 ] - [ DEBUG ]  Opening JDBC Connection
+2016-12-13 18:43:06  [ main:2806 ] - [ DEBUG ]  Checked out connection 365181913 from pool.
+2016-12-13 18:43:06  [ main:2807 ] - [ DEBUG ]  Setting autocommit to false on JDBC Connection [conn0: url=jdbc:h2:mem:activiti user=SA]
+2016-12-13 18:43:06  [ main:2807 ] - [ DEBUG ]  ==>  Preparing: select distinct RES.* from ACT_RU_TASK RES inner join ACT_RU_IDENTITYLINK I on I.TASK_ID_ = RES.ID_ WHERE RES.ASSIGNEE_ is null and I.TYPE_ = 'candidate' and ( I.GROUP_ID_ IN ( ? ) ) order by RES.ID_ asc LIMIT ? OFFSET ? 
+2016-12-13 18:43:06  [ main:2808 ] - [ DEBUG ]  ==> Parameters: deptLeader(String), 2147483647(Integer), 0(Integer)
+2016-12-13 18:43:06  [ main:2809 ] - [ DEBUG ]  <==      Total: 1
+2016-12-13 18:43:06  [ main:2809 ] - [ DEBUG ]  flush summary: 0 insert, 0 update, 0 delete.
+2016-12-13 18:43:06  [ main:2809 ] - [ DEBUG ]  now executing flush...
+2016-12-13 18:43:06  [ main:2809 ] - [ DEBUG ]  firing event committing...
+2016-12-13 18:43:06  [ main:2809 ] - [ DEBUG ]  committing the ibatis sql session...
+2016-12-13 18:43:06  [ main:2809 ] - [ DEBUG ]  firing event committed...
+2016-12-13 18:43:06  [ main:2809 ] - [ DEBUG ]  Resetting autocommit to true on JDBC Connection [conn0: url=jdbc:h2:mem:activiti user=SA]
+2016-12-13 18:43:06  [ main:2810 ] - [ DEBUG ]  Closing JDBC Connection [conn0: url=jdbc:h2:mem:activiti user=SA]
+2016-12-13 18:43:06  [ main:2810 ] - [ DEBUG ]  Returned connection 365181913 to pool.
+2016-12-13 18:43:06  [ main:2810 ] - [ DEBUG ]  --- TaskQueryImpl finished --------------------------------------------------------
+2016-12-13 18:43:06  [ main:2810 ] - [ DEBUG ]  
+

@@ -27,6 +27,8 @@
         <mybatis.version>3.2.6</mybatis.version>  
 		<!-- 设置编码为UTF-8 -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<jackson.version>2.6.2</jackson.version>
+		
 	</properties>
   
   <dependencies>
@@ -228,80 +230,57 @@
 		    <artifactId>h2</artifactId>
 		    <version>1.4.193</version>
 		</dependency>
+		
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-databind</artifactId>
+		    <version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-annotations</artifactId>
+		    <version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-core</artifactId>
+		    <version>${jackson.version}</version>
+		</dependency>
 
-	<dependency> <!-- Spark dependency -->
+
+<!-- spark部分 -->
+	<dependency>
       <groupId>org.apache.spark</groupId>
-      <artifactId>spark-core_2.10</artifactId>
+      <artifactId>spark-core_2.11</artifactId>
       <version>2.0.0</version>
     </dependency>
     
-<!-- https://mvnrepository.com/artifact/org.scala-lang/scala-library -->
-<dependency>
-    <groupId>org.scala-lang</groupId>
-    <artifactId>scala-library</artifactId>
-    <version>2.11.1</version>
-</dependency>
-
-	
-<!-- https://mvnrepository.com/artifact/org.scala-lang.modules/scala-xml_2.11 -->
-<dependency>
-    <groupId>org.scala-lang.modules</groupId>
-    <artifactId>scala-xml_2.11</artifactId>
-    <version>1.0.2</version>
-</dependency>
-<!-- https://mvnrepository.com/artifact/org.scala-lang/scala-reflect -->
-<dependency>
-    <groupId>org.scala-lang</groupId>
-    <artifactId>scala-reflect</artifactId>
-    <version>2.11.1</version>
-</dependency>
-<!-- https://mvnrepository.com/artifact/org.scala-lang/scala-compiler -->
-<dependency>
-    <groupId>org.scala-lang</groupId>
-    <artifactId>scala-compiler</artifactId>
-    <version>2.11.1</version>
-</dependency>
-<!-- https://mvnrepository.com/artifact/org.scala-lang.modules/scala-parser-combinators_2.11 -->
-<dependency>
-    <groupId>org.scala-lang.modules</groupId>
-    <artifactId>scala-parser-combinators_2.11</artifactId>
-    <version>1.0.1</version>
-</dependency>
-<!-- https://mvnrepository.com/artifact/com.typesafe.scala-logging/scala-logging_2.11 -->
-<dependency>
-    <groupId>com.typesafe.scala-logging</groupId>
-    <artifactId>scala-logging_2.11</artifactId>
-    <version>3.0.0</version>
-</dependency>
-<!-- https://mvnrepository.com/artifact/org.scala-lang/scala-actors -->
-<dependency>
-    <groupId>org.scala-lang</groupId>
-    <artifactId>scala-actors</artifactId>
-    <version>2.11.1</version>
-</dependency>
-
-
-
-
-
-
-	
-	<!-- https://mvnrepository.com/artifact/org.apache.spark/spark-hive_2.10 -->
-	<dependency>
+    <dependency>
+      <groupId>org.apache.spark</groupId>
+      <artifactId>spark-repl_2.10</artifactId>
+      <version>2.0.0</version>
+    </dependency>
+    <dependency>
 	    <groupId>org.apache.spark</groupId>
 	    <artifactId>spark-hive_2.10</artifactId>
 	    <version>2.0.0</version>
 	</dependency>
-	
-	<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-validator -->
 	<dependency>
-	    <groupId>org.hibernate</groupId>
-	    <artifactId>hibernate-validator</artifactId>
-	    <version>4.2.0.Final</version>
+	    <groupId>org.scala-lang</groupId>
+	    <artifactId>scala-library</artifactId>
+	    <version>2.11.8</version>
 	</dependency>
-
-
-
+	<dependency>
+	    <groupId>org.scala-lang</groupId>
+	    <artifactId>scalap</artifactId>
+	    <version>2.11.8</version>
+	</dependency>
+ 	<dependency>
+	    <groupId>org.scala-lang</groupId>
+	    <artifactId>scala-compiler</artifactId>
+	    <version>2.11.1</version>
+	</dependency>
+	
   </dependencies>
   <build>
     <finalName>ActivitiSpringPro</finalName>
